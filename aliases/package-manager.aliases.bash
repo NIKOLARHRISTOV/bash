@@ -7,48 +7,48 @@ declare _omb_tmp_sudo
 # Switch for the use of "sudo"
 _omb_tmp_sudo=
 if [[ ${OMB_ALIAS_PACKAGE_MANAGER_SUDO+set} ]]; then
-  _omb_tmp_sudo=${OMB_ALIAS_PACKAGE_MANAGER_SUDO:+$OMB_ALIAS_PACKAGE_MANAGER_SUDO }
+	_omb_tmp_sudo=${OMB_ALIAS_PACKAGE_MANAGER_SUDO:+$OMB_ALIAS_PACKAGE_MANAGER_SUDO }
 elif [[ ${OMB_USE_SUDO-true} == true ]]; then
-  if ((EUID != 0)) && _omb_util_binary_exists sudo; then
-    _omb_tmp_sudo='sudo '
-  fi
+	if ((EUID != 0)) && _omb_util_binary_exists sudo; then
+		_omb_tmp_sudo='sudo '
+	fi
 fi
 
 # Portage - Enoch Merge
 if _omb_util_binary_exists emerge; then
-  alias em="${_omb_tmp_sudo}emerge" # Enoch Merge
-  alias es="${_omb_tmp_sudo}emerge --search" # Enoch Search
-  alias esync="${_omb_tmp_sudo}emerge --sync" # Enoch SYNC
-  alias eb="${_omb_tmp_sudo}ebuild" # Enoch Build
-  alias er="${_omb_tmp_sudo}emerge -c" # Enoch Remove
-  alias ers="${_omb_tmp_sudo}emerge -c" # Enoch Remove Systempackage
-  alias emfu="${_omb_tmp_sudo}emerge --sync && ${_omb_tmp_sudo}emerge -uDUj @world"
-  alias elip="${_omb_tmp_sudo}eix-installed -a" # Enoch List Installed Packages
+	alias em="${_omb_tmp_sudo}emerge"           # Enoch Merge
+	alias es="${_omb_tmp_sudo}emerge --search"  # Enoch Search
+	alias esync="${_omb_tmp_sudo}emerge --sync" # Enoch SYNC
+	alias eb="${_omb_tmp_sudo}ebuild"           # Enoch Build
+	alias er="${_omb_tmp_sudo}emerge -c"        # Enoch Remove
+	alias ers="${_omb_tmp_sudo}emerge -c"       # Enoch Remove Systempackage
+	alias emfu="${_omb_tmp_sudo}emerge --sync && ${_omb_tmp_sudo}emerge -uDUj @world"
+	alias elip="${_omb_tmp_sudo}eix-installed -a" # Enoch List Installed Packages
 fi
 
 # Paludis - Cave
 if _omb_util_binary_exists cave; then
-  alias cave="${_omb_tmp_sudo}cave"
-  alias cr="${_omb_tmp_sudo}cave resolve" # Cave Resolve
-  alias cui="${_omb_tmp_sudo}cave uninstall" # Cave UnInstall
-  alias cs="${_omb_tmp_sudo}cave show" # Cave Show
-  alias cli="${_omb_tmp_sudo}cave print-ids --matching '*/*::/'" # Cave List Installed
+	alias cave="${_omb_tmp_sudo}cave"
+	alias cr="${_omb_tmp_sudo}cave resolve"                        # Cave Resolve
+	alias cui="${_omb_tmp_sudo}cave uninstall"                     # Cave UnInstall
+	alias cs="${_omb_tmp_sudo}cave show"                           # Cave Show
+	alias cli="${_omb_tmp_sudo}cave print-ids --matching '*/*::/'" # Cave List Installed
 fi
 
 # Advanced Packaging Tool - APT
 if _omb_util_binary_exists apt; then
-  alias apt="${_omb_tmp_sudo}apt" # Advanced Packaging Tool
-  alias aptfu="${_omb_tmp_sudo}apt update -y && ${_omb_tmp_sudo}apt upgrade -y && ${_omb_tmp_sudo}apt dist-upgrade -y && ${_omb_tmp_sudo}apt autoremove -y"
-  alias apti="${_omb_tmp_sudo}apt install -y" # Apt install
-  alias apts="${_omb_tmp_sudo}apt-cache search" # Apt search
-  alias aptr="${_omb_tmp_sudo}apt remove -y" # Apt remove
-  alias aptar="${_omb_tmp_sudo}apt autoremove -y" # Apt Auto Remove
-  alias aptli="${_omb_tmp_sudo}apt list --installed"
+	alias apt="${_omb_tmp_sudo}apt" # Advanced Packaging Tool
+	alias aptfu="${_omb_tmp_sudo}apt update -y && ${_omb_tmp_sudo}apt upgrade -y && ${_omb_tmp_sudo}apt dist-upgrade -y && ${_omb_tmp_sudo}apt autoremove -y"
+	alias apti="${_omb_tmp_sudo}apt install -y"     # Apt install
+	alias apts="${_omb_tmp_sudo}apt-cache search"   # Apt search
+	alias aptr="${_omb_tmp_sudo}apt remove -y"      # Apt remove
+	alias aptar="${_omb_tmp_sudo}apt autoremove -y" # Apt Auto Remove
+	alias aptli="${_omb_tmp_sudo}apt list --installed"
 fi
 
 # Debian PacKaGe - DPKG
 if _omb_util_binary_exists dpkg; then
-  alias dpkg="${_omb_tmp_sudo}dpkg"
+	alias dpkg="${_omb_tmp_sudo}dpkg"
 fi
 
 # # Zypper = Zen Yast Package Program (ZYPP?)

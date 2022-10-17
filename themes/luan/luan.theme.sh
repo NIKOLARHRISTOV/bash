@@ -14,16 +14,16 @@ RVM_THEME_PROMPT_PREFIX=""
 RVM_THEME_PROMPT_SUFFIX=""
 
 function _omb_theme_PROMPT_COMMAND() {
-    dtime="$(clock_prompt)"
-    user_host="${_omb_prompt_green}\u@${_omb_prompt_teal}\h${_omb_prompt_normal}"
-    current_dir="${_omb_prompt_bold_navy}\w${_omb_prompt_normal}"
-    rvm_ruby="${_omb_prompt_bold_brown}$(_omb_prompt_print_ruby_env)${_omb_prompt_normal}"
-    git_branch="$(scm_prompt_info)${_omb_prompt_normal}"
-    prompt="${_omb_prompt_bold_green}\$${_omb_prompt_normal} "
-    arrow="${_omb_prompt_bold_white}▶${_omb_prompt_normal} "
-    prompt="${_omb_prompt_bold_green}\$${_omb_prompt_normal} "
+	dtime="$(clock_prompt)"
+	user_host="${_omb_prompt_green}\u@${_omb_prompt_teal}\h${_omb_prompt_normal}"
+	current_dir="${_omb_prompt_bold_navy}\w${_omb_prompt_normal}"
+	rvm_ruby="${_omb_prompt_bold_brown}$(_omb_prompt_print_ruby_env)${_omb_prompt_normal}"
+	git_branch="$(scm_prompt_info)${_omb_prompt_normal}"
+	prompt="${_omb_prompt_bold_green}\$${_omb_prompt_normal} "
+	arrow="${_omb_prompt_bold_white}▶${_omb_prompt_normal} "
+	prompt="${_omb_prompt_bold_green}\$${_omb_prompt_normal} "
 
-    PS1="${dtime}${user_host}:${current_dir} ${rvm_ruby} ${git_branch}
+	PS1="${dtime}${user_host}:${current_dir} ${rvm_ruby} ${git_branch}
       $arrow $prompt"
 }
 

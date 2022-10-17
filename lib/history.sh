@@ -3,9 +3,8 @@ shopt -s histappend # append to bash_history if Terminal.app quits
 
 ## Command history configuration
 if [ -z "$HISTFILE" ]; then
-  HISTFILE=$HOME/.bash_history
+	HISTFILE=$HOME/.bash_history
 fi
-
 
 # some moderate history controls taken from sensible.bash
 ## SANE HISTORY DEFAULTS ##
@@ -40,7 +39,7 @@ HISTCONTROL="erasedups:ignoreboth"
 export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
 
 # Use standard ISO 8601 timestamp
-# %F equivalent to %Y-%m-%d                                                                                      
+# %F equivalent to %Y-%m-%d
 # %T equivalent to %H:%M:%S (24-hours format)
 HISTTIMEFORMAT='%F %T '
 
@@ -54,8 +53,8 @@ bind '"\e[D": backward-char'
 
 # Show history
 #case $HIST_STAMPS in
-  #"mm/dd/yyyy") alias history='fc -fl 1' ;;
-  #"dd.mm.yyyy") alias history='fc -El 1' ;;
-  #"yyyy-mm-dd") alias history='fc -il 1' ;;
-  #*) alias history='fc -l 1' ;;
+#"mm/dd/yyyy") alias history='fc -fl 1' ;;
+#"dd.mm.yyyy") alias history='fc -El 1' ;;
+#"yyyy-mm-dd") alias history='fc -il 1' ;;
+#*) alias history='fc -l 1' ;;
 #esac

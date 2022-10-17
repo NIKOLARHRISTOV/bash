@@ -1,12 +1,12 @@
 #! bash oh-my-bash.module
 # Common directories functions
-_omb_util_alias cd..='cd ../'                         # Go back 1 directory level (for fast typers)
-_omb_util_alias ..='cd ../'                           # Go back 1 directory level
-_omb_util_alias ...='cd ../../'                       # Go back 2 directory levels
-_omb_util_alias .3='cd ../../../'                     # Go back 3 directory levels
-_omb_util_alias .4='cd ../../../../'                  # Go back 4 directory levels
-_omb_util_alias .5='cd ../../../../../'               # Go back 5 directory levels
-_omb_util_alias .6='cd ../../../../../../'            # Go back 6 directory levels
+_omb_util_alias cd..='cd ../'              # Go back 1 directory level (for fast typers)
+_omb_util_alias ..='cd ../'                # Go back 1 directory level
+_omb_util_alias ...='cd ../../'            # Go back 2 directory levels
+_omb_util_alias .3='cd ../../../'          # Go back 3 directory levels
+_omb_util_alias .4='cd ../../../../'       # Go back 4 directory levels
+_omb_util_alias .5='cd ../../../../../'    # Go back 5 directory levels
+_omb_util_alias .6='cd ../../../../../../' # Go back 6 directory levels
 
 _omb_util_alias -='cd -'
 _omb_util_alias 1='cd -'
