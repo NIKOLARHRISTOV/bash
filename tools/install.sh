@@ -142,12 +142,12 @@ _omb_install_user_bashrc() {
 		_omb_install_run mv ~/.bashrc "$bashrc_backup"
 	fi
 
-	printf "${BLUE}Using the Oh My Bash template file and adding it to ~/.bashrc${NORMAL}\n"
-	_omb_install_run cp "$OSH"/templates/bashrc.osh-template ~/.bashrc
-	sed "/^export OSH=/ c\\
-export OSH=$OSH
-  " ~/.bashrc >|~/.bashrc.omb-temp
-	_omb_install_run mv -f ~/.bashrc.omb-temp ~/.bashrc
+  printf "${BLUE}Using the Oh My Bash template file and adding it to ~/.bashrc${NORMAL}\n"
+  _omb_install_run cp "$OSH"/templates/bashrc.osh-template ~/.bashrc
+  sed "/^export OSH=/ c\\
+export OSH='${OSH//\'/\'\\\'\'}'
+  " ~/.bashrc >| ~/.bashrc.omb-temp
+  _omb_install_run mv -f ~/.bashrc.omb-temp ~/.bashrc
 
 	set +e
 	_omb_install_banner
@@ -238,8 +238,12 @@ _omb_install_main() {
 		OSH=~/.oh-my-bash
 	fi
 
-	# Only enable exit-on-error after the non-critical colorization stuff,
-	# which may fail on systems lacking tput or terminfo
+  if [[ ! $OSH_REPOSITORY ]]; then
+    OSH_REPOSITORY=https://github.com/ohmybash/oh-my-bash.git
+  fi
+
+  # Only enable exit-on-error after the non-critical colorization stuff,
+  # which may fail on systems lacking tput or terminfo
 
 	set -e
 
@@ -256,23 +260,23 @@ _omb_install_main() {
 	# precedence over umasks except for filesystems mounted with option "noacl".
 	umask g-w,o-w
 
-	printf "${BLUE}Cloning Oh My Bash...${NORMAL}\n"
-	type -P git &>/dev/null || {
-		echo "Error: git is not installed"
-		return 1
-	}
-	# The Windows (MSYS) Git is not compatible with normal use on cygwin
-	if [[ $OSTYPE = cygwin ]]; then
-		if command git --version | command grep msysgit >/dev/null; then
-			echo "Error: Windows/MSYS Git is not supported on Cygwin"
-			echo "Error: Make sure the Cygwin git package is installed and is first on the path"
-			return 1
-		fi
-	fi
-	_omb_install_run git clone --depth=1 https://github.com/ohmybash/oh-my-bash.git "$OSH" || {
-		printf "Error: git clone of oh-my-bash repo failed\n"
-		return 1
-	}
+  printf "${BLUE}Cloning Oh My Bash...${NORMAL}\n"
+  type -P git &>/dev/null || {
+    echo "Error: git is not installed"
+    return 1
+  }
+  # The Windows (MSYS) Git is not compatible with normal use on cygwin
+  if [[ $OSTYPE = cygwin ]]; then
+    if command git --version | command grep msysgit > /dev/null; then
+      echo "Error: Windows/MSYS Git is not supported on Cygwin"
+      echo "Error: Make sure the Cygwin git package is installed and is first on the path"
+      return 1
+    fi
+  fi
+  _omb_install_run git clone --depth=1 "$OSH_REPOSITORY" "$OSH" || {
+    printf "Error: git clone of oh-my-bash repo failed\n"
+    return 1
+  }
 
 	if [[ $install_prefix ]]; then
 		_omb_install_system_bashrc

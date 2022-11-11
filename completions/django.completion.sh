@@ -39,20 +39,21 @@ _django_completion() {
 }
 complete -F _django_completion -o default django-admin.py manage.py django-admin
 
-_python_django_completion() {
-	if [[ ${COMP_CWORD} -ge 2 ]]; then
-		PYTHON_EXE=$(basename -- ${COMP_WORDS[0]})
-		echo $PYTHON_EXE | egrep "python([2-9]\.[0-9])?" >/dev/null 2>&1
-		if [[ $? == 0 ]]; then
-			PYTHON_SCRIPT=$(basename -- ${COMP_WORDS[1]})
-			echo $PYTHON_SCRIPT | egrep "manage\.py|django-admin(\.py)?" >/dev/null 2>&1
-			if [[ $? == 0 ]]; then
-				COMPREPLY=($(COMP_WORDS="${COMP_WORDS[*]:1}" \
-					COMP_CWORD=$((COMP_CWORD - 1)) \
-					DJANGO_AUTO_COMPLETE=1 ${COMP_WORDS[*]}))
-			fi
-		fi
-	fi
+_python_django_completion()
+{
+    if [[ ${COMP_CWORD} -ge 2 ]]; then
+        PYTHON_EXE=$( basename -- ${COMP_WORDS[0]} )
+        echo $PYTHON_EXE | command grep -E "python([2-9]\.[0-9])?" >/dev/null 2>&1
+        if [[ $? == 0 ]]; then
+            PYTHON_SCRIPT=$( basename -- ${COMP_WORDS[1]} )
+            echo $PYTHON_SCRIPT | command grep -E "manage\.py|django-admin(\.py)?" >/dev/null 2>&1
+            if [[ $? == 0 ]]; then
+                COMPREPLY=( $( COMP_WORDS="${COMP_WORDS[*]:1}" \
+                               COMP_CWORD=$(( COMP_CWORD-1 )) \
+                               DJANGO_AUTO_COMPLETE=1 ${COMP_WORDS[*]} ) )
+            fi
+        fi
+    fi
 }
 
 # Support for multiple interpreters.
