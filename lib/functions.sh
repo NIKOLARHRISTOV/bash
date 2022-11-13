@@ -51,14 +51,14 @@ function open_command() {
 #    1 if it does not exist
 #
 if ((_omb_bash_version >= 40000)); then
-  function alias_value() {
-    [[ ${BASH_ALIASES[$1]+set} ]] && echo "${BASH_ALIASES[$1]}"
-  }
+	function alias_value() {
+		[[ ${BASH_ALIASES[$1]+set} ]] && echo "${BASH_ALIASES[$1]}"
+	}
 else
-  function alias_value() {
-    local value=
-    value=$(alias "$1" 2>/dev/null) && eval "value=${value#*=}" && echo "$value"
-  }
+	function alias_value() {
+		local value=
+		value=$(alias "$1" 2>/dev/null) && eval "value=${value#*=}" && echo "$value"
+	}
 fi
 
 #

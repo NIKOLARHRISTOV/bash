@@ -2,8 +2,8 @@
 
 ## alias:debian
 
-Shorted aliases for most used Debian specific commands.
-To activate it, add `debian` to `plugins(...)` in your `.bashrc` file:
+Shorted aliases for most used Debian specific commands. To activate it, add
+`debian` to `plugins(...)` in your `.bashrc` file:
 
 `plugins=(... debian)`
 
@@ -47,7 +47,7 @@ To activate it, add `debian` to `plugins(...)` in your `.bashrc` file:
 | `upgrb` | `sudo update-grub`         |
 | `uirfs` | `sudo update-initramfs -u` |
 
-----
+---
 
 ## alias:package-manager
 
@@ -77,10 +77,10 @@ OMB_ALIAS_PACKAGE_MANAGER_SUDO=
 
 ## alias:terraform
 
-| Alias    | Command                      |
-| -------- | ---------------------------- |
-| `t`      | `terraform`                  |
-| `tinit`  | `terraform init`             |
-| `tplan`  | `terraform plan`             |
-| `tapply` | `terraform apply`            |
-| `tfmt`   | `terraform fmt`              | 
+| Alias    | Command           |
+| -------- | ----------------- |
+| `t`      | `terraform`       |
+| `tinit`  | `terraform init`  |
+| `tplan`  | `terraform plan`  |
+| `tapply` | `terraform apply` |
+| `tfmt`   | `terraform fmt`   |
