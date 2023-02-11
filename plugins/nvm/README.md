@@ -39,8 +39,8 @@ completions=(
 ## `.nvmrc` autoload
 
 If set, the plugin will automatically load a node version when it finds a
-`.nvmrc` file[3] in the current working directory indicating which node version to load.
-This can be done by adding the following to your `.bashrc`:
+`.nvmrc` file[3] in the current working directory indicating which node version
+to load. This can be done by adding the following to your `.bashrc`:
 
 ```bash
 OMB_PLUGIN_NVM_AUTO_USE=true
