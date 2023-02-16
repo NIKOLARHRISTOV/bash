@@ -10,7 +10,7 @@ on:
 
 jobs:
     test:
-        runs-on: [self-hosted, ubuntu-latest, windows-latest, macos-latest]
+        runs-on: [ubuntu-latest, windows-latest, macos-latest]
         steps:
             - uses: actions/checkout@v3.3.0
               with:
