@@ -9,12 +9,12 @@ SCM_SVN_CHAR="${_omb_prompt_bold_teal}⑆${_omb_prompt_normal}"
 SCM_HG_CHAR="${_omb_prompt_bold_brown}☿${_omb_prompt_normal}"
 
 case $TERM in
-xterm*)
-	TITLEBAR="\[\033]0;\w\007\]"
-	;;
-*)
-	TITLEBAR=""
-	;;
+	xterm*)
+		TITLEBAR="\[\033]0;\w\007\]"
+		;;
+	*)
+		TITLEBAR=""
+		;;
 esac
 
 PS3=">> "

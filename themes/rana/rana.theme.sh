@@ -75,12 +75,12 @@ D_VIMSHELL_COLOR="$_omb_prompt_teal"
 
 # ------------------------------------------------------------------ FUNCTIONS
 case $TERM in
-xterm*)
-	TITLEBAR='\[\e]0;\w\e\\\]'
-	;;
-*)
-	TITLEBAR=""
-	;;
+	xterm*)
+		TITLEBAR='\[\e]0;\w\e\\\]'
+		;;
+	*)
+		TITLEBAR=""
+		;;
 esac
 
 is_vim_shell() {
@@ -116,13 +116,13 @@ prompt_git() {
 	local branchName=''
 
 	# Check if the current directory is in a Git repository.
-	if git rev-parse --is-inside-work-tree &>/dev/null; then
+	if git rev-parse --is-inside-work-tree &> /dev/null; then
 
 		# check if the current directory is in .git before running git checks
-		if [[ $(git rev-parse --is-inside-git-dir 2>/dev/null) == false ]]; then
+		if [[ $(git rev-parse --is-inside-git-dir 2> /dev/null) == false ]]; then
 
 			# Ensure the index is up to date.
-			git update-index --really-refresh -q &>/dev/null
+			git update-index --really-refresh -q &> /dev/null
 
 			# Check for uncommitted changes in the index.
 			if ! git diff --quiet --ignore-submodules --cached; then
@@ -140,7 +140,7 @@ prompt_git() {
 			fi
 
 			# Check for stashed files.
-			if git rev-parse --verify refs/stash &>/dev/null; then
+			if git rev-parse --verify refs/stash &> /dev/null; then
 				s+='$'
 			fi
 
@@ -150,9 +150,9 @@ prompt_git() {
 		# If HEAD isn’t a symbolic ref, get the short SHA for the latest commit
 		# Otherwise, just give up.
 		branchName=$(
-			git symbolic-ref --quiet --short HEAD 2>/dev/null ||
-				git rev-parse --short HEAD 2>/dev/null ||
-				echo '(unknown)'
+			git symbolic-ref --quiet --short HEAD 2> /dev/null \
+				|| git rev-parse --short HEAD 2> /dev/null \
+				|| echo '(unknown)'
 		)
 
 		[[ $s ]] && s=" [$s]"

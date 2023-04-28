@@ -63,37 +63,37 @@ mo() {
 				files=("${files[@]}" "$arg")
 			else
 				case "$arg" in
-				-h | --h | --he | --hel | --help | -\?)
-					_moUsage "$0"
-					exit 0
-					;;
+					-h | --h | --he | --hel | --help | -\?)
+						_moUsage "$0"
+						exit 0
+						;;
 
-				--false)
-					# shellcheck disable=SC2030
-					MO_FALSE_IS_EMPTY=true
-					;;
+					--false)
+						# shellcheck disable=SC2030
+						MO_FALSE_IS_EMPTY=true
+						;;
 
-				--source=*)
-					f2source="${arg#--source=}"
+					--source=*)
+						f2source="${arg#--source=}"
 
-					if [[ -f "$f2source" ]]; then
-						# shellcheck disable=SC1090
-						. "$f2source"
-					else
-						echo "No such file: $f2source" >&2
-						exit 1
-					fi
-					;;
+						if [[ -f "$f2source" ]]; then
+							# shellcheck disable=SC1090
+							. "$f2source"
+						else
+							echo "No such file: $f2source" >&2
+							exit 1
+						fi
+						;;
 
-				--)
-					# Set a flag indicating we've encountered double hyphens
-					doubleHyphens=true
-					;;
+					--)
+						# Set a flag indicating we've encountered double hyphens
+						doubleHyphens=true
+						;;
 
-				*)
-					# Every arg that is not a flag or a option should be a file
-					files=("${files[@]}" "$arg")
-					;;
+					*)
+						# Every arg that is not a flag or a option should be a file
+						files=("${files[@]}" "$arg")
+						;;
 				esac
 			fi
 		done
@@ -132,44 +132,44 @@ _moFindEndTag() {
 		content[1]='{{'"${content[1]}"'}}'
 
 		case $tag in
-		'#'* | '^'*)
-			#: Start another block
-			scanned="${scanned}${content[0]}${content[1]}"
-			_moTrimWhitespace tag "${tag:1}"
-			_moFindEndTag content "${content[2]}" "$tag" "loop"
-			scanned="${scanned}${content[0]}${content[1]}"
-			remaining=${content[2]}
-			;;
+			'#'* | '^'*)
+				#: Start another block
+				scanned="${scanned}${content[0]}${content[1]}"
+				_moTrimWhitespace tag "${tag:1}"
+				_moFindEndTag content "${content[2]}" "$tag" "loop"
+				scanned="${scanned}${content[0]}${content[1]}"
+				remaining=${content[2]}
+				;;
 
-		'/'*)
-			#: End a block - could be ours
-			_moTrimWhitespace tag "${tag:1}"
-			scanned="$scanned${content[0]}"
+			'/'*)
+				#: End a block - could be ours
+				_moTrimWhitespace tag "${tag:1}"
+				scanned="$scanned${content[0]}"
 
-			if [[ "$tag" == "$3" ]]; then
-				#: Found our end tag
-				if [[ -z "${4-}" ]] && _moIsStandalone standaloneBytes "$scanned" "${content[2]}" true; then
-					#: This is also a standalone tag - clean up whitespace
-					#: and move those whitespace bytes to the "tag" element
-					standaloneBytes=($standaloneBytes)
-					content[1]="${scanned:${standaloneBytes[0]}}${content[1]}${content[2]:0:${standaloneBytes[1]}}"
-					scanned="${scanned:0:${standaloneBytes[0]}}"
-					content[2]="${content[2]:${standaloneBytes[1]}}"
+				if [[ "$tag" == "$3" ]]; then
+					#: Found our end tag
+					if [[ -z "${4-}" ]] && _moIsStandalone standaloneBytes "$scanned" "${content[2]}" true; then
+						#: This is also a standalone tag - clean up whitespace
+						#: and move those whitespace bytes to the "tag" element
+						standaloneBytes=($standaloneBytes)
+						content[1]="${scanned:${standaloneBytes[0]}}${content[1]}${content[2]:0:${standaloneBytes[1]}}"
+						scanned="${scanned:0:${standaloneBytes[0]}}"
+						content[2]="${content[2]:${standaloneBytes[1]}}"
+					fi
+
+					local "$1" && _moIndirectArray "$1" "$scanned" "${content[1]}" "${content[2]}"
+					return 0
 				fi
 
-				local "$1" && _moIndirectArray "$1" "$scanned" "${content[1]}" "${content[2]}"
-				return 0
-			fi
+				scanned="$scanned${content[1]}"
+				remaining=${content[2]}
+				;;
 
-			scanned="$scanned${content[1]}"
-			remaining=${content[2]}
-			;;
-
-		*)
-			#: Ignore all other tags
-			scanned="${scanned}${content[0]}${content[1]}"
-			remaining=${content[2]}
-			;;
+			*)
+				#: Ignore all other tags
+				scanned="${scanned}${content[0]}${content[1]}"
+				remaining=${content[2]}
+				;;
 		esac
 
 		_moSplit content "$remaining" '{{' '}}'
@@ -360,7 +360,7 @@ _moIsArray() {
 	# Namespace this variable so we don't conflict with what we're testing.
 	local moTestResult
 
-	moTestResult=$(declare -p "$1" 2>/dev/null) || return 1
+	moTestResult=$(declare -p "$1" 2> /dev/null) || return 1
 	[[ "${moTestResult:0:10}" == "declare -a" ]] && return 0
 	[[ "${moTestResult:0:10}" == "declare -A" ]] && return 0
 
@@ -536,103 +536,103 @@ _moParse() {
 		_moTrimWhitespace moTag "${moContent[1]}"
 
 		case $moTag in
-		'#'*)
-			# Loop, if/then, or pass content through function
-			# Sets context
-			_moStandaloneAllowed moContent "${moContent[@]}" "$moIsBeginning"
-			_moTrimWhitespace moTag "${moTag:1}"
-			_moFindEndTag moBlock "$moContent" "$moTag"
-			_moFullTagName moTag "$moCurrent" "$moTag"
+			'#'*)
+				# Loop, if/then, or pass content through function
+				# Sets context
+				_moStandaloneAllowed moContent "${moContent[@]}" "$moIsBeginning"
+				_moTrimWhitespace moTag "${moTag:1}"
+				_moFindEndTag moBlock "$moContent" "$moTag"
+				_moFullTagName moTag "$moCurrent" "$moTag"
 
-			if _moTest "$moTag"; then
-				# Show / loop / pass through function
-				if _moIsFunction "$moTag"; then
-					#: TODO: Consider piping the output to _moGetContent
-					#: so the lambda does not execute in a subshell?
-					moContent=$($moTag "${moBlock[0]}")
-					_moParse "$moContent" "$moCurrent" false
-					moContent="${moBlock[2]}"
-				elif _moIsArray "$moTag"; then
-					eval "_moLoop \"\${moBlock[0]}\" \"$moTag\" \"\${!${moTag}[@]}\""
-				else
-					_moParse "${moBlock[0]}" "$moCurrent" false
+				if _moTest "$moTag"; then
+					# Show / loop / pass through function
+					if _moIsFunction "$moTag"; then
+						#: TODO: Consider piping the output to _moGetContent
+						#: so the lambda does not execute in a subshell?
+						moContent=$($moTag "${moBlock[0]}")
+						_moParse "$moContent" "$moCurrent" false
+						moContent="${moBlock[2]}"
+					elif _moIsArray "$moTag"; then
+						eval "_moLoop \"\${moBlock[0]}\" \"$moTag\" \"\${!${moTag}[@]}\""
+					else
+						_moParse "${moBlock[0]}" "$moCurrent" false
+					fi
 				fi
-			fi
 
-			moContent="${moBlock[2]}"
-			;;
+				moContent="${moBlock[2]}"
+				;;
 
-		'>'*)
-			# Load partial - get name of file relative to cwd
-			_moPartial moContent "${moContent[@]}" "$moIsBeginning" "$moCurrent"
-			;;
+			'>'*)
+				# Load partial - get name of file relative to cwd
+				_moPartial moContent "${moContent[@]}" "$moIsBeginning" "$moCurrent"
+				;;
 
-		'/'*)
-			# Closing tag - If hit in this loop, we simply ignore
-			# Matching tags are found in _moFindEndTag
-			_moStandaloneAllowed moContent "${moContent[@]}" "$moIsBeginning"
-			;;
+			'/'*)
+				# Closing tag - If hit in this loop, we simply ignore
+				# Matching tags are found in _moFindEndTag
+				_moStandaloneAllowed moContent "${moContent[@]}" "$moIsBeginning"
+				;;
 
-		'^'*)
-			# Display section if named thing does not exist
-			_moStandaloneAllowed moContent "${moContent[@]}" "$moIsBeginning"
-			_moTrimWhitespace moTag "${moTag:1}"
-			_moFindEndTag moBlock "$moContent" "$moTag"
-			_moFullTagName moTag "$moCurrent" "$moTag"
+			'^'*)
+				# Display section if named thing does not exist
+				_moStandaloneAllowed moContent "${moContent[@]}" "$moIsBeginning"
+				_moTrimWhitespace moTag "${moTag:1}"
+				_moFindEndTag moBlock "$moContent" "$moTag"
+				_moFullTagName moTag "$moCurrent" "$moTag"
 
-			if ! _moTest "$moTag"; then
-				_moParse "${moBlock[0]}" "$moCurrent" false "$moCurrent"
-			fi
+				if ! _moTest "$moTag"; then
+					_moParse "${moBlock[0]}" "$moCurrent" false "$moCurrent"
+				fi
 
-			moContent="${moBlock[2]}"
-			;;
+				moContent="${moBlock[2]}"
+				;;
 
-		'!'*)
-			# Comment - ignore the tag content entirely
-			# Trim spaces/tabs before the comment
-			_moStandaloneAllowed moContent "${moContent[@]}" "$moIsBeginning"
-			;;
+			'!'*)
+				# Comment - ignore the tag content entirely
+				# Trim spaces/tabs before the comment
+				_moStandaloneAllowed moContent "${moContent[@]}" "$moIsBeginning"
+				;;
 
-		.)
-			# Current content (environment variable or function)
-			_moStandaloneDenied moContent "${moContent[@]}"
-			_moShow "$moCurrent" "$moCurrent"
-			;;
+			.)
+				# Current content (environment variable or function)
+				_moStandaloneDenied moContent "${moContent[@]}"
+				_moShow "$moCurrent" "$moCurrent"
+				;;
 
-		'=')
-			# Change delimiters
-			# Any two non-whitespace sequences separated by whitespace.
-			# TODO
-			_moStandaloneAllowed moContent "${moContent[@]}" "$moIsBeginning"
-			;;
+			'=')
+				# Change delimiters
+				# Any two non-whitespace sequences separated by whitespace.
+				# TODO
+				_moStandaloneAllowed moContent "${moContent[@]}" "$moIsBeginning"
+				;;
 
-		'{'*)
-			# Unescaped - split on }}} not }}
-			_moStandaloneDenied moContent "${moContent[@]}"
-			moContent="${moTag:1}"'}}'"$moContent"
-			_moSplit moContent "$moContent" '}}}'
-			_moTrimWhitespace moTag "${moContent[0]}"
-			_moFullTagName moTag "$moCurrent" "$moTag"
-			moContent=${moContent[1]}
+			'{'*)
+				# Unescaped - split on }}} not }}
+				_moStandaloneDenied moContent "${moContent[@]}"
+				moContent="${moTag:1}"'}}'"$moContent"
+				_moSplit moContent "$moContent" '}}}'
+				_moTrimWhitespace moTag "${moContent[0]}"
+				_moFullTagName moTag "$moCurrent" "$moTag"
+				moContent=${moContent[1]}
 
-			# Now show the value
-			_moShow "$moTag" "$moCurrent"
-			;;
+				# Now show the value
+				_moShow "$moTag" "$moCurrent"
+				;;
 
-		'&'*)
-			# Unescaped
-			_moStandaloneDenied moContent "${moContent[@]}"
-			_moTrimWhitespace moTag "${moTag:1}"
-			_moFullTagName moTag "$moCurrent" "$moTag"
-			_moShow "$moTag" "$moCurrent"
-			;;
+			'&'*)
+				# Unescaped
+				_moStandaloneDenied moContent "${moContent[@]}"
+				_moTrimWhitespace moTag "${moTag:1}"
+				_moFullTagName moTag "$moCurrent" "$moTag"
+				_moShow "$moTag" "$moCurrent"
+				;;
 
-		*)
-			# Normal environment variable or function call
-			_moStandaloneDenied moContent "${moContent[@]}"
-			_moFullTagName moTag "$moCurrent" "$moTag"
-			_moShow "$moTag" "$moCurrent"
-			;;
+			*)
+				# Normal environment variable or function call
+				_moStandaloneDenied moContent "${moContent[@]}"
+				_moFullTagName moTag "$moCurrent" "$moTag"
+				_moShow "$moTag" "$moCurrent"
+				;;
 		esac
 
 		moIsBeginning=false

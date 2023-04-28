@@ -5,16 +5,16 @@
 if [ -z "${BASH_VERSION-}" ]; then
 	printf "Error: Bash 3.2 or higher is required for Oh My Bash.\n"
 	printf "Error: Install Bash and try running this installation script with Bash.\n"
-	if command -v bash >/dev/null 2>&1; then
+	if command -v bash > /dev/null 2>&1; then
 		printf 'Example: \033[31;1mbash\033[0;34m -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"\n'
 	fi
-	return 1 >/dev/null 2>&1 || exit 1
+	return 1 > /dev/null 2>&1 || exit 1
 fi
 
 if [[ ! ${BASH_VERSINFO[0]-} ]] || ((BASH_VERSINFO[0] < 3 || BASH_VERSINFO[0] == 3 && BASH_VERSINFO[1] < 2)); then
 	printf "Error: Bash 3.2 required for Oh My Bash.\n" >&2
 	printf "Error: Upgrade Bash and try again.\n" >&2
-	return 2 &>/dev/null || exit 2
+	return 2 &> /dev/null || exit 2
 elif ((BASH_VERSINFO[0] < 4)); then
 	printf "Warning: Bash >=4 is no longer required for Oh My Bash but is cool to have ;)\n" >&2
 	printf "Warning: Why don't you upgrade your Bash to 4 or higher?\n" >&2
@@ -60,47 +60,47 @@ _omb_install_readargs() {
 		shift
 		if [[ :$install_opts: != *:literal:* ]]; then
 			case $arg in
-			--prefix=*)
-				arg=${arg#*=}
-				if [[ $arg ]]; then
-					install_prefix=$arg
-				else
+				--prefix=*)
+					arg=${arg#*=}
+					if [[ $arg ]]; then
+						install_prefix=$arg
+					else
+						install_opts+=:error
+						printf 'install (oh-my-bash): %s\n' "$RED$BOLD[Error]$NORMAL ${RED}the option argument for '--prefix' is empty.$NORMAL" >&2
+					fi
+					continue
+					;;
+				--prefix)
+					if (($#)); then
+						install_prefix=$1
+						shift
+					else
+						install_opts+=:error
+						printf 'install (oh-my-bash): %s\n' "$RED$BOLD[Error]$NORMAL ${RED}an option argument for '$arg' is missing.$NORMAL" >&2
+					fi
+					continue
+					;;
+				--help | --usage | --unattended | --dry-run)
+					install_opts+=:${arg#--}
+					continue
+					;;
+				--version | -v)
+					install_opts+=:version
+					continue
+					;;
+				--)
+					install_opts+=:literal
+					continue
+					;;
+				-*)
 					install_opts+=:error
-					printf 'install (oh-my-bash): %s\n' "$RED$BOLD[Error]$NORMAL ${RED}the option argument for '--prefix' is empty.$NORMAL" >&2
-				fi
-				continue
-				;;
-			--prefix)
-				if (($#)); then
-					install_prefix=$1
-					shift
-				else
-					install_opts+=:error
-					printf 'install (oh-my-bash): %s\n' "$RED$BOLD[Error]$NORMAL ${RED}an option argument for '$arg' is missing.$NORMAL" >&2
-				fi
-				continue
-				;;
-			--help | --usage | --unattended | --dry-run)
-				install_opts+=:${arg#--}
-				continue
-				;;
-			--version | -v)
-				install_opts+=:version
-				continue
-				;;
-			--)
-				install_opts+=:literal
-				continue
-				;;
-			-*)
-				install_opts+=:error
-				if [[ $arg == -[!-]?* ]]; then
-					printf 'install (oh-my-bash): %s\n' "$RED$BOLD[Error]$NORMAL ${RED}unrecognized options '$arg'.$NORMAL" >&2
-				else
-					printf 'install (oh-my-bash): %s\n' "$RED$BOLD[Error]$NORMAL ${RED}unrecognized option '$arg'.$NORMAL" >&2
-				fi
-				continue
-				;;
+					if [[ $arg == -[!-]?* ]]; then
+						printf 'install (oh-my-bash): %s\n' "$RED$BOLD[Error]$NORMAL ${RED}unrecognized options '$arg'.$NORMAL" >&2
+					else
+						printf 'install (oh-my-bash): %s\n' "$RED$BOLD[Error]$NORMAL ${RED}unrecognized option '$arg'.$NORMAL" >&2
+					fi
+					continue
+					;;
 			esac
 		fi
 
@@ -146,7 +146,7 @@ _omb_install_user_bashrc() {
 	_omb_install_run cp "$OSH"/templates/bashrc.osh-template ~/.bashrc
 	sed "/^export OSH=/ c\\
 export OSH='${OSH//\'/\'\\\'\'}'
-  " ~/.bashrc >|~/.bashrc.omb-temp
+  " ~/.bashrc >| ~/.bashrc.omb-temp
 	_omb_install_run mv -f ~/.bashrc.omb-temp ~/.bashrc
 
 	set +e
@@ -173,7 +173,7 @@ _omb_install_system_bashrc() {
 	osh=${osh//$'\n'/$'\\\n'}
 	local sed_script='/^export OSH=.*/c \
 '"export OSH=$osh"
-	_omb_install_run sed "$sed_script" "$OSH"/templates/bashrc.osh-template >|"$OSH"/bashrc
+	_omb_install_run sed "$sed_script" "$OSH"/templates/bashrc.osh-template >| "$OSH"/bashrc
 
 	_omb_install_banner
 	printf '%s\n' "${GREEN}To enable Oh My Bash, please copy '${BOLD}$OSH/bashrc${NORMAL}${GREEN}' to '${BOLD}~/.bashrc${NORMAL}${GREEN}'.${NORMAL}"
@@ -184,17 +184,17 @@ _omb_install_system_bashrc() {
 _omb_install_main() {
 	# Use colors, but only if connected to a terminal, and that terminal
 	# supports them.
-	if type -P tput &>/dev/null; then
-		local ncolors=$(tput colors 2>/dev/null || tput Co 2>/dev/null || echo -1)
+	if type -P tput &> /dev/null; then
+		local ncolors=$(tput colors 2> /dev/null || tput Co 2> /dev/null || echo -1)
 	fi
 
 	if [[ -t 1 && -n $ncolors && $ncolors -ge 8 ]]; then
-		local RED=$(tput setaf 1 2>/dev/null || tput AF 1 2>/dev/null)
-		local GREEN=$(tput setaf 2 2>/dev/null || tput AF 2 2>/dev/null)
-		local YELLOW=$(tput setaf 3 2>/dev/null || tput AF 3 2>/dev/null)
-		local BLUE=$(tput setaf 4 2>/dev/null || tput AF 4 2>/dev/null)
-		local BOLD=$(tput bold 2>/dev/null || tput md 2>/dev/null)
-		local NORMAL=$(tput sgr0 2>/dev/null || tput me 2>/dev/null)
+		local RED=$(tput setaf 1 2> /dev/null || tput AF 1 2> /dev/null)
+		local GREEN=$(tput setaf 2 2> /dev/null || tput AF 2 2> /dev/null)
+		local YELLOW=$(tput setaf 3 2> /dev/null || tput AF 3 2> /dev/null)
+		local BLUE=$(tput setaf 4 2> /dev/null || tput AF 4 2> /dev/null)
+		local BOLD=$(tput bold 2> /dev/null || tput md 2> /dev/null)
+		local NORMAL=$(tput sgr0 2> /dev/null || tput me 2> /dev/null)
 	else
 		local RED=""
 		local GREEN=""
@@ -231,8 +231,8 @@ _omb_install_main() {
 	fi
 
 	if [[ $install_prefix ]]; then
-		[[ $install_prefix == /* ]] ||
-			install_prefix=$PWD/$install_prefix
+		[[ $install_prefix == /* ]] \
+			|| install_prefix=$PWD/$install_prefix
 		local OSH=$install_prefix/share/oh-my-bash
 	elif [[ ! $OSH ]]; then
 		OSH=~/.oh-my-bash
@@ -261,13 +261,13 @@ _omb_install_main() {
 	umask g-w,o-w
 
 	printf "${BLUE}Cloning Oh My Bash...${NORMAL}\n"
-	type -P git &>/dev/null || {
+	type -P git &> /dev/null || {
 		echo "Error: git is not installed"
 		return 1
 	}
 	# The Windows (MSYS) Git is not compatible with normal use on cygwin
 	if [[ $OSTYPE = cygwin ]]; then
-		if command git --version | command grep msysgit >/dev/null; then
+		if command git --version | command grep msysgit > /dev/null; then
 			echo "Error: Windows/MSYS Git is not supported on Cygwin"
 			echo "Error: Make sure the Cygwin git package is installed and is first on the path"
 			return 1
@@ -285,7 +285,7 @@ _omb_install_main() {
 	fi
 }
 
-[[ ${BASH_EXECUTION_STRING-} && $0 == -* ]] &&
-	set -- "$0" "$@"
+[[ ${BASH_EXECUTION_STRING-} && $0 == -* ]] \
+	&& set -- "$0" "$@"
 
 _omb_install_main "$@" 5>&2

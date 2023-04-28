@@ -78,8 +78,8 @@ function _svn_grcut() {
 # _svn_info (URL|Repository Root)
 function _svn_info() {
 	local what=$1 line=
-	LANG=C LC_MESSAGES=C svn info --non-interactive 2>/dev/null |
-		while read line; do
+	LANG=C LC_MESSAGES=C svn info --non-interactive 2> /dev/null \
+		| while read line; do
 			[[ $line == *"$what: "* ]] && echo ${line#*: }
 		done
 }
@@ -313,28 +313,28 @@ _svn() {
 		if [[ $last != 'onlyarg' ]]; then
 			# more OPTions
 			case $opt in
-			-r | --revision | --revision=*)
-				hasRevisionOpt=1
-				;;
-			--revprop)
-				hasRevPropOpt=1
-				# restrict to revision properties!
-				allProps=($revProps)
-				# on revprops, only one URL is expected
-				nExpectArgs=1
-				;;
-			-h | --help)
-				isHelpCmd=1
-				;;
-			-F | --file)
-				val='-F'
-				;;
-			--relocate)
-				hasRelocateOpt=1
-				;;
-			--reintegrate)
-				hasReintegrateOpt=1
-				;;
+				-r | --revision | --revision=*)
+					hasRevisionOpt=1
+					;;
+				--revprop)
+					hasRevPropOpt=1
+					# restrict to revision properties!
+					allProps=($revProps)
+					# on revprops, only one URL is expected
+					nExpectArgs=1
+					;;
+				-h | --help)
+					isHelpCmd=1
+					;;
+				-F | --file)
+					val='-F'
+					;;
+				--relocate)
+					hasRelocateOpt=1
+					;;
+				--reintegrate)
+					hasReintegrateOpt=1
+					;;
 			esac
 
 			# no more options, only arguments, whatever they look like.
@@ -394,7 +394,7 @@ _svn() {
 			local urls= file=
 			for file in ~/.subversion/auth/svn.simple/*; do
 				if [ -r $file ]; then
-					local url=$(_svn_read_hashfile svn:realmstring <$file)
+					local url=$(_svn_read_hashfile svn:realmstring < $file)
 					url=${url/*</}
 					url=${url/>*/}
 					urls="$urls $url"
@@ -458,24 +458,24 @@ _svn() {
 		[[ $previous = '--limit' ]] && values='0 1 2 3 4 5 6 7 8 9'
 
 		# some special partial help about --revision option.
-		[[ $previous = '--revision' || $previous = '-r' ]] &&
-			values='HEAD BASE PREV COMMITTED 0 {'
+		[[ $previous = '--revision' || $previous = '-r' ]] \
+			&& values='HEAD BASE PREV COMMITTED 0 {'
 
-		[[ $previous = '--encoding' ]] &&
-			values="latin1 utf8 $SVN_BASH_ENCODINGS"
+		[[ $previous = '--encoding' ]] \
+			&& values="latin1 utf8 $SVN_BASH_ENCODINGS"
 
-		[[ $previous = '--extensions' || $previous = '-x' ]] &&
-			values="--unified --ignore-space-change \
+		[[ $previous = '--extensions' || $previous = '-x' ]] \
+			&& values="--unified --ignore-space-change \
 		   --ignore-all-space --ignore-eol-style --show-c-functions"
 
-		[[ $previous = '--depth' ]] &&
-			values='empty files immediates infinity'
+		[[ $previous = '--depth' ]] \
+			&& values='empty files immediates infinity'
 
-		[[ $previous = '--set-depth' ]] &&
-			values='empty exclude files immediates infinity'
+		[[ $previous = '--set-depth' ]] \
+			&& values='empty exclude files immediates infinity'
 
-		[[ $previous = '--accept' ]] &&
-			{
+		[[ $previous = '--accept' ]] \
+			&& {
 				# the list is different for 'resolve'
 				if [[ $cmd = 'resolve' ]]; then
 					# from svn help resolve
@@ -495,7 +495,7 @@ _svn() {
 				# digest? others?
 				for file in ~/.subversion/auth/svn.simple/*; do
 					if [ -r $file ]; then
-						values="$values $(_svn_read_hashfile username <$file)"
+						values="$values $(_svn_read_hashfile username < $file)"
 					fi
 				done
 			fi
@@ -514,8 +514,8 @@ _svn() {
 		[[ $values ]] && COMPREPLY=($(compgen -W "$values" -- $cur))
 		[[ $dirs ]] && COMPREPLY=($(compgen -o dirnames -- $cur))
 		[[ $exes ]] && COMPREPLY=($(compgen -c -- $cur))
-		[[ $beep ]] &&
-			{
+		[[ $beep ]] \
+			&& {
 				# 'no known completion'. hummm.
 				echo -en "\a"
 				COMPREPLY=('')
@@ -600,26 +600,26 @@ _svn() {
 		# ' is a reminder for an arbitrary value
 		local values="\' --file"
 		case $prop in
-		svn:keywords)
-			# just a subset?
-			values="Id Rev URL Date Author Header \' $SVN_BASH_KEYWORDS"
-			;;
-		svn:executable | svn:needs-lock)
-			# hmmm... canonical value * is special to the shell.
-			values='\\*'
-			;;
-		svn:eol-style)
-			values='native LF CR CRLF'
-			;;
-		svn:mime-type)
-			# could read /etc/mime.types if available. overkill.
-			values="text/ text/plain text/html text/xml text/rtf
+			svn:keywords)
+				# just a subset?
+				values="Id Rev URL Date Author Header \' $SVN_BASH_KEYWORDS"
+				;;
+			svn:executable | svn:needs-lock)
+				# hmmm... canonical value * is special to the shell.
+				values='\\*'
+				;;
+			svn:eol-style)
+				values='native LF CR CRLF'
+				;;
+			svn:mime-type)
+				# could read /etc/mime.types if available. overkill.
+				values="text/ text/plain text/html text/xml text/rtf
                        image/ image/png image/gif image/jpeg image/tiff
                        audio/ audio/midi audio/mpeg
                        video/ video/mpeg video/mp4
                        application/ application/octet-stream
                        $SVN_BASH_MIME_TYPE"
-			;;
+				;;
 		esac
 
 		COMPREPLY=($(compgen -W "$values" -- $cur))
@@ -629,24 +629,24 @@ _svn() {
 
 	# maximum number of additional arguments expected in various forms
 	case $cmd in
-	merge)
-		nExpectArgs=3
-		;;
-	mergeinfo)
-		nExpectArgs=1
-		;;
-	copy | cp | move | mv | rename | ren | export | import)
-		nExpectArgs=2
-		;;
-	switch | sw)
-		[[ ! $hasRelocateOpt ]] && nExpectArgs=2
-		;;
-	help | h)
-		nExpectArgs=0
-		;;
-	--version)
-		nExpectArgs=0
-		;;
+		merge)
+			nExpectArgs=3
+			;;
+		mergeinfo)
+			nExpectArgs=1
+			;;
+		copy | cp | move | mv | rename | ren | export | import)
+			nExpectArgs=2
+			;;
+		switch | sw)
+			[[ ! $hasRelocateOpt ]] && nExpectArgs=2
+			;;
+		help | h)
+			nExpectArgs=0
+			;;
+		--version)
+			nExpectArgs=0
+			;;
 	esac
 
 	# the maximum number of arguments is reached for a command
@@ -669,13 +669,13 @@ _svn() {
 			# "--quiet" removes 'unknown' files
 			local status='svn status --non-interactive'
 
-			[[ $SVN_BASH_COMPL_EXT == *recurse* ]] ||
-				status="$status --non-recursive"
+			[[ $SVN_BASH_COMPL_EXT == *recurse* ]] \
+				|| status="$status --non-recursive"
 
 			# I'm not sure that it can work with externals in call cases
 			# the output contains translatable sentences (even with quiet)
-			[[ $SVN_BASH_COMPL_EXT == *externals* ]] ||
-				status="$status --ignore-externals"
+			[[ $SVN_BASH_COMPL_EXT == *externals* ]] \
+				|| status="$status --ignore-externals"
 
 			local cs= files=
 			# subtlety: must not set $cur* if $cur is empty in some cases
@@ -683,57 +683,57 @@ _svn() {
 
 			# 'files' is set according to the current subcommand
 			case $cmd in
-			st*) # status completion must include all files
-				files=$cur*
-				;;
-			ci | commit | revert | di*) # anything edited
-				files=$($status $cs | _svn_grcut '@([MADR!]*| M*|_M*)')
-				;;
-			add) # unknown files
-				files=$($status $cs | _svn_grcut '\?*')
-				;;
-			unlock) # unlock locked files
-				files=$($status $cs | _svn_grcut '@(??L*|?????[KOTB]*)')
-				;;
-			resolve*) # files in conflict
-				files=$($status $cs | _svn_grcut '@(?C*|C*)')
-				;;
-			praise | blame | ann*) # any svn file but added
-				files=$(_svn_lls all $cur*)
-				;;
-			p*) # prop commands
-				if [[ $cmd == @($propCmds) &&
-					$prop == @(svn:ignore|svn:externals) ]]; then
-					# directory specific props
-					files=$(_svn_lls dir . $cur*)
-				else
-					# ??? added directories appear twice: foo foo/
-					files="$(_svn_lls all $cur*)
+				st*) # status completion must include all files
+					files=$cur*
+					;;
+				ci | commit | revert | di*) # anything edited
+					files=$($status $cs | _svn_grcut '@([MADR!]*| M*|_M*)')
+					;;
+				add) # unknown files
+					files=$($status $cs | _svn_grcut '\?*')
+					;;
+				unlock) # unlock locked files
+					files=$($status $cs | _svn_grcut '@(??L*|?????[KOTB]*)')
+					;;
+				resolve*) # files in conflict
+					files=$($status $cs | _svn_grcut '@(?C*|C*)')
+					;;
+				praise | blame | ann*) # any svn file but added
+					files=$(_svn_lls all $cur*)
+					;;
+				p*) # prop commands
+					if [[ $cmd == @($propCmds) &&
+						$prop == @(svn:ignore|svn:externals) ]]; then
+						# directory specific props
+						files=$(_svn_lls dir . $cur*)
+					else
+						# ??? added directories appear twice: foo foo/
+						files="$(_svn_lls all $cur*)
                                    $($status $cs | _svn_grcut 'A*')"
-				fi
-				;;
-			info) # information on any file
-				files="$(_svn_lls all $cur*)
+					fi
+					;;
+				info) # information on any file
+					files="$(_svn_lls all $cur*)
                                $($status $cs | _svn_grcut 'A*')"
-				;;
-			remove | rm | del* | move | mv | rename) # changing existing files
-				files=$(_svn_lls all $cur*)
-				;;
-			mkdir) # completion in mkdir can only be for subdirs?
-				files=$(_svn_lls dir $cur*)
-				;;
-			log | lock | up* | cl* | switch) # misc, all but added files
-				files=$(_svn_lls all $cur*)
-				;;
-			merge) # may do a better job? URL/WCPATH
-				files=$(_svn_lls all $cur*)
-				;;
-			ls | list) # better job? what about URLs?
-				files=$(_svn_lls all $cur*)
-				;;
-			*) # other commands: changelist export import cat mergeinfo
-				local fallback=1
-				;;
+					;;
+				remove | rm | del* | move | mv | rename) # changing existing files
+					files=$(_svn_lls all $cur*)
+					;;
+				mkdir) # completion in mkdir can only be for subdirs?
+					files=$(_svn_lls dir $cur*)
+					;;
+				log | lock | up* | cl* | switch) # misc, all but added files
+					files=$(_svn_lls all $cur*)
+					;;
+				merge) # may do a better job? URL/WCPATH
+					files=$(_svn_lls all $cur*)
+					;;
+				ls | list) # better job? what about URLs?
+					files=$(_svn_lls all $cur*)
+					;;
+				*) # other commands: changelist export import cat mergeinfo
+					local fallback=1
+					;;
 			esac
 
 			# when not recursive, some relevant files may exist
@@ -770,164 +770,164 @@ _svn() {
 
 	cmdOpts=
 	case $cmd in
-	--version)
-		cmdOpts="$qOpts"
-		;;
-	add)
-		cmdOpts="--auto-props --no-auto-props --force --targets \
+		--version)
+			cmdOpts="$qOpts"
+			;;
+		add)
+			cmdOpts="--auto-props --no-auto-props --force --targets \
 		         --no-ignore --parents $nOpts $qOpts $pOpts"
-		;;
-	blame | annotate | ann | praise)
-		cmdOpts="$rOpts $pOpts -v --verbose --incremental --xml \
+			;;
+		blame | annotate | ann | praise)
+			cmdOpts="$rOpts $pOpts -v --verbose --incremental --xml \
 		         -x --extensions --force $gOpts"
-		;;
-	cat)
-		cmdOpts="$rOpts $pOpts"
-		;;
-	changelist | cl)
-		cmdOpts="--targets $pOpts $qOpts $cOpts \
+			;;
+		cat)
+			cmdOpts="$rOpts $pOpts"
+			;;
+		changelist | cl)
+			cmdOpts="--targets $pOpts $qOpts $cOpts \
                          -R --recursive --depth --remove"
-		;;
-	checkout | co)
-		cmdOpts="$rOpts $qOpts $nOpts $pOpts --ignore-externals \
+			;;
+		checkout | co)
+			cmdOpts="$rOpts $qOpts $nOpts $pOpts --ignore-externals \
                          --force"
-		;;
-	cleanup)
-		cmdOpts="--diff3-cmd $pOpts"
-		;;
-	commit | ci)
-		cmdOpts="$mOpts $qOpts $nOpts --targets --editor-cmd $pOpts \
+			;;
+		cleanup)
+			cmdOpts="--diff3-cmd $pOpts"
+			;;
+		commit | ci)
+			cmdOpts="$mOpts $qOpts $nOpts --targets --editor-cmd $pOpts \
 		         --no-unlock $cOpts --keep-changelists \
 		         --include-externals"
-		;;
-	copy | cp)
-		cmdOpts="$mOpts $rOpts $qOpts --editor-cmd $pOpts --parents \
+			;;
+		copy | cp)
+			cmdOpts="$mOpts $rOpts $qOpts --editor-cmd $pOpts --parents \
 		         --ignore-externals"
-		;;
-	delete | del | remove | rm)
-		cmdOpts="--force $mOpts $qOpts --targets --editor-cmd $pOpts \
+			;;
+		delete | del | remove | rm)
+			cmdOpts="--force $mOpts $qOpts --targets --editor-cmd $pOpts \
                          --keep-local"
-		;;
-	diff | di)
-		cmdOpts="$rOpts -x --extensions --diff-cmd --no-diff-deleted \
+			;;
+		diff | di)
+			cmdOpts="$rOpts -x --extensions --diff-cmd --no-diff-deleted \
 		         $nOpts $pOpts --force --old --new --notice-ancestry \
 		         -c --change --summarize $cOpts --xml --git \
 		         --internal-diff --show-copies-as-adds \
 		         --ignore-properties --properties-only --no-diff-added \
 		         --patch-compatible"
-		;;
-	export)
-		cmdOpts="$rOpts $qOpts $pOpts $nOpts --force --native-eol \
+			;;
+		export)
+			cmdOpts="$rOpts $qOpts $pOpts $nOpts --force --native-eol \
                          --ignore-externals --ignore-keywords"
-		;;
-	help | h | \?)
-		cmdOpts=
-		;;
-	import)
-		cmdOpts="--auto-props --no-auto-props $mOpts $qOpts $nOpts \
+			;;
+		help | h | \?)
+			cmdOpts=
+			;;
+		import)
+			cmdOpts="--auto-props --no-auto-props $mOpts $qOpts $nOpts \
 		         --no-ignore --editor-cmd $pOpts --force"
-		;;
-	info)
-		cmdOpts="$pOpts $rOpts --targets -R --recursive --depth \
+			;;
+		info)
+			cmdOpts="$pOpts $rOpts --targets -R --recursive --depth \
                          --incremental --xml $cOpts"
-		;;
-	list | ls)
-		cmdOpts="$rOpts -v --verbose -R --recursive $pOpts \
+			;;
+		list | ls)
+			cmdOpts="$rOpts -v --verbose -R --recursive $pOpts \
                          --incremental --xml --depth --include-externals"
-		;;
-	lock)
-		cmdOpts="-m --message -F --file --encoding --force-log \
+			;;
+		lock)
+			cmdOpts="-m --message -F --file --encoding --force-log \
                          --targets --force $pOpts"
-		;;
-	log)
-		cmdOpts="$rOpts -v --verbose --targets $pOpts --stop-on-copy \
+			;;
+		log)
+			cmdOpts="$rOpts -v --verbose --targets $pOpts --stop-on-copy \
 		         --incremental --xml $qOpts -l --limit -c --change \
                          $gOpts --with-all-revprops --with-revprop --depth \
 		         --diff --diff-cmd -x --extensions --internal-diff \
 		         --with-no-revprops --search --search-and"
-		;;
-	merge)
-		cmdOpts="$rOpts $nOpts $qOpts --force --dry-run --diff3-cmd \
+			;;
+		merge)
+			cmdOpts="$rOpts $nOpts $qOpts --force --dry-run --diff3-cmd \
 		         $pOpts --ignore-ancestry -c --change -x --extensions \
                          --record-only --accept --reintegrate \
 		         --allow-mixed-revisions -v --verbose"
-		;;
-	mergeinfo)
-		cmdOpts="$rOpts $pOpts --depth --show-revs -R --recursive"
-		;;
-	mkdir)
-		cmdOpts="$mOpts $qOpts --editor-cmd $pOpts --parents"
-		;;
-	move | mv | rename | ren)
-		cmdOpts="$mOpts $rOpts $qOpts --force --editor-cmd $pOpts \
+			;;
+		mergeinfo)
+			cmdOpts="$rOpts $pOpts --depth --show-revs -R --recursive"
+			;;
+		mkdir)
+			cmdOpts="$mOpts $qOpts --editor-cmd $pOpts --parents"
+			;;
+		move | mv | rename | ren)
+			cmdOpts="$mOpts $rOpts $qOpts --force --editor-cmd $pOpts \
                          --parents --allow-mixed-revisions"
-		;;
-	patch)
-		cmdOpts="$qOpts $pOpts --dry-run --ignore-whitespace \
+			;;
+		patch)
+			cmdOpts="$qOpts $pOpts --dry-run --ignore-whitespace \
 			--reverse-diff --strip"
-		;;
-	propdel | pdel | pd)
-		cmdOpts="$qOpts -R --recursive $rOpts $pOpts $cOpts \
+			;;
+		propdel | pdel | pd)
+			cmdOpts="$qOpts -R --recursive $rOpts $pOpts $cOpts \
                          --depth"
-		[[ $isRevProp || ! $prop ]] && cmdOpts="$cmdOpts --revprop"
-		;;
-	propedit | pedit | pe)
-		cmdOpts="--editor-cmd $pOpts $mOpts --force"
-		[[ $isRevProp || ! $prop ]] &&
-			cmdOpts="$cmdOpts --revprop $rOpts"
-		;;
-	propget | pget | pg)
-		cmdOpts="-v --verbose -R --recursive $rOpts --strict \
+			[[ $isRevProp || ! $prop ]] && cmdOpts="$cmdOpts --revprop"
+			;;
+		propedit | pedit | pe)
+			cmdOpts="--editor-cmd $pOpts $mOpts --force"
+			[[ $isRevProp || ! $prop ]] \
+				&& cmdOpts="$cmdOpts --revprop $rOpts"
+			;;
+		propget | pget | pg)
+			cmdOpts="-v --verbose -R --recursive $rOpts --strict \
 		         $pOpts $cOpts --depth --xml --show-inherited-props"
-		[[ $isRevProp || ! $prop ]] && cmdOpts="$cmdOpts --revprop"
-		;;
-	proplist | plist | pl)
-		cmdOpts="-v --verbose -R --recursive $rOpts --revprop $qOpts \
+			[[ $isRevProp || ! $prop ]] && cmdOpts="$cmdOpts --revprop"
+			;;
+		proplist | plist | pl)
+			cmdOpts="-v --verbose -R --recursive $rOpts --revprop $qOpts \
 		         $pOpts $cOpts --depth --xml --show-inherited-props"
-		;;
-	propset | pset | ps)
-		cmdOpts="$qOpts --targets -R --recursive \
+			;;
+		propset | pset | ps)
+			cmdOpts="$qOpts --targets -R --recursive \
 		         --encoding $pOpts --force $cOpts --depth"
-		[[ $isRevProp || ! $prop ]] &&
-			cmdOpts="$cmdOpts --revprop $rOpts"
-		[[ $val ]] || cmdOpts="$cmdOpts -F --file"
-		;;
-	relocate)
-		cmdOpts="--ignore-externals $pOpts"
-		;;
-	resolve)
-		cmdOpts="--targets -R --recursive $qOpts $pOpts --accept \
+			[[ $isRevProp || ! $prop ]] \
+				&& cmdOpts="$cmdOpts --revprop $rOpts"
+			[[ $val ]] || cmdOpts="$cmdOpts -F --file"
+			;;
+		relocate)
+			cmdOpts="--ignore-externals $pOpts"
+			;;
+		resolve)
+			cmdOpts="--targets -R --recursive $qOpts $pOpts --accept \
                          --depth"
-		;;
-	resolved)
-		cmdOpts="--targets -R --recursive $qOpts $pOpts --depth"
-		;;
-	revert)
-		cmdOpts="--targets -R --recursive $qOpts $cOpts \
+			;;
+		resolved)
+			cmdOpts="--targets -R --recursive $qOpts $pOpts --depth"
+			;;
+		revert)
+			cmdOpts="--targets -R --recursive $qOpts $cOpts \
                          --depth $pOpts"
-		;;
-	status | stat | st)
-		cmdOpts="-u --show-updates -v --verbose $nOpts $qOpts $pOpts \
+			;;
+		status | stat | st)
+			cmdOpts="-u --show-updates -v --verbose $nOpts $qOpts $pOpts \
 		         --no-ignore --ignore-externals --incremental --xml \
                          $cOpts"
-		;;
-	switch | sw)
-		cmdOpts="--relocate $rOpts $nOpts $qOpts $pOpts --diff3-cmd \
+			;;
+		switch | sw)
+			cmdOpts="--relocate $rOpts $nOpts $qOpts $pOpts --diff3-cmd \
                          --force --accept --ignore-externals --set-depth \
 		         --ignore-ancestry"
-		;;
-	unlock)
-		cmdOpts="--targets --force $pOpts"
-		;;
-	update | up)
-		cmdOpts="$rOpts $nOpts $qOpts $pOpts --diff3-cmd \
+			;;
+		unlock)
+			cmdOpts="--targets --force $pOpts"
+			;;
+		update | up)
+			cmdOpts="$rOpts $nOpts $qOpts $pOpts --diff3-cmd \
                          --ignore-externals --force --accept $cOpts \
                          --parents --editor-cmd --set-depth"
-		;;
-	upgrade)
-		cmdOpts="$qOpts $pOpts"
-		;;
-	*) ;;
+			;;
+		upgrade)
+			cmdOpts="$qOpts $pOpts"
+			;;
+		*) ;;
 
 	esac
 
@@ -946,8 +946,8 @@ _svn() {
 
 		# remove leading dashes and arguments
 		case $opt in
-		--*) optBase=${opt/=*/} ;;
-		-*) optBase=${opt:0:2} ;;
+			--*) optBase=${opt/=*/} ;;
+			-*) optBase=${opt:0:2} ;;
 		esac
 
 		cmdOpts=" $cmdOpts "
@@ -955,36 +955,36 @@ _svn() {
 
 		# take out alternatives and mutually exclusives
 		case $optBase in
-		-v) cmdOpts=${cmdOpts/ --verbose / } ;;
-		--verbose) cmdOpts=${cmdOpts/ -v / } ;;
-		-N) cmdOpts=${cmdOpts/ --non-recursive / } ;;
-		--non-recursive) cmdOpts=${cmdOpts/ -N / } ;;
-		-R) cmdOpts=${cmdOpts/ --recursive / } ;;
-		--recursive) cmdOpts=${cmdOpts/ -R / } ;;
-		-x) cmdOpts=${cmdOpts/ --extensions / } ;;
-		--extensions) cmdOpts=${cmdOpts/ -x / } ;;
-		-q) cmdOpts=${cmdOpts/ --quiet / } ;;
-		--quiet) cmdOpts=${cmdOpts/ -q / } ;;
-		-h) cmdOpts=${cmdOpts/ --help / } ;;
-		--help) cmdOpts=${cmdOpts/ -h / } ;;
-		-l) cmdOpts=${cmdOpts/ --limit / } ;;
-		--limit) cmdOpts=${cmdOpts/ -l / } ;;
-		-r) cmdOpts=${cmdOpts/ --revision / } ;;
-		--revision) cmdOpts=${cmdOpts/ -r / } ;;
-		-c) cmdOpts=${cmdOpts/ --change / } ;;
-		--change) cmdOpts=${cmdOpts/ -c / } ;;
-		--auto-props) cmdOpts=${cmdOpts/ --no-auto-props / } ;;
-		--no-auto-props) cmdOpts=${cmdOpts/ --auto-props / } ;;
-		-g) cmdOpts=${cmdOpts/ --use-merge-history / } ;;
-		--use-merge-history)
-			cmdOpts=${cmdOpts/ -g / }
-			;;
-		-m | --message | -F | --file)
-			cmdOpts=${cmdOpts/ --message / }
-			cmdOpts=${cmdOpts/ -m / }
-			cmdOpts=${cmdOpts/ --file / }
-			cmdOpts=${cmdOpts/ -F / }
-			;;
+			-v) cmdOpts=${cmdOpts/ --verbose / } ;;
+			--verbose) cmdOpts=${cmdOpts/ -v / } ;;
+			-N) cmdOpts=${cmdOpts/ --non-recursive / } ;;
+			--non-recursive) cmdOpts=${cmdOpts/ -N / } ;;
+			-R) cmdOpts=${cmdOpts/ --recursive / } ;;
+			--recursive) cmdOpts=${cmdOpts/ -R / } ;;
+			-x) cmdOpts=${cmdOpts/ --extensions / } ;;
+			--extensions) cmdOpts=${cmdOpts/ -x / } ;;
+			-q) cmdOpts=${cmdOpts/ --quiet / } ;;
+			--quiet) cmdOpts=${cmdOpts/ -q / } ;;
+			-h) cmdOpts=${cmdOpts/ --help / } ;;
+			--help) cmdOpts=${cmdOpts/ -h / } ;;
+			-l) cmdOpts=${cmdOpts/ --limit / } ;;
+			--limit) cmdOpts=${cmdOpts/ -l / } ;;
+			-r) cmdOpts=${cmdOpts/ --revision / } ;;
+			--revision) cmdOpts=${cmdOpts/ -r / } ;;
+			-c) cmdOpts=${cmdOpts/ --change / } ;;
+			--change) cmdOpts=${cmdOpts/ -c / } ;;
+			--auto-props) cmdOpts=${cmdOpts/ --no-auto-props / } ;;
+			--no-auto-props) cmdOpts=${cmdOpts/ --auto-props / } ;;
+			-g) cmdOpts=${cmdOpts/ --use-merge-history / } ;;
+			--use-merge-history)
+				cmdOpts=${cmdOpts/ -g / }
+				;;
+			-m | --message | -F | --file)
+				cmdOpts=${cmdOpts/ --message / }
+				cmdOpts=${cmdOpts/ -m / }
+				cmdOpts=${cmdOpts/ --file / }
+				cmdOpts=${cmdOpts/ -F / }
+				;;
 		esac
 
 		# remove help options within help subcommand
@@ -1024,60 +1024,60 @@ _svnadmin() {
 	# if not typing an option, or if the previous option required a
 	# parameter, then fallback on ordinary filename expansion
 	helpCmds='help|--help|h|\?'
-	if [[ ${COMP_WORDS[1]} != @($helpCmds) ]] &&
-		[[ "$cur" != -* ]] ||
-		[[ ${COMP_WORDS[COMP_CWORD - 1]} == @($optsParam) ]]; then
+	if [[ ${COMP_WORDS[1]} != @($helpCmds) ]] \
+		&& [[ "$cur" != -* ]] \
+		|| [[ ${COMP_WORDS[COMP_CWORD - 1]} == @($optsParam) ]]; then
 		return 0
 	fi
 
 	cmdOpts=
 	case ${COMP_WORDS[1]} in
-	create)
-		cmdOpts="--bdb-txn-nosync --bdb-log-keep --config-dir \
+		create)
+			cmdOpts="--bdb-txn-nosync --bdb-log-keep --config-dir \
 		         --fs-type --pre-1.4-compatible --pre-1.5-compatible \
 		         --pre-1.6-compatible --compatible-version"
-		;;
-	deltify)
-		cmdOpts="-r --revision -q --quiet"
-		;;
-	dump)
-		cmdOpts="-r --revision --incremental -q --quiet --deltas \
+			;;
+		deltify)
+			cmdOpts="-r --revision -q --quiet"
+			;;
+		dump)
+			cmdOpts="-r --revision --incremental -q --quiet --deltas \
 		         -M --memory-cache-size"
-		;;
-	freeze)
-		cmdOpts="-F --file"
-		;;
-	help | h | \?)
-		cmdOpts="$cmds"
-		;;
-	hotcopy)
-		cmdOpts="--clean-logs"
-		;;
-	load)
-		cmdOpts="--ignore-uuid --force-uuid --parent-dir -q --quiet \
+			;;
+		freeze)
+			cmdOpts="-F --file"
+			;;
+		help | h | \?)
+			cmdOpts="$cmds"
+			;;
+		hotcopy)
+			cmdOpts="--clean-logs"
+			;;
+		load)
+			cmdOpts="--ignore-uuid --force-uuid --parent-dir -q --quiet \
 		         --use-pre-commit-hook --use-post-commit-hook \
 		         --bypass-prop-validation -M --memory-cache-size"
-		;;
-	lock | unlock)
-		cmdOpts="--bypass-hooks"
-		;;
-	recover)
-		cmdOpts="--wait"
-		;;
-	rmtxns)
-		cmdOpts="-q --quiet"
-		;;
-	setlog)
-		cmdOpts="-r --revision --bypass-hooks"
-		;;
-	setrevprop)
-		cmdOpts="-r --revision --use-pre-revprop-change-hook \
+			;;
+		lock | unlock)
+			cmdOpts="--bypass-hooks"
+			;;
+		recover)
+			cmdOpts="--wait"
+			;;
+		rmtxns)
+			cmdOpts="-q --quiet"
+			;;
+		setlog)
+			cmdOpts="-r --revision --bypass-hooks"
+			;;
+		setrevprop)
+			cmdOpts="-r --revision --use-pre-revprop-change-hook \
 		         --use-post-revprop-change-hook"
-		;;
-	verify)
-		cmdOpts="-r --revision -q --quiet"
-		;;
-	*) ;;
+			;;
+		verify)
+			cmdOpts="-r --revision -q --quiet"
+			;;
+		*) ;;
 
 	esac
 
@@ -1088,8 +1088,8 @@ _svnadmin() {
 		opt=${COMP_WORDS[$i]}
 
 		case $opt in
-		--*) optBase=${opt/=*/} ;;
-		-*) optBase=${opt:0:2} ;;
+			--*) optBase=${opt/=*/} ;;
+			-*) optBase=${opt:0:2} ;;
 		esac
 
 		cmdOpts=" $cmdOpts "
@@ -1097,16 +1097,16 @@ _svnadmin() {
 
 		# take out alternatives
 		case $optBase in
-		-q) cmdOpts=${cmdOpts/ --quiet / } ;;
-		--quiet) cmdOpts=${cmdOpts/ -q / } ;;
-		-h) cmdOpts=${cmdOpts/ --help / } ;;
-		--help) cmdOpts=${cmdOpts/ -h / } ;;
-		-r) cmdOpts=${cmdOpts/ --revision / } ;;
-		--revision) cmdOpts=${cmdOpts/ -r / } ;;
-		-F) cmdOpts=${cmdOpts/ --file / } ;;
-		--file) cmdOpts=${cmdOpts/ -F / } ;;
-		-M) cmdOpts=${cmdOpts/ --memory-cache-size / } ;;
-		--memory-cache-size) cmdOpts=${cmdOpts/ --M / } ;;
+			-q) cmdOpts=${cmdOpts/ --quiet / } ;;
+			--quiet) cmdOpts=${cmdOpts/ -q / } ;;
+			-h) cmdOpts=${cmdOpts/ --help / } ;;
+			--help) cmdOpts=${cmdOpts/ -h / } ;;
+			-r) cmdOpts=${cmdOpts/ --revision / } ;;
+			--revision) cmdOpts=${cmdOpts/ -r / } ;;
+			-F) cmdOpts=${cmdOpts/ --file / } ;;
+			--file) cmdOpts=${cmdOpts/ -F / } ;;
+			-M) cmdOpts=${cmdOpts/ --memory-cache-size / } ;;
+			--memory-cache-size) cmdOpts=${cmdOpts/ --M / } ;;
 		esac
 
 		# skip next option if this one requires a parameter
@@ -1142,23 +1142,23 @@ _svndumpfilter() {
 	# if not typing an option, or if the previous option required a
 	# parameter, then fallback on ordinary filename expansion
 	helpCmds='help|--help|h|\?'
-	if [[ ${COMP_WORDS[1]} != @($helpCmds) ]] &&
-		[[ "$cur" != -* ]] ||
-		[[ ${COMP_WORDS[COMP_CWORD - 1]} == @($optsParam) ]]; then
+	if [[ ${COMP_WORDS[1]} != @($helpCmds) ]] \
+		&& [[ "$cur" != -* ]] \
+		|| [[ ${COMP_WORDS[COMP_CWORD - 1]} == @($optsParam) ]]; then
 		return 0
 	fi
 
 	cmdOpts=
 	case ${COMP_WORDS[1]} in
-	exclude | include)
-		cmdOpts="--drop-empty-revs --renumber-revs
+		exclude | include)
+			cmdOpts="--drop-empty-revs --renumber-revs
 		         --skip-missing-merge-sources --targets
 		         --preserve-revprops --quiet"
-		;;
-	help | h | \?)
-		cmdOpts="$cmds"
-		;;
-	*) ;;
+			;;
+		help | h | \?)
+			cmdOpts="$cmds"
+			;;
+		*) ;;
 
 	esac
 
@@ -1169,8 +1169,8 @@ _svndumpfilter() {
 		opt=${COMP_WORDS[$i]}
 
 		case $opt in
-		--*) optBase=${opt/=*/} ;;
-		-*) optBase=${opt:0:2} ;;
+			--*) optBase=${opt/=*/} ;;
+			-*) optBase=${opt:0:2} ;;
 		esac
 
 		cmdOpts=" $cmdOpts "
@@ -1178,8 +1178,8 @@ _svndumpfilter() {
 
 		# take out alternatives
 		case $optBase in
-		-h) cmdOpts=${cmdOpts/ --help / } ;;
-		--help) cmdOpts=${cmdOpts/ -h / } ;;
+			-h) cmdOpts=${cmdOpts/ --help / } ;;
+			--help) cmdOpts=${cmdOpts/ -h / } ;;
 		esac
 
 		# skip next option if this one requires a parameter
@@ -1216,64 +1216,64 @@ _svnlook() {
 	# if not typing an option, or if the previous option required a
 	# parameter, then fallback on ordinary filename expansion
 	helpCmds='help|--help|h|\?'
-	if [[ ${COMP_WORDS[1]} != @($helpCmds) ]] &&
-		[[ "$cur" != -* ]] ||
-		[[ ${COMP_WORDS[COMP_CWORD - 1]} == @($optsParam) ]]; then
+	if [[ ${COMP_WORDS[1]} != @($helpCmds) ]] \
+		&& [[ "$cur" != -* ]] \
+		|| [[ ${COMP_WORDS[COMP_CWORD - 1]} == @($optsParam) ]]; then
 		return 0
 	fi
 
 	cmdOpts=
 	case ${COMP_WORDS[1]} in
-	author)
-		cmdOpts="-r --revision -t --transaction"
-		;;
-	cat)
-		cmdOpts="-r --revision -t --transaction"
-		;;
-	changed)
-		cmdOpts="-r --revision -t --transaction --copy-info"
-		;;
-	date)
-		cmdOpts="-r --revision -t --transaction"
-		;;
-	diff)
-		cmdOpts="-r --revision -t --transaction --diff-copy-from \
+		author)
+			cmdOpts="-r --revision -t --transaction"
+			;;
+		cat)
+			cmdOpts="-r --revision -t --transaction"
+			;;
+		changed)
+			cmdOpts="-r --revision -t --transaction --copy-info"
+			;;
+		date)
+			cmdOpts="-r --revision -t --transaction"
+			;;
+		diff)
+			cmdOpts="-r --revision -t --transaction --diff-copy-from \
 		         --no-diff-added --no-diff-deleted -x --extensions"
-		;;
-	dirs-changed)
-		cmdOpts="-r --revision -t --transaction"
-		;;
-	help | h | \?)
-		cmdOpts="$cmds"
-		;;
-	history)
-		cmdOpts="-r --revision -l --limit --show-ids"
-		;;
-	info)
-		cmdOpts="-r --revision -t --transaction"
-		;;
-	lock)
-		cmdOpts=
-		;;
-	log)
-		cmdOpts="-r --revision -t --transaction"
-		;;
-	propget | pget | pg)
-		cmdOpts="-r --revision -t --transaction --revprop"
-		;;
-	proplist | plist | pl)
-		cmdOpts="-r --revision -t --transaction --revprop -v --verbose --xml"
-		;;
-	tree)
-		cmdOpts="-r --revision -t --transaction --full-paths -N --non-recursive --show-ids"
-		;;
-	uuid)
-		cmdOpts=
-		;;
-	youngest)
-		cmdOpts=
-		;;
-	*) ;;
+			;;
+		dirs-changed)
+			cmdOpts="-r --revision -t --transaction"
+			;;
+		help | h | \?)
+			cmdOpts="$cmds"
+			;;
+		history)
+			cmdOpts="-r --revision -l --limit --show-ids"
+			;;
+		info)
+			cmdOpts="-r --revision -t --transaction"
+			;;
+		lock)
+			cmdOpts=
+			;;
+		log)
+			cmdOpts="-r --revision -t --transaction"
+			;;
+		propget | pget | pg)
+			cmdOpts="-r --revision -t --transaction --revprop"
+			;;
+		proplist | plist | pl)
+			cmdOpts="-r --revision -t --transaction --revprop -v --verbose --xml"
+			;;
+		tree)
+			cmdOpts="-r --revision -t --transaction --full-paths -N --non-recursive --show-ids"
+			;;
+		uuid)
+			cmdOpts=
+			;;
+		youngest)
+			cmdOpts=
+			;;
+		*) ;;
 
 	esac
 
@@ -1284,8 +1284,8 @@ _svnlook() {
 		opt=${COMP_WORDS[$i]}
 
 		case $opt in
-		--*) optBase=${opt/=*/} ;;
-		-*) optBase=${opt:0:2} ;;
+			--*) optBase=${opt/=*/} ;;
+			-*) optBase=${opt:0:2} ;;
 		esac
 
 		cmdOpts=" $cmdOpts "
@@ -1293,20 +1293,20 @@ _svnlook() {
 
 		# take out alternatives
 		case $optBase in
-		-N) cmdOpts=${cmdOpts/ --non-recursive / } ;;
-		--non-recursive) cmdOpts=${cmdOpts/ -N / } ;;
-		-h) cmdOpts=${cmdOpts/ --help / } ;;
-		--help) cmdOpts=${cmdOpts/ -h / } ;;
-		-l) cmdOpts=${cmdOpts/ --limit / } ;;
-		--limit) cmdOpts=${cmdOpts/ -l / } ;;
-		-r) cmdOpts=${cmdOpts/ --revision / } ;;
-		--revision) cmdOpts=${cmdOpts/ -r / } ;;
-		-t) cmdOpts=${cmdOpts/ --transaction / } ;;
-		--transaction) cmdOpts=${cmdOpts/ -t / } ;;
-		-v) cmdOpts=${cmdOpts/ --verbose / } ;;
-		--verbose) cmdOpts=${cmdOpts/ -v / } ;;
-		-x) cmdOpts=${cmdOpts/ --extensions / } ;;
-		--extensions) cmdOpts=${cmdOpts/ -x / } ;;
+			-N) cmdOpts=${cmdOpts/ --non-recursive / } ;;
+			--non-recursive) cmdOpts=${cmdOpts/ -N / } ;;
+			-h) cmdOpts=${cmdOpts/ --help / } ;;
+			--help) cmdOpts=${cmdOpts/ -h / } ;;
+			-l) cmdOpts=${cmdOpts/ --limit / } ;;
+			--limit) cmdOpts=${cmdOpts/ -l / } ;;
+			-r) cmdOpts=${cmdOpts/ --revision / } ;;
+			--revision) cmdOpts=${cmdOpts/ -r / } ;;
+			-t) cmdOpts=${cmdOpts/ --transaction / } ;;
+			--transaction) cmdOpts=${cmdOpts/ -t / } ;;
+			-v) cmdOpts=${cmdOpts/ --verbose / } ;;
+			--verbose) cmdOpts=${cmdOpts/ -v / } ;;
+			-x) cmdOpts=${cmdOpts/ --extensions / } ;;
+			--extensions) cmdOpts=${cmdOpts/ -x / } ;;
 		esac
 
 		# skip next option if this one requires a parameter
@@ -1343,28 +1343,28 @@ _svnsync() {
 	# if not typing an option, or if the previous option required a
 	# parameter, then fallback on ordinary filename expansion
 	helpCmds='help|--help|h|\?'
-	if [[ ${COMP_WORDS[1]} != @($helpCmds) ]] &&
-		[[ "$cur" != -* ]] ||
-		[[ ${COMP_WORDS[COMP_CWORD - 1]} == @($optsParam) ]]; then
+	if [[ ${COMP_WORDS[1]} != @($helpCmds) ]] \
+		&& [[ "$cur" != -* ]] \
+		|| [[ ${COMP_WORDS[COMP_CWORD - 1]} == @($optsParam) ]]; then
 		return 0
 	fi
 
 	cmdOpts=
 	case ${COMP_WORDS[1]} in
-	copy-revprops | initialize | init | synchronize | sync)
-		cmdOpts="--non-interactive --no-auth-cache --trust-server-cert \
+		copy-revprops | initialize | init | synchronize | sync)
+			cmdOpts="--non-interactive --no-auth-cache --trust-server-cert \
 		         --source-username --source-password --sync-username \
 		         --sync-password --config-dir --config-option -q --quiet"
-		;;
-	help | h | \?)
-		cmdOpts="$cmds"
-		;;
-	info)
-		cmdOpts="--non-interactive --no-auth-cache --trust-server-cert \
+			;;
+		help | h | \?)
+			cmdOpts="$cmds"
+			;;
+		info)
+			cmdOpts="--non-interactive --no-auth-cache --trust-server-cert \
 		         --source-username --source-password --sync-username \
 		         --sync-password --config-dir --config-option"
-		;;
-	*) ;;
+			;;
+		*) ;;
 
 	esac
 
@@ -1375,8 +1375,8 @@ _svnsync() {
 		opt=${COMP_WORDS[$i]}
 
 		case $opt in
-		--*) optBase=${opt/=*/} ;;
-		-*) optBase=${opt:0:2} ;;
+			--*) optBase=${opt/=*/} ;;
+			-*) optBase=${opt:0:2} ;;
 		esac
 
 		cmdOpts=" $cmdOpts "
@@ -1384,10 +1384,10 @@ _svnsync() {
 
 		# take out alternatives
 		case $optBase in
-		-h) cmdOpts=${cmdOpts/ --help / } ;;
-		--help) cmdOpts=${cmdOpts/ -h / } ;;
-		-q) cmdOpts=${cmdOpts/ --quiet / } ;;
-		--quiet) cmdOpts=${cmdOpts/ -q / } ;;
+			-h) cmdOpts=${cmdOpts/ --help / } ;;
+			--help) cmdOpts=${cmdOpts/ -h / } ;;
+			-q) cmdOpts=${cmdOpts/ --quiet / } ;;
+			--quiet) cmdOpts=${cmdOpts/ -q / } ;;
 		esac
 
 		# skip next option if this one requires a parameter
@@ -1462,12 +1462,12 @@ _svnversion() {
 
 		# take out alternatives
 		case $opt in
-		-n) cmdOpts=${cmdOpts/ --no-newline / } ;;
-		--no-newline) cmdOpts=${cmdOpts/ -n / } ;;
-		-h) cmdOpts=${cmdOpts/ --help / } ;;
-		--help) cmdOpts=${cmdOpts/ -h / } ;;
-		-c) cmdOpts=${cmdOpts/ --committed / } ;;
-		--committed) cmdOpts=${cmdOpts/ -c / } ;;
+			-n) cmdOpts=${cmdOpts/ --no-newline / } ;;
+			--no-newline) cmdOpts=${cmdOpts/ -n / } ;;
+			-h) cmdOpts=${cmdOpts/ --help / } ;;
+			--help) cmdOpts=${cmdOpts/ -h / } ;;
+			-c) cmdOpts=${cmdOpts/ --committed / } ;;
+			--committed) cmdOpts=${cmdOpts/ -c / } ;;
 		esac
 	done
 

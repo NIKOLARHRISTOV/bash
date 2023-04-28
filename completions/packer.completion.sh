@@ -36,20 +36,20 @@ __packercomp() {
 	local cur_="${2-$cur}"
 
 	case "$cur_" in
-	-*=) ;;
+		-*=) ;;
 
-	*)
-		local c i=0 IFS=$' \t\n'
-		for c in $1; do
-			if [[ $c == "$cur_"* ]]; then
-				case $c in
-				-*=* | *.) ;;
-				*) c="$c " ;;
-				esac
-				COMPREPLY[i++]="$c"
-			fi
-		done
-		;;
+		*)
+			local c i=0 IFS=$' \t\n'
+			for c in $1; do
+				if [[ $c == "$cur_"* ]]; then
+					case $c in
+						-*=* | *.) ;;
+						*) c="$c " ;;
+					esac
+					COMPREPLY[i++]="$c"
+				fi
+			done
+			;;
 	esac
 }
 
@@ -68,23 +68,23 @@ __packer_build() {
         virtualbox-iso virtualbox-ovf vmware-iso vmware-vmx"
 
 	case "$cur" in
-	-parallel=*)
-		__packercomp "false true" "${cur##-parallel=}"
-		return
-		;;
-	-except=*)
-		__packercomp "$builders" "${cur##-except=}"
-		return
-		;;
-	-only=*)
-		__packercomp "$builders" "${cur##-only=}"
-		return
-		;;
-	-*)
-		__packercomp "-debug -force -machine-readable -except= -only= -parallel= -var -var-file"
-		return
-		;;
-	*) ;;
+		-parallel=*)
+			__packercomp "false true" "${cur##-parallel=}"
+			return
+			;;
+		-except=*)
+			__packercomp "$builders" "${cur##-except=}"
+			return
+			;;
+		-only=*)
+			__packercomp "$builders" "${cur##-only=}"
+			return
+			;;
+		-*)
+			__packercomp "-debug -force -machine-readable -except= -only= -parallel= -var -var-file"
+			return
+			;;
+		*) ;;
 	esac
 
 	__packercomp_template_file
@@ -98,11 +98,11 @@ __packer_fix() {
 # Generates completion for the inspect command.
 __packer_inspect() {
 	case "$cur" in
-	-*)
-		__packercomp "-machine-readable"
-		return
-		;;
-	*) ;;
+		-*)
+			__packercomp "-machine-readable"
+			return
+			;;
+		*) ;;
 	esac
 
 	__packercomp_template_file
@@ -131,23 +131,23 @@ _packer_completion() {
 	while [ $c -lt $COMP_CWORD ]; do
 		i="${COMP_WORDS[c]}"
 		case "$i" in
-		-*) ;;
-		*)
-			command="$i"
-			break
-			;;
+			-*) ;;
+			*)
+				command="$i"
+				break
+				;;
 		esac
 		((c++))
 	done
 
 	if [ -z "$command" ]; then
 		case "$cur" in
-		'-'*)
-			__packercomp "-machine-readable --help --version"
-			;;
-		*)
-			__packercomp "build fix inspect validate"
-			;;
+			'-'*)
+				__packercomp "-machine-readable --help --version"
+				;;
+			*)
+				__packercomp "build fix inspect validate"
+				;;
 		esac
 		return
 	fi
