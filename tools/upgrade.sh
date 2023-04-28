@@ -3,7 +3,7 @@
 function _omb_upgrade {
 	# Use colors, but only if connected to a terminal, and that terminal
 	# supports them.
-	if type -P tput &>/dev/null; then
+	if type -P tput &> /dev/null; then
 		local ncolors=$(tput colors)
 	fi
 
@@ -50,7 +50,7 @@ function _omb_upgrade {
 	printf "${BLUE}%s\n" "Hooray! Oh My Bash has been updated and/or is at the current version."
 	printf "${BLUE}${BOLD}%s${NORMAL}\n" "To keep up on the latest news and updates, follow us on GitHub: https://github.com/ohmybash/oh-my-bash"
 	if [[ $- == *i* ]]; then
-		declare -f _omb_util_unload &>/dev/null && _omb_util_unload
+		declare -f _omb_util_unload &> /dev/null && _omb_util_unload
 		source ~/.bashrc
 	fi
 }

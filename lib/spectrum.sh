@@ -18,7 +18,7 @@ if
 		declare -gA _omb_spectrum_fg=()
 		declare -gA _omb_spectrum_bg=()
 		declare -gA FX FG BG
-	elif ((_omb_bash_version >= 40000)) && ! local _omb_local_test 2>/dev/null; then
+	elif ((_omb_bash_version >= 40000)) && ! local _omb_local_test 2> /dev/null; then
 		declare -A _omb_spectrum_fx=()
 		declare -A _omb_spectrum_fg=()
 		declare -A _omb_spectrum_bg=()

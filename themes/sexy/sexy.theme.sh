@@ -3,14 +3,14 @@
 # Screenshot: http://cloud.gf3.ca/M5rG
 # A big thanks to \amethyst on Freenode
 
-if [[ $COLORTERM = gnome-* && $TERM = xterm ]] && infocmp gnome-256color >/dev/null 2>&1; then
+if [[ $COLORTERM = gnome-* && $TERM = xterm ]] && infocmp gnome-256color > /dev/null 2>&1; then
 	export TERM=gnome-256color
-elif [[ $TERM != dumb ]] && infocmp xterm-256color >/dev/null 2>&1; then
+elif [[ $TERM != dumb ]] && infocmp xterm-256color > /dev/null 2>&1; then
 	export TERM=xterm-256color
 fi
 
-if tput setaf 1 &>/dev/null; then
-	if [[ $(tput colors) -ge 256 ]] 2>/dev/null; then
+if tput setaf 1 &> /dev/null; then
+	if [[ $(tput colors) -ge 256 ]] 2> /dev/null; then
 		MAGENTA=$(tput setaf 9)
 		ORANGE=$(tput setaf 172)
 		GREEN=$(tput setaf 190)
@@ -36,10 +36,10 @@ else
 fi
 
 parse_git_dirty() {
-	[[ $(git status 2>/dev/null | tail -n1 | cut -c 1-17) != "nothing to commit" ]] && echo "*"
+	[[ $(git status 2> /dev/null | tail -n1 | cut -c 1-17) != "nothing to commit" ]] && echo "*"
 }
 parse_git_branch() {
-	git branch --no-color 2>/dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(parse_git_dirty)/"
+	git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(parse_git_dirty)/"
 }
 
 function _omb_theme_PROMPT_COMMAND() {

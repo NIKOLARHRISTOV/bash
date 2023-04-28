@@ -4,7 +4,7 @@
 # be uninstalled without bash.
 
 _omb_uninstall_contains_omb() {
-	command grep -qE '(source|\.)[[:space:]]+.*[/[:space:]]oh-my-bash\.sh' "$1" 2>/dev/null
+	command grep -qE '(source|\.)[[:space:]]+.*[/[:space:]]oh-my-bash\.sh' "$1" 2> /dev/null
 }
 
 # Find the latest bashrc that do not source oh-my-bash.sh
@@ -33,7 +33,7 @@ read -r -p "Are you sure you want to remove Oh My Bash? [y/N] " _omb_uninstall_c
 if [ "$_omb_uninstall_confirmation" != y ] && [ "$_omb_uninstall_confirmation" != Y ]; then
 	printf '%s\n' "Uninstall cancelled"
 	unset _omb_uninstall_confirmation
-	return 0 2>/dev/null || exit 0
+	return 0 2> /dev/null || exit 0
 fi
 unset _omb_uninstall_confirmation
 
@@ -52,7 +52,7 @@ if ! _omb_uninstall_contains_omb ~/.bashrc; then
 	fi
 	printf '%s\n' "uninstall: Canceled." >&2
 	unset _omb_uninstall_bashrc_original
-	return 1 2>/dev/null || exit 1
+	return 1 2> /dev/null || exit 1
 fi
 
 _omb_uninstall_bashrc_uninstalled=
@@ -67,8 +67,8 @@ if [ -n "$_omb_uninstall_bashrc_original" ]; then
 	command mv "$_omb_uninstall_bashrc_original" ~/.bashrc
 	printf '%s\n' "Your original bash config was restored. Please restart your session."
 else
-	command sed '/oh-my-bash\.sh/s/^/: #/' ~/"${_omb_uninstall_bashrc_uninstalled:-.bashrc}" >|~/.bashrc.omb-temp &&
-		command mv ~/.bashrc.omb-temp ~/.bashrc
+	command sed '/oh-my-bash\.sh/s/^/: #/' ~/"${_omb_uninstall_bashrc_uninstalled:-.bashrc}" >| ~/.bashrc.omb-temp \
+		&& command mv ~/.bashrc.omb-temp ~/.bashrc
 fi
 
 unset _omb_uninstall_bashrc_original
@@ -76,10 +76,10 @@ unset _omb_uninstall_bashrc_uninstalled
 
 echo "Thanks for trying out Oh My Bash. It has been uninstalled."
 case $- in
-*i*)
-	if [ -n "${BASH_VERSION-}" ]; then
-		declare -f _omb_util_unload >/dev/null 2>&1 && _omb_util_unload
-		source ~/.bashrc
-	fi
-	;;
+	*i*)
+		if [ -n "${BASH_VERSION-}" ]; then
+			declare -f _omb_util_unload > /dev/null 2>&1 && _omb_util_unload
+			source ~/.bashrc
+		fi
+		;;
 esac

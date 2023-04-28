@@ -1,9 +1,9 @@
 #! bash oh-my-bash.module
 
 # Set term to 256color mode, if 256color is not supported, colors won't work properly
-if [[ $COLORTERM = gnome-* && $TERM = xterm ]] && infocmp gnome-256color >/dev/null 2>&1; then
+if [[ $COLORTERM = gnome-* && $TERM = xterm ]] && infocmp gnome-256color > /dev/null 2>&1; then
 	export TERM=gnome-256color
-elif infocmp xterm-256color >/dev/null 2>&1; then
+elif infocmp xterm-256color > /dev/null 2>&1; then
 	export TERM=xterm-256color
 fi
 
@@ -29,12 +29,12 @@ function set_host_color() {
 # Set different username color for users and root
 function set_user_color() {
 	case $(id -u) in
-	0)
-		printf "${_omb_prompt_brown}"
-		;;
-	*)
-		printf "${_omb_prompt_teal}"
-		;;
+		0)
+			printf "${_omb_prompt_brown}"
+			;;
+		*)
+			printf "${_omb_prompt_teal}"
+			;;
 	esac
 }
 

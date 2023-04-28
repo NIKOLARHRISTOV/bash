@@ -25,18 +25,18 @@ export MYSQL_PS1="(\u@\h) [\d]> "
 
 TITLEBAR=""
 case $TERM in
-xterm*) TITLEBAR="\[\033]0;\w\007\]" ;;
+	xterm*) TITLEBAR="\[\033]0;\w\007\]" ;;
 esac
 
 __my_rvm_ruby_version() {
 	local gemset
-	gemset=$(awk -F'@' '{print $2}' <<<"${GEM_HOME}")
+	gemset=$(awk -F'@' '{print $2}' <<< "${GEM_HOME}")
 	local version
-	version=$(awk -F'-' '{print $2}' <<<"${MY_RUBY_HOME}")
+	version=$(awk -F'-' '{print $2}' <<< "${MY_RUBY_HOME}")
 	[ "${gemset}" != "" ] && gemset="@${gemset}"
 	local full="${version}${gemset}"
-	[ "${full}" != "" ] &&
-		echo "${OMB_THEME_BRACKET_COLOR}[${OMB_THEME_STRING_COLOR}${full}${OMB_THEME_BRACKET_COLOR}]${_omb_prompt_normal}"
+	[ "${full}" != "" ] \
+		&& echo "${OMB_THEME_BRACKET_COLOR}[${OMB_THEME_STRING_COLOR}${full}${OMB_THEME_BRACKET_COLOR}]${_omb_prompt_normal}"
 }
 
 is_vim_shell() {
@@ -46,7 +46,7 @@ is_vim_shell() {
 }
 
 is_integer() { # helper function to make sure input is an integer
-	[ "$1" -eq "$1" ] >/dev/null 2>&1
+	[ "$1" -eq "$1" ] > /dev/null 2>&1
 	return $?
 }
 
@@ -54,8 +54,8 @@ is_integer() { # helper function to make sure input is an integer
 # can't find a version online that accepts ls as an input
 todo_txt_count() {
 	if _omb_util_command_exists todo.sh; then # is todo.sh installed
-		local count=$(todo.sh ls |
-			awk '/TODO: [0-9]+ of ([0-9]+) tasks shown/ { print $4 }')
+		local count=$(todo.sh ls \
+			| awk '/TODO: [0-9]+ of ([0-9]+) tasks shown/ { print $4 }')
 		if is_integer "${count}"; then # did we get a sane answer back
 			echo "${OMB_THEME_BRACKET_COLOR}[${OMB_THEME_STRING_COLOR}T:$count${OMB_THEME_BRACKET_COLOR}]$_omb_prompt_normal"
 		fi
@@ -82,10 +82,10 @@ _omb_theme_PROMPT_COMMAND() {
 	line2="${bracket_c}└─$(todo_txt_count)${PROMPT_CHAR}"
 	# nice prompt
 	case "$(id -u)" in
-	0)
-		my_user="${_omb_prompt_bold_brown}\u${_omb_prompt_normal}"
-		line2="${bracket_c}└─${PROMPT_CHAR}"
-		;;
+		0)
+			my_user="${_omb_prompt_bold_brown}\u${_omb_prompt_normal}"
+			line2="${bracket_c}└─${PROMPT_CHAR}"
+			;;
 	esac
 
 	PS1="${TITLEBAR}"

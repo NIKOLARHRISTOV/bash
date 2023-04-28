@@ -91,50 +91,50 @@ _defaults() {
 		fi
 	fi
 
-	keys=$(defaults read $domain 2>/dev/null | sed -n -e '/^    [^}) ]/p' | sed -e 's/^    \([^" ]\{1,\}\) = .*$/\1/g' -e 's/^    "\([^"]\{1,\}\)" = .*$/\1/g' | sed -e 's/ /\\ /g')
+	keys=$(defaults read $domain 2> /dev/null | sed -n -e '/^    [^}) ]/p' | sed -e 's/^    \([^" ]\{1,\}\) = .*$/\1/g' -e 's/^    "\([^"]\{1,\}\)" = .*$/\1/g' | sed -e 's/ /\\ /g')
 
 	case $cmd in
-	read | read-type)
-		# Complete key
-		local IFS=$'\n'
-		COMPREPLY=($(echo "$keys" | grep -i "^${cur//\\/\\\\}"))
-		;;
-	write)
-		if [[ $key_index -eq $COMP_CWORD ]]; then
+		read | read-type)
 			# Complete key
 			local IFS=$'\n'
 			COMPREPLY=($(echo "$keys" | grep -i "^${cur//\\/\\\\}"))
-		elif [[ $((key_index + 1)) -eq $COMP_CWORD ]]; then
-			# Complete value type
-			# Unfortunately ${COMP_WORDS[key_index]} fails on keys with spaces
-			local value_types='-string -data -integer -float -boolean -date -array -array-add -dict -dict-add'
-			local cur_type=$(defaults read-type $domain ${COMP_WORDS[key_index]} 2>/dev/null | sed -e 's/^Type is \(.*\)/-\1/' -e's/dictionary/dict/' | grep "^$cur")
-			if [[ $cur_type ]]; then
-				COMPREPLY=($cur_type)
-			else
-				COMPREPLY=($(compgen -W "$value_types" -- $cur))
+			;;
+		write)
+			if [[ $key_index -eq $COMP_CWORD ]]; then
+				# Complete key
+				local IFS=$'\n'
+				COMPREPLY=($(echo "$keys" | grep -i "^${cur//\\/\\\\}"))
+			elif [[ $((key_index + 1)) -eq $COMP_CWORD ]]; then
+				# Complete value type
+				# Unfortunately ${COMP_WORDS[key_index]} fails on keys with spaces
+				local value_types='-string -data -integer -float -boolean -date -array -array-add -dict -dict-add'
+				local cur_type=$(defaults read-type $domain ${COMP_WORDS[key_index]} 2> /dev/null | sed -e 's/^Type is \(.*\)/-\1/' -e's/dictionary/dict/' | grep "^$cur")
+				if [[ $cur_type ]]; then
+					COMPREPLY=($cur_type)
+				else
+					COMPREPLY=($(compgen -W "$value_types" -- $cur))
+				fi
+			elif [[ $((key_index + 2)) -eq $COMP_CWORD ]]; then
+				# Complete value
+				# Unfortunately ${COMP_WORDS[key_index]} fails on keys with spaces
+				COMPREPLY=($(defaults read $domain ${COMP_WORDS[key_index]} 2> /dev/null | grep -i "^${cur//\\/\\\\}"))
 			fi
-		elif [[ $((key_index + 2)) -eq $COMP_CWORD ]]; then
-			# Complete value
-			# Unfortunately ${COMP_WORDS[key_index]} fails on keys with spaces
-			COMPREPLY=($(defaults read $domain ${COMP_WORDS[key_index]} 2>/dev/null | grep -i "^${cur//\\/\\\\}"))
-		fi
-		;;
-	rename)
-		if [[ $key_index -eq $COMP_CWORD ]] ||
-			[[ $((key_index + 1)) -eq $COMP_CWORD ]]; then
-			# Complete source and destination keys
-			local IFS=$'\n'
-			COMPREPLY=($(echo "$keys" | grep -i "^${cur//\\/\\\\}"))
-		fi
-		;;
-	delete)
-		if [[ $key_index -eq $COMP_CWORD ]]; then
-			# Complete key
-			local IFS=$'\n'
-			COMPREPLY=($(echo "$keys" | grep -i "^${cur//\\/\\\\}"))
-		fi
-		;;
+			;;
+		rename)
+			if [[ $key_index -eq $COMP_CWORD ]] \
+				|| [[ $((key_index + 1)) -eq $COMP_CWORD ]]; then
+				# Complete source and destination keys
+				local IFS=$'\n'
+				COMPREPLY=($(echo "$keys" | grep -i "^${cur//\\/\\\\}"))
+			fi
+			;;
+		delete)
+			if [[ $key_index -eq $COMP_CWORD ]]; then
+				# Complete key
+				local IFS=$'\n'
+				COMPREPLY=($(echo "$keys" | grep -i "^${cur//\\/\\\\}"))
+			fi
+			;;
 	esac
 
 	return 0

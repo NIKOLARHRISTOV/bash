@@ -30,8 +30,8 @@ _serverProfiles() {
 _bindingAddress() {
 	# from /etc/bash_completion.d/ssh
 	COMPREPLY=("${COMPREPLY[@]}" $(compgen -W \
-		"0.0.0.0 $(PATH="$PATH:/sbin" ifconfig -a |
-			sed -ne 's/.*addr:\([^[:space:]]*\).*/\1/p' \
+		"0.0.0.0 $(PATH="$PATH:/sbin" ifconfig -a \
+			| sed -ne 's/.*addr:\([^[:space:]]*\).*/\1/p' \
 				-ne 's/.*inet[[:space:]]\{1,\}\([^[:space:]]*\).*/\1/p')" \
 		-- "$cur"))
 }
@@ -44,63 +44,63 @@ _jboss() {
 
 	case $cur in
 
-	-Djboss.socket.binding.port-offset=*)
-		cur=${cur#*=}
-		#static list of common bindings sets
-		local bindings="100 200 300 400 10000 20000 30000 40000"
-		COMPREPLY=($(compgen -W "${bindings}" -- ${cur}))
-		return 0
-		;;
-	-Djboss.default.jgroups.stack=*)
-		cur=${cur#*=}
-		#static list of standard JGroups stacks
-		local stacks="udp udp-async udp-sync tcp tcp-sync"
-		COMPREPLY=($(compgen -W "${stacks}" -- ${cur}))
-		return 0
-		;;
+		-Djboss.socket.binding.port-offset=*)
+			cur=${cur#*=}
+			#static list of common bindings sets
+			local bindings="100 200 300 400 10000 20000 30000 40000"
+			COMPREPLY=($(compgen -W "${bindings}" -- ${cur}))
+			return 0
+			;;
+		-Djboss.default.jgroups.stack=*)
+			cur=${cur#*=}
+			#static list of standard JGroups stacks
+			local stacks="udp udp-async udp-sync tcp tcp-sync"
+			COMPREPLY=($(compgen -W "${stacks}" -- ${cur}))
+			return 0
+			;;
 
-	-Dorg.jboss.ejb3.remoting.IsLocalInterceptor.passByRef=* | -Dcom.sun.management.jmxremote.authenticate=* | -Dcom.sun.management.jmxremote.ssl=*)
-		cur=${cur#*=}
-		local booleans="true false"
-		COMPREPLY=($(compgen -W "${booleans}" -- ${cur}))
-		return 0
-		;;
+		-Dorg.jboss.ejb3.remoting.IsLocalInterceptor.passByRef=* | -Dcom.sun.management.jmxremote.authenticate=* | -Dcom.sun.management.jmxremote.ssl=*)
+			cur=${cur#*=}
+			local booleans="true false"
+			COMPREPLY=($(compgen -W "${booleans}" -- ${cur}))
+			return 0
+			;;
 
-	-Djboss.server.base.dir=* | -Djboss.home.dir=* | -Djboss.domain.base.dir=*)
-		cur=${cur#*=}
-		_filedir -d
-		return 0
-		;;
+		-Djboss.server.base.dir=* | -Djboss.home.dir=* | -Djboss.domain.base.dir=*)
+			cur=${cur#*=}
+			_filedir -d
+			return 0
+			;;
 
-	-Djboss.domain.master.address=* | -Djboss.bind.address*=*)
-		cur=${cur#*=}
-		_bindingAddress
-		return 0
-		;;
-	--server-config=* | -c= | --host-config=*)
-		cur=${cur#*=}
-		_serverProfiles
-		return 0
-		;;
+		-Djboss.domain.master.address=* | -Djboss.bind.address*=*)
+			cur=${cur#*=}
+			_bindingAddress
+			return 0
+			;;
+		--server-config=* | -c= | --host-config=*)
+			cur=${cur#*=}
+			_serverProfiles
+			return 0
+			;;
 
 	esac
 
 	case $prev in
-	-u)
-		# a few from RFC 2365 IPv4 Local Scope ()
-		local addresses="239.255.0.1 239.255.0.2 239.255.0.3"
-		COMPREPLY=($(compgen -W "${addresses}" -- ${cur}))
-		return 0
-		;;
-	-b*)
-		_bindingAddress
-		return 0
-		;;
-	-c)
-		_serverProfiles
-		return 0
-		;;
-	*) ;;
+		-u)
+			# a few from RFC 2365 IPv4 Local Scope ()
+			local addresses="239.255.0.1 239.255.0.2 239.255.0.3"
+			COMPREPLY=($(compgen -W "${addresses}" -- ${cur}))
+			return 0
+			;;
+		-b*)
+			_bindingAddress
+			return 0
+			;;
+		-c)
+			_serverProfiles
+			return 0
+			;;
+		*) ;;
 
 	esac
 	# *** from jboss5  ********************

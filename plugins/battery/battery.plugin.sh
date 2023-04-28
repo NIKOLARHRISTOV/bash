@@ -48,63 +48,63 @@ ac_adapter_disconnected() {
 battery_percentage() {
 	if _omb_util_command_exists upower; then
 		local UPOWER_OUTPUT=$(_omb_plugin_battery__upower_print_info | sed -n 's/.*percentage[:[:blank:]]*\([0-9%]\{1,\}\)$/\1/p')
-		[[ $UPOWER_OUTPUT ]] &&
-			echo "${UPOWER_OUTPUT::-1}"
+		[[ $UPOWER_OUTPUT ]] \
+			&& echo "${UPOWER_OUTPUT::-1}"
 	elif _omb_util_command_exists acpi; then
 		local ACPI_OUTPUT=$(acpi -b)
 		case $ACPI_OUTPUT in
-		*" Unknown"*)
-			local PERC_OUTPUT=$(echo $ACPI_OUTPUT | head -c 22 | tail -c 2)
-			case $PERC_OUTPUT in
-			*%)
-				echo "0${PERC_OUTPUT}" | head -c 2
+			*" Unknown"*)
+				local PERC_OUTPUT=$(echo $ACPI_OUTPUT | head -c 22 | tail -c 2)
+				case $PERC_OUTPUT in
+					*%)
+						echo "0${PERC_OUTPUT}" | head -c 2
+						;;
+					*)
+						echo ${PERC_OUTPUT}
+						;;
+				esac
 				;;
-			*)
+
+			*" Charging"* | *" Discharging"*)
+				local PERC_OUTPUT=$(echo $ACPI_OUTPUT | awk -F, '/,/{gsub(/ /, "", $0); gsub(/%/,"", $0); print $2}')
 				echo ${PERC_OUTPUT}
 				;;
-			esac
-			;;
-
-		*" Charging"* | *" Discharging"*)
-			local PERC_OUTPUT=$(echo $ACPI_OUTPUT | awk -F, '/,/{gsub(/ /, "", $0); gsub(/%/,"", $0); print $2}')
-			echo ${PERC_OUTPUT}
-			;;
-		*" Full"*)
-			echo '100'
-			;;
-		*)
-			echo '-1'
-			;;
+			*" Full"*)
+				echo '100'
+				;;
+			*)
+				echo '-1'
+				;;
 		esac
 	elif _omb_util_command_exists pmset; then
 		local PMSET_OUTPUT=$(pmset -g ps | sed -n 's/.*[[:blank:]]+*\(.*%\).*/\1/p')
 		case $PMSET_OUTPUT in
-		100*)
-			echo '100'
-			;;
-		*)
-			echo $PMSET_OUTPUT | head -c 2
-			;;
+			100*)
+				echo '100'
+				;;
+			*)
+				echo $PMSET_OUTPUT | head -c 2
+				;;
 		esac
 	elif _omb_util_command_exists ioreg; then
 		local IOREG_OUTPUT=$(ioreg -n AppleSmartBattery -r | awk '$1~/Capacity/{c[$1]=$3} END{OFMT="%05.2f%%"; max=c["\"MaxCapacity\""]; print (max>0? 100*c["\"CurrentCapacity\""]/max: "?")}')
 		case $IOREG_OUTPUT in
-		100*)
-			echo '100'
-			;;
-		*)
-			echo $IOREG_OUTPUT | head -c 2
-			;;
+			100*)
+				echo '100'
+				;;
+			*)
+				echo $IOREG_OUTPUT | head -c 2
+				;;
 		esac
 	elif _omb_util_command_exists WMIC; then
 		local WINPC=$(echo porcent=$(WMIC PATH Win32_Battery Get EstimatedChargeRemaining /Format:List) | grep -o '[0-9]*')
 		case $WINPC in
-		100*)
-			echo '100'
-			;;
-		*)
-			echo $WINPC
-			;;
+			100*)
+				echo '100'
+				;;
+			*)
+				echo $WINPC
+				;;
 		esac
 	else
 		echo "no"
@@ -127,53 +127,53 @@ battery_charge() {
 	local BATTERY_PERC=$(battery_percentage)
 
 	case $BATTERY_PERC in
-	no)
-		echo ""
-		;;
-	9*)
-		echo "${FULL_COLOR}${F_C}${F_C}${F_C}${F_C}${F_C}${_omb_prompt_normal}"
-		;;
-	8*)
-		echo "${FULL_COLOR}${F_C}${F_C}${F_C}${F_C}${HALF_COLOR}${F_C}${_omb_prompt_normal}"
-		;;
-	7*)
-		echo "${FULL_COLOR}${F_C}${F_C}${F_C}${F_C}${DEPLETED_COLOR}${D_C}${_omb_prompt_normal}"
-		;;
-	6*)
-		echo "${FULL_COLOR}${F_C}${F_C}${F_C}${HALF_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${_omb_prompt_normal}"
-		;;
-	5*)
-		echo "${FULL_COLOR}${F_C}${F_C}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${_omb_prompt_normal}"
-		;;
-	4*)
-		echo "${FULL_COLOR}${F_C}${F_C}${HALF_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${_omb_prompt_normal}"
-		;;
-	3*)
-		echo "${FULL_COLOR}${F_C}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${D_C}${_omb_prompt_normal}"
-		;;
-	2*)
-		echo "${FULL_COLOR}${F_C}${HALF_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${D_C}${_omb_prompt_normal}"
-		;;
-	1*)
-		echo "${FULL_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${D_C}${D_C}${_omb_prompt_normal}"
-		;;
-	05)
-		echo "${DANGER_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${D_C}${D_C}${_omb_prompt_normal}"
-		;;
-	04)
-		echo "${DANGER_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${D_C}${D_C}${_omb_prompt_normal}"
-		;;
-	03)
-		echo "${DANGER_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${D_C}${D_C}${_omb_prompt_normal}"
-		;;
-	02)
-		echo "${DANGER_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${D_C}${D_C}${_omb_prompt_normal}"
-		;;
-	0*)
-		echo "${HALF_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${D_C}${D_C}${_omb_prompt_normal}"
-		;;
-	*)
-		echo "${DANGER_COLOR}UNPLG${_omb_prompt_normal}"
-		;;
+		no)
+			echo ""
+			;;
+		9*)
+			echo "${FULL_COLOR}${F_C}${F_C}${F_C}${F_C}${F_C}${_omb_prompt_normal}"
+			;;
+		8*)
+			echo "${FULL_COLOR}${F_C}${F_C}${F_C}${F_C}${HALF_COLOR}${F_C}${_omb_prompt_normal}"
+			;;
+		7*)
+			echo "${FULL_COLOR}${F_C}${F_C}${F_C}${F_C}${DEPLETED_COLOR}${D_C}${_omb_prompt_normal}"
+			;;
+		6*)
+			echo "${FULL_COLOR}${F_C}${F_C}${F_C}${HALF_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${_omb_prompt_normal}"
+			;;
+		5*)
+			echo "${FULL_COLOR}${F_C}${F_C}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${_omb_prompt_normal}"
+			;;
+		4*)
+			echo "${FULL_COLOR}${F_C}${F_C}${HALF_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${_omb_prompt_normal}"
+			;;
+		3*)
+			echo "${FULL_COLOR}${F_C}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${D_C}${_omb_prompt_normal}"
+			;;
+		2*)
+			echo "${FULL_COLOR}${F_C}${HALF_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${D_C}${_omb_prompt_normal}"
+			;;
+		1*)
+			echo "${FULL_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${D_C}${D_C}${_omb_prompt_normal}"
+			;;
+		05)
+			echo "${DANGER_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${D_C}${D_C}${_omb_prompt_normal}"
+			;;
+		04)
+			echo "${DANGER_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${D_C}${D_C}${_omb_prompt_normal}"
+			;;
+		03)
+			echo "${DANGER_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${D_C}${D_C}${_omb_prompt_normal}"
+			;;
+		02)
+			echo "${DANGER_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${D_C}${D_C}${_omb_prompt_normal}"
+			;;
+		0*)
+			echo "${HALF_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${D_C}${D_C}${_omb_prompt_normal}"
+			;;
+		*)
+			echo "${DANGER_COLOR}UNPLG${_omb_prompt_normal}"
+			;;
 	esac
 }

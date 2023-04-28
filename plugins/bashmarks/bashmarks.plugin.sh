@@ -42,45 +42,45 @@ touch "$SDIRS"
 function bm {
 	option="${1}"
 	case ${option} in
-	# save current directory to bookmarks [ bm -a BOOKMARK_NAME ]
-	-a)
-		_save_bookmark "$2"
-		;;
-	# delete bookmark [ bm -d BOOKMARK_NAME ]
-	-d)
-		_delete_bookmark "$2"
-		;;
-	# jump to bookmark [ bm -g BOOKMARK_NAME ]
-	-g)
-		_goto_bookmark "$2"
-		;;
-	# print bookmark [ bm -p BOOKMARK_NAME ]
-	-p)
-		_print_bookmark "$2"
-		;;
-	# show bookmark list [ bm -l ]
-	-l)
-		_list_bookmark
-		;;
-	# help [ bm -h ]
-	-h)
-		_echo_usage
-		;;
-	*)
-		if [[ $1 == -* ]]; then
-			# unrecognized option. echo error message and usage [ bm -X ]
-			echo "Unknown option '$1'"
+		# save current directory to bookmarks [ bm -a BOOKMARK_NAME ]
+		-a)
+			_save_bookmark "$2"
+			;;
+		# delete bookmark [ bm -d BOOKMARK_NAME ]
+		-d)
+			_delete_bookmark "$2"
+			;;
+		# jump to bookmark [ bm -g BOOKMARK_NAME ]
+		-g)
+			_goto_bookmark "$2"
+			;;
+		# print bookmark [ bm -p BOOKMARK_NAME ]
+		-p)
+			_print_bookmark "$2"
+			;;
+		# show bookmark list [ bm -l ]
+		-l)
+			_list_bookmark
+			;;
+		# help [ bm -h ]
+		-h)
 			_echo_usage
-			kill -SIGINT $$
-			exit 1
-		elif [[ $1 == "" ]]; then
-			# no args supplied - echo usage [ bm ]
-			_echo_usage
-		else
-			# non-option supplied as first arg.  assume goto [ bm BOOKMARK_NAME ]
-			_goto_bookmark "$1"
-		fi
-		;;
+			;;
+		*)
+			if [[ $1 == -* ]]; then
+				# unrecognized option. echo error message and usage [ bm -X ]
+				echo "Unknown option '$1'"
+				_echo_usage
+				kill -SIGINT $$
+				exit 1
+			elif [[ $1 == "" ]]; then
+				# no args supplied - echo usage [ bm ]
+				_echo_usage
+			else
+				# non-option supplied as first arg.  assume goto [ bm BOOKMARK_NAME ]
+				_goto_bookmark "$1"
+			fi
+			;;
 	esac
 }
 
@@ -101,7 +101,7 @@ function _save_bookmark {
 	if [ -z "$exit_message" ]; then
 		_purge_line "$SDIRS" "export DIR_$1="
 		CURDIR=$(echo $PWD | sed "s#^$HOME#\$HOME#g")
-		echo "export DIR_$1=\"$CURDIR\"" >>$SDIRS
+		echo "export DIR_$1=\"$CURDIR\"" >> $SDIRS
 	fi
 }
 
@@ -182,7 +182,7 @@ function _purge_line {
 		trap "/bin/rm -f -- '$t'" EXIT
 
 		# purge line
-		sed "/$2/d" "$1" >|"$t"
+		sed "/$2/d" "$1" >| "$t"
 		/bin/mv "$t" "$1"
 
 		# cleanup temp file

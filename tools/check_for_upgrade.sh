@@ -2,12 +2,12 @@
 
 function _omb_upgrade_current_epoch {
 	local sec=${EPOCHSECONDS-}
-	[[ $sec ]] || printf -v sec '%(%s)T' -1 2>/dev/null || sec=$(command date +%s)
+	[[ $sec ]] || printf -v sec '%(%s)T' -1 2> /dev/null || sec=$(command date +%s)
 	echo $((sec / 60 / 60 / 24))
 }
 
 function _omb_upgrade_update_timestamp {
-	echo "LAST_EPOCH=$(_omb_upgrade_current_epoch)" >|~/.osh-update
+	echo "LAST_EPOCH=$(_omb_upgrade_current_epoch)" >| ~/.osh-update
 }
 
 function _omb_upgrade_check {
@@ -33,9 +33,9 @@ function _omb_upgrade_check {
 
 	# update ~/.osh-update
 	_omb_upgrade_update_timestamp
-	if [[ $DISABLE_UPDATE_PROMPT == true ]] ||
-		{ read -p '[Oh My Bash] Would you like to check for updates? [Y/n]: ' line &&
-			[[ $line == Y* || $line == y* || ! $line ]]; }; then
+	if [[ $DISABLE_UPDATE_PROMPT == true ]] \
+		|| { read -p '[Oh My Bash] Would you like to check for updates? [Y/n]: ' line \
+			&& [[ $line == Y* || $line == y* || ! $line ]]; }; then
 		source "$OSH"/tools/upgrade.sh
 	fi
 }
@@ -45,9 +45,9 @@ function _omb_upgrade_check {
 [[ -w "$OSH" ]] || return 0
 
 # Cancel upgrade if git is unavailable on the system
-type -P git &>/dev/null || return 0
+type -P git &> /dev/null || return 0
 
-if command mkdir "$OSH/log/update.lock" 2>/dev/null; then
+if command mkdir "$OSH/log/update.lock" 2> /dev/null; then
 	_omb_upgrade_check
 	command rmdir "$OSH"/log/update.lock
 fi

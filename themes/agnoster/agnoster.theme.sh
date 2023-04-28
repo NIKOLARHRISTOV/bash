@@ -88,9 +88,9 @@ RIGHT_SUBSEG=''
 
 text_effect() {
 	case "$1" in
-	reset) echo 0 ;;
-	bold) echo 1 ;;
-	underline) echo 4 ;;
+		reset) echo 0 ;;
+		bold) echo 1 ;;
+		underline) echo 4 ;;
 	esac
 }
 
@@ -99,29 +99,29 @@ text_effect() {
 # under the "256 (8-bit) Colors" section, and follow the example for orange below
 fg_color() {
 	case "$1" in
-	black) echo 30 ;;
-	red) echo 31 ;;
-	green) echo 32 ;;
-	yellow) echo 33 ;;
-	blue) echo 34 ;;
-	magenta) echo 35 ;;
-	cyan) echo 36 ;;
-	white) echo 37 ;;
-	orange) echo 38\;5\;166 ;;
+		black) echo 30 ;;
+		red) echo 31 ;;
+		green) echo 32 ;;
+		yellow) echo 33 ;;
+		blue) echo 34 ;;
+		magenta) echo 35 ;;
+		cyan) echo 36 ;;
+		white) echo 37 ;;
+		orange) echo 38\;5\;166 ;;
 	esac
 }
 
 bg_color() {
 	case "$1" in
-	black) echo 40 ;;
-	red) echo 41 ;;
-	green) echo 42 ;;
-	yellow) echo 43 ;;
-	blue) echo 44 ;;
-	magenta) echo 45 ;;
-	cyan) echo 46 ;;
-	white) echo 47 ;;
-	orange) echo 48\;5\;166 ;;
+		black) echo 40 ;;
+		red) echo 41 ;;
+		green) echo 42 ;;
+		yellow) echo 43 ;;
+		blue) echo 44 ;;
+		magenta) echo 45 ;;
+		cyan) echo 46 ;;
+		white) echo 47 ;;
+		orange) echo 48\;5\;166 ;;
 	esac
 }
 
@@ -241,17 +241,17 @@ prompt_histdt() {
 }
 
 git_status_dirty() {
-	dirty=$(git status -s 2>/dev/null | tail -n 1)
+	dirty=$(git status -s 2> /dev/null | tail -n 1)
 	[[ -n $dirty ]] && echo " ●"
 }
 
 # Git: branch/detached head, dirty status
 prompt_git() {
 	local ref dirty
-	if git rev-parse --is-inside-work-tree &>/dev/null; then
+	if git rev-parse --is-inside-work-tree &> /dev/null; then
 		ZSH_THEME_GIT_PROMPT_DIRTY='±'
 		dirty=$(git_status_dirty)
-		ref=$(git symbolic-ref HEAD 2>/dev/null) || ref="➦ $(git show-ref --head -s --abbrev | head -n1 2>/dev/null)"
+		ref=$(git symbolic-ref HEAD 2> /dev/null) || ref="➦ $(git show-ref --head -s --abbrev | head -n1 2> /dev/null)"
 		if [[ -n $dirty ]]; then
 			prompt_segment yellow black
 		else

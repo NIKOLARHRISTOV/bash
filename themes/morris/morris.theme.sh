@@ -4,15 +4,15 @@
 
 # added TITLEBAR for updating the tab and window titles with the pwd
 case $TERM in
-xterm*)
-	TITLEBAR=$(printf "\033]0;%s@%s:%s\007" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}")
-	;;
-screen)
-	TITLEBAR=$(printf "\033]0;%s@%s:%s\033\\" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}")
-	;;
-*)
-	TITLEBAR=""
-	;;
+	xterm*)
+		TITLEBAR=$(printf "\033]0;%s@%s:%s\007" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}")
+		;;
+	screen)
+		TITLEBAR=$(printf "\033]0;%s@%s:%s\033\\" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}")
+		;;
+	*)
+		TITLEBAR=""
+		;;
 esac
 
 function _omb_theme_PROMPT_COMMAND() {
