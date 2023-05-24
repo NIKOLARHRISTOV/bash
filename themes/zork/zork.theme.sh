@@ -22,51 +22,58 @@ esac
 
 PS3=">> "
 
-__my_rvm_ruby_version() {
-	local gemset=$(echo $GEM_HOME | awk -F'@' '{print $2}')
-	[ "$gemset" != "" ] && gemset="@$gemset"
-	local version=$(echo $MY_RUBY_HOME | awk -F'-' '{print $2}')
-	local full="$version$gemset"
-	[ "$full" != "" ] && echo "[$full]"
+function __my_rvm_ruby_version {
+    local gemset=$(echo $GEM_HOME | awk -F'@' '{print $2}')
+  [ "$gemset" != "" ] && gemset="@$gemset"
+    local version=$(echo $MY_RUBY_HOME | awk -F'-' '{print $2}')
+    local full="$version$gemset"
+  [ "$full" != "" ] && echo "[$full]"
 }
 
-is_vim_shell() {
-	if [ ! -z "$VIMRUNTIME" ]; then
-		echo "[${_omb_prompt_teal}vim shell${_omb_prompt_normal}]"
-	fi
+function is_vim_shell {
+        if [ ! -z "$VIMRUNTIME" ]
+        then
+                echo "[${_omb_prompt_teal}vim shell${_omb_prompt_normal}]"
+        fi
 }
 
-modern_scm_prompt() {
-	CHAR=$(scm_char)
-	if [ $CHAR = $SCM_NONE_CHAR ]; then
-		return
-	else
-		echo "[$(scm_char)][$(scm_prompt_info)]"
-	fi
+function modern_scm_prompt {
+        CHAR=$(scm_char)
+        if [ $CHAR = $SCM_NONE_CHAR ]
+        then
+                return
+        else
+                echo "[$(scm_char)][$(scm_prompt_info)]"
+        fi
 }
 
 # show chroot if exist
-chroot() {
-	if [ -n "$debian_chroot" ]; then
-		my_ps_chroot="${_omb_prompt_bold_teal}$debian_chroot${_omb_prompt_normal}"
-		echo "($my_ps_chroot)"
-	fi
-}
+function chroot {
+    if [ -n "$debian_chroot" ]
+    then
+        my_ps_chroot="${_omb_prompt_bold_teal}$debian_chroot${_omb_prompt_normal}";
+        echo "($my_ps_chroot)";
+    fi
+    }
 
 # show virtualenvwrapper
-my_ve() {
-	if [ -n "$VIRTUAL_ENV" ]; then
-		my_ps_ve="${_omb_prompt_bold_purple}$ve${_omb_prompt_normal}"
-		echo "($my_ps_ve)"
-	fi
-	echo ""
-}
+function my_ve {
+    if [ -n "$VIRTUAL_ENV" ]
+    then
+        my_ps_ve="${_omb_prompt_bold_purple}$ve${_omb_prompt_normal}";
+        echo "($my_ps_ve)";
+    fi
+    echo "";
+    }
 
-_omb_theme_PROMPT_COMMAND() {
+function _omb_theme_PROMPT_COMMAND {
 
-	my_ps_host="${_omb_prompt_green}\h${_omb_prompt_normal}"
-	# yes, these are the the same for now ...
-	my_ps_host_root="${_omb_prompt_green}\h${_omb_prompt_normal}"
+    my_ps_host="${_omb_prompt_green}\h${_omb_prompt_normal}";
+    # yes, these are the the same for now ...
+    my_ps_host_root="${_omb_prompt_green}\h${_omb_prompt_normal}";
+
+    my_ps_user="${_omb_prompt_bold_green}\u${_omb_prompt_normal}"
+    my_ps_root="${_omb_prompt_bold_brown}\u${_omb_prompt_normal}";
 
 	my_ps_user="${_omb_prompt_bold_green}\u${_omb_prompt_normal}"
 	my_ps_root="${_omb_prompt_bold_brown}\u${_omb_prompt_normal}"

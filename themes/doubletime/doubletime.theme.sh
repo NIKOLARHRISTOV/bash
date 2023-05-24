@@ -19,8 +19,8 @@ if [ ! -z $VIRTUALENV_THEME_PROMPT_COLOR ]; then
 else
 	VIRTUALENV_THEME_PROMPT_COLOR="${_omb_prompt_green}"
 fi
-VIRTUALENV_THEME_PROMPT_PREFIX="(${VIRTUALENV_THEME_PROMPT_COLOR}py${_omb_prompt_normal}: "
-VIRTUALENV_THEME_PROMPT_SUFFIX=") "
+OMB_PROMPT_VIRTUALENV_FORMAT="(${VIRTUALENV_THEME_PROMPT_COLOR}py${_omb_prompt_normal}: %s) "
+OMB_PROMPT_SHOW_PYTHON_VENV=${OMB_PROMPT_SHOW_PYTHON_VENV:=true}
 
 if [ ! -z $THEME_PROMPT_HOST_COLOR ]; then
 	THEME_PROMPT_HOST_COLOR=$(eval echo $$(echo ${THEME_PROMPT_HOST_COLOR}))
@@ -28,15 +28,15 @@ else
 	THEME_PROMPT_HOST_COLOR="$_omb_prompt_navy"
 fi
 
-doubletime_scm_prompt() {
-	CHAR=$(scm_char)
-	if [ $CHAR = $SCM_NONE_CHAR ]; then
-		return
-	elif [ $CHAR = $SCM_GIT_CHAR ]; then
-		echo "$(git_prompt_status)"
-	else
-		echo "[$(scm_prompt_info)]"
-	fi
+function doubletime_scm_prompt {
+  CHAR=$(scm_char)
+  if [ $CHAR = $SCM_NONE_CHAR ]; then
+    return
+  elif [ $CHAR = $SCM_GIT_CHAR ]; then
+    echo "$(git_prompt_status)"
+  else
+    echo "[$(scm_prompt_info)]"
+  fi
 }
 
 function _omb_theme_PROMPT_COMMAND() {
@@ -53,20 +53,20 @@ $(doubletime_scm_prompt)$_omb_prompt_reset_color $ "
 
 _omb_util_add_prompt_command _omb_theme_PROMPT_COMMAND
 
-git_prompt_status() {
-	local git_status_output
-	git_status_output=$(git status 2>/dev/null)
-	if [ -n "$(echo $git_status_output | grep 'Changes not staged')" ]; then
-		git_status="${_omb_prompt_bold_brown}$(scm_prompt_info) ✗"
-	elif [ -n "$(echo $git_status_output | grep 'Changes to be committed')" ]; then
-		git_status="${_omb_prompt_bold_olive}$(scm_prompt_info) ^"
-	elif [ -n "$(echo $git_status_output | grep 'Untracked files')" ]; then
-		git_status="${_omb_prompt_bold_teal}$(scm_prompt_info) +"
-	elif [ -n "$(echo $git_status_output | grep 'nothing to commit')" ]; then
-		git_status="${_omb_prompt_bold_green}$(scm_prompt_info) ${_omb_prompt_green}✓"
-	else
-		git_status="$(scm_prompt_info)"
-	fi
-	echo "[$git_status${_omb_prompt_normal}]"
+function git_prompt_status {
+  local git_status_output
+  git_status_output=$(command git status 2> /dev/null )
+  if [ -n "$(echo $git_status_output | grep 'Changes not staged')" ]; then
+    git_status="${_omb_prompt_bold_brown}$(scm_prompt_info) ✗"
+  elif [ -n "$(echo $git_status_output | grep 'Changes to be committed')" ]; then
+     git_status="${_omb_prompt_bold_olive}$(scm_prompt_info) ^"
+  elif [ -n "$(echo $git_status_output | grep 'Untracked files')" ]; then
+     git_status="${_omb_prompt_bold_teal}$(scm_prompt_info) +"
+  elif [ -n "$(echo $git_status_output | grep 'nothing to commit')" ]; then
+     git_status="${_omb_prompt_bold_green}$(scm_prompt_info) ${_omb_prompt_green}✓"
+  else
+    git_status="$(scm_prompt_info)"
+  fi
+  echo "[$git_status${_omb_prompt_normal}]"
 
 }

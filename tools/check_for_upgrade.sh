@@ -17,12 +17,13 @@ function _omb_upgrade_check {
 		return 0
 	fi
 
-	local LAST_EPOCH
-	. ~/.osh-update
-	if [[ ! $LAST_EPOCH ]]; then
-		_omb_upgrade_update_timestamp
-		return 0
-	fi
+  local LAST_EPOCH
+  # shellcheck disable=SC1090
+  . ~/.osh-update
+  if [[ ! $LAST_EPOCH ]]; then
+    _omb_upgrade_update_timestamp
+    return 0
+  fi
 
 	# Default to the old behavior
 	local epoch_expires=${UPDATE_OSH_DAYS:-13}
@@ -31,18 +32,19 @@ function _omb_upgrade_check {
 		return 0
 	fi
 
-	# update ~/.osh-update
-	_omb_upgrade_update_timestamp
-	if [[ $DISABLE_UPDATE_PROMPT == true ]] \
-		|| { read -p '[Oh My Bash] Would you like to check for updates? [Y/n]: ' line \
-			&& [[ $line == Y* || $line == y* || ! $line ]]; }; then
-		source "$OSH"/tools/upgrade.sh
-	fi
+  # update ~/.osh-update
+  _omb_upgrade_update_timestamp
+  if [[ $DISABLE_UPDATE_PROMPT == true ]] ||
+       { read -rp '[Oh My Bash] Would you like to check for updates? [Y/n]: ' line &&
+           [[ $line == Y* || $line == y* || ! $line ]]; }
+  then
+    source "$OSH"/tools/upgrade.sh
+  fi
 }
 
 # Cancel upgrade if the current user doesn't have write permissions for the
 # oh-my-bash directory.
-[[ -w "$OSH" ]] || return 0
+[[ -w $OSH ]] || return 0
 
 # Cancel upgrade if git is unavailable on the system
 type -P git &> /dev/null || return 0

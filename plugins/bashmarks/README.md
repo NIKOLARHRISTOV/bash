@@ -1,7 +1,6 @@
 # Bashmarks plugin
 
-The Bashmarks plugin allows you to create and use bookmarks for directories on
-your filesystems.
+The Bashmarks plugin allows you to create and use bookmarks for directories on your filesystems.
 
 ## Quickstart
 
@@ -9,10 +8,9 @@ Create a new bookmark using the _bm -a_ command:
 
 `$ bm -a mydir`
 
-The command above creates a bookmark for the current directory with the name
-_mydir_.
+The command above creates a bookmark for the current directory with the name *mydir*.
 
-You can navigate to the location of a bookmark using the _bm -g_ command:
+You can navigate to the location of a bookmark using the *bm -g* command:
 
 `$ bm -g mydir`
 
@@ -23,7 +21,7 @@ You can also supply just any bookmark name and the _-g_ option will be assumed:
 Tab completion is available when you need to enter a bookmark name in a command,
 such as when using _bm -g_
 
-Easily list all bookmarks you have setup using the _bm -l_ command.
+Easily list all bookmarks you have setup using the *bm -l* command.
 
 ## Commands
 

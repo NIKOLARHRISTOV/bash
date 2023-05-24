@@ -38,13 +38,14 @@ function set_user_color() {
 	esac
 }
 
-scm_prompt() {
-	CHAR=$(scm_char)
-	if [ $CHAR = $SCM_NONE_CHAR ]; then
-		return
-	else
-		echo "[$(scm_char)$(scm_prompt_info)]"
-	fi
+function scm_prompt {
+  CHAR=$(scm_char)
+  if [ $CHAR = $SCM_NONE_CHAR ]
+    then
+      return
+    else
+      echo "[$(scm_char)$(scm_prompt_info)]"
+  fi
 }
 
 # Define custom colors we need
@@ -61,8 +62,8 @@ function set_custom_colors() {
 	powder_blue="\[$(tput setaf 153)\]"
 }
 
-__ps_time() {
-	echo "$(clock_prompt)${_omb_prompt_normal}\n"
+function __ps_time {
+  echo "$(clock_prompt)${_omb_prompt_normal}\n"
 }
 
 function _omb_theme_PROMPT_COMMAND() {

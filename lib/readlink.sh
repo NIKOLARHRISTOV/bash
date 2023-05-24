@@ -80,19 +80,18 @@ function _omb_util_readlink__resolve {
 	# Select implementation on the first call
 	_omb_util_readlink_type=
 
-	case $OSTYPE in
-		cygwin | msys | linux-gnu)
-			# These systems provide "readlink -f".
-			local readlink
-			readlink=$(type -P readlink)
-			case $readlink in
-				/bin/readlink | /usr/bin/readlink)
-					_omb_util_readlink_type=readlink-f
-					function _omb_util_readlink__resolve { readlink -f -- "$1"; }
-					;;
-			esac
-			;;
-	esac
+  case $OSTYPE in
+  (cygwin | msys | linux-gnu)
+    # These systems provide "readlink -f".
+    local readlink
+    readlink=$(type -P readlink)
+    case $readlink in
+    (/bin/readlink | /usr/bin/readlink)
+      # shellcheck disable=SC2100
+      _omb_util_readlink_type=readlink-f
+      function _omb_util_readlink__resolve { readlink -f -- "$1"; } ;;
+    esac ;;
+  esac
 
 	if [[ ! $_omb_util_readlink_type ]]; then
 		_omb_util_readlink_type=loop

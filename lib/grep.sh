@@ -1,8 +1,8 @@
 #! bash oh-my-bash.module
 
 # is x grep argument available?
-_omb_grep_flag_available() {
-	echo | grep $1 "" > /dev/null 2>&1
+function _omb_grep_flag_available {
+  echo | grep $1 "" >/dev/null 2>&1
 }
 
 _omb_grep_options=()

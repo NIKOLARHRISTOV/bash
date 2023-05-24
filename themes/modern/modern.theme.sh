@@ -19,13 +19,14 @@ esac
 
 PS3=">> "
 
-is_vim_shell() {
-	if [ ! -z "$VIMRUNTIME" ]; then
+function is_vim_shell {
+	if [ ! -z "$VIMRUNTIME" ]
+	then
 		echo "[${_omb_prompt_teal}vim shell${_omb_prompt_normal}]"
 	fi
 }
 
-modern_scm_prompt() {
+function modern_scm_prompt {
 	CHAR=$(scm_char)
 	if [ $CHAR = $SCM_NONE_CHAR ]; then
 		return
@@ -34,8 +35,9 @@ modern_scm_prompt() {
 	fi
 }
 
-_omb_theme_PROMPT_COMMAND() {
-	if [ $? -ne 0 ]; then
+function _omb_theme_PROMPT_COMMAND {
+	if [ $? -ne 0 ]
+	then
 		# Yes, the indenting on these is weird, but it has to be like
 		# this otherwise it won't display properly.
 

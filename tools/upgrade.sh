@@ -1,29 +1,29 @@
 #!/usr/bin/env bash
 
 function _omb_upgrade {
-	# Use colors, but only if connected to a terminal, and that terminal
-	# supports them.
-	if type -P tput &> /dev/null; then
-		local ncolors=$(tput colors)
-	fi
+  # Use colors, but only if connected to a terminal, and that terminal
+  # supports them.
+  local ncolors=
+  if type -P tput &>/dev/null; then
+    ncolors=$(tput colors)
+  fi
 
-	if [[ -t 1 && $ncolors && $ncolors -ge 8 ]]; then
-		local RED=$(tput setaf 1)
-		local GREEN=$(tput setaf 2)
-		local YELLOW=$(tput setaf 3)
-		local BLUE=$(tput setaf 4)
-		local BOLD=$(tput bold)
-		local NORMAL=$(tput sgr0)
-	else
-		local RED=""
-		local GREEN=""
-		local YELLOW=""
-		local BLUE=""
-		local BOLD=""
-		local NORMAL=""
-	fi
+  local RED GREEN BLUE BOLD NORMAL
+  if [[ -t 1 && $ncolors && $ncolors -ge 8 ]]; then
+    RED=$(tput setaf 1 2>/dev/null || tput AF 1 2>/dev/null)
+    GREEN=$(tput setaf 2 2>/dev/null || tput AF 2 2>/dev/null)
+    BLUE=$(tput setaf 4 2>/dev/null || tput AF 4 2>/dev/null)
+    BOLD=$(tput bold 2>/dev/null || tput md 2>/dev/null)
+    NORMAL=$(tput sgr0 2>/dev/null || tput me 2>/dev/null)
+  else
+	  RED=""
+	  GREEN=""
+	  BLUE=""
+	  BOLD=""
+	  NORMAL=""
+  fi
 
-	printf "${BLUE}%s${NORMAL}\n" "Updating Oh My Bash"
+  printf '%s\n' "${BLUE}Updating Oh My Bash${NORMAL}"
 
 	# Note: The git option "-C PATH" is only supported from git-1.8.5
 	# (https://github.com/git/git/commit/44e1e4d6 2013-09).  On the other hand,
@@ -40,18 +40,21 @@ function _omb_upgrade {
 		return 1
 	fi
 
-	printf '%s' "$GREEN"
-	printf '%s\n' '         __                          __               __  '
-	printf '%s\n' '  ____  / /_     ____ ___  __  __   / /_  ____ ______/ /_ '
-	printf '%s\n' ' / __ \/ __ \   / __ `__ \/ / / /  / __ \/ __ `/ ___/ __ \'
-	printf '%s\n' '/ /_/ / / / /  / / / / / / /_/ /  / /_/ / /_/ (__  ) / / /'
-	printf '%s\n' '\____/_/ /_/  /_/ /_/ /_/\__, /  /_.___/\__,_/____/_/ /_/ '
-	printf '%s\n' '                        /____/                            '
-	printf "${BLUE}%s\n" "Hooray! Oh My Bash has been updated and/or is at the current version."
-	printf "${BLUE}${BOLD}%s${NORMAL}\n" "To keep up on the latest news and updates, follow us on GitHub: https://github.com/ohmybash/oh-my-bash"
-	if [[ $- == *i* ]]; then
-		declare -f _omb_util_unload &> /dev/null && _omb_util_unload
-		source ~/.bashrc
-	fi
+  printf '%s' "$GREEN"
+  # shellcheck disable=SC1003,SC2016
+  printf '%s\n' \
+    '         __                          __               __  ' \
+    '  ____  / /_     ____ ___  __  __   / /_  ____ ______/ /_ ' \
+    ' / __ \/ __ \   / __ `__ \/ / / /  / __ \/ __ `/ ___/ __ \' \
+    '/ /_/ / / / /  / / / / / / /_/ /  / /_/ / /_/ (__  ) / / /' \
+    '\____/_/ /_/  /_/ /_/ /_/\__, /  /_.___/\__,_/____/_/ /_/ ' \
+    '                        /____/                            '
+  printf "${BLUE}%s\n" "Hooray! Oh My Bash has been updated and/or is at the current version."
+  printf "${BLUE}${BOLD}%s${NORMAL}\n" "To keep up on the latest news and updates, follow us on GitHub: https://github.com/ohmybash/oh-my-bash"
+  if [[ $- == *i* ]]; then
+    declare -f _omb_util_unload &>/dev/null && _omb_util_unload
+    # shellcheck disable=SC1090
+    source ~/.bashrc
+  fi
 }
 _omb_upgrade

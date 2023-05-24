@@ -8,12 +8,12 @@
 # To use, source this file on bash:
 #   . completion-bundle
 
-__bundle() {
-	local cur=$2
-	local prev=$3
-	local bundle_command
-	__bundle_get_command
-	COMPREPLY=()
+function __bundle {
+  local cur=$2
+  local prev=$3
+  local bundle_command
+  __bundle_get_command
+  COMPREPLY=()
 
 	local options
 	if [[ $cur = -* ]]; then
@@ -30,10 +30,10 @@ __bundle() {
 	COMPREPLY=($(compgen -W "$options" -- "$cur"))
 }
 
-__bundle_get_command() {
-	local i
-	for ((i = 1; i < $COMP_CWORD; ++i)); do
-		local arg=${COMP_WORDS[$i]}
+function __bundle_get_command {
+    local i
+    for ((i=1; i < $COMP_CWORD; ++i)); do
+        local arg=${COMP_WORDS[$i]}
 
 		case $arg in
 			[^-]*)

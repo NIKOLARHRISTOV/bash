@@ -44,13 +44,17 @@ fi
 # SOFTWARE.
 #
 if _omb_util_command_exists nvm && [[ ${OMB_PLUGIN_NVM_AUTO_USE-} == true ]]; then
-	_omb_plugin_nvm_find_up() {
-		local path=$PWD
-		while [[ $path && ! -e $path/$1 ]]; do
-			path=${path%/*}
-		done
-		echo "$path"
-	}
+  function _omb_plugin_nvm_find_up {
+    local path=$PWD
+    while [[ $path && ! -e $path/$1 ]]; do
+      path=${path%/*}
+    done
+    echo "$path"
+  }
+
+  function _omb_plugin_nvm_cd {
+    cd "$@" || return "$?"
+    local nvm_path=$(_omb_plugin_nvm_find_up .nvmrc)
 
 	_omb_plugin_nvm_cd() {
 		cd "$@" || return "$?"

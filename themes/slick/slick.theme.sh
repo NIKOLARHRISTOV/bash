@@ -22,36 +22,39 @@ esac
 
 PS3=">> "
 
-__my_rvm_ruby_version() {
-	local gemset=$(echo $GEM_HOME | awk -F'@' '{print $2}')
-	[ "$gemset" != "" ] && gemset="@$gemset"
-	local version=$(echo $MY_RUBY_HOME | awk -F'-' '{print $2}')
-	local full="$version$gemset"
-	[ "$full" != "" ] && echo "[$full]"
+function __my_rvm_ruby_version {
+    local gemset=$(echo $GEM_HOME | awk -F'@' '{print $2}')
+  [ "$gemset" != "" ] && gemset="@$gemset"
+    local version=$(echo $MY_RUBY_HOME | awk -F'-' '{print $2}')
+    local full="$version$gemset"
+  [ "$full" != "" ] && echo "[$full]"
 }
 
-__my_venv_prompt() {
-	if [ ! -z "$VIRTUAL_ENV" ]; then
-		echo "[${_omb_prompt_navy}@${_omb_prompt_normal}${VIRTUAL_ENV##*/}]"
-	fi
+function __my_venv_prompt {
+  if [ ! -z "$VIRTUAL_ENV" ]
+  then
+    echo "[${_omb_prompt_navy}@${_omb_prompt_normal}${VIRTUAL_ENV##*/}]"
+  fi
 }
 
-is_vim_shell() {
-	if [ ! -z "$VIMRUNTIME" ]; then
-		echo "[${_omb_prompt_teal}vim shell${_omb_prompt_normal}]"
-	fi
+function is_vim_shell {
+        if [ ! -z "$VIMRUNTIME" ]
+        then
+                echo "[${_omb_prompt_teal}vim shell${_omb_prompt_normal}]"
+        fi
 }
 
-modern_scm_prompt() {
-	CHAR=$(scm_char)
-	if [ $CHAR = $SCM_NONE_CHAR ]; then
-		return
-	else
-		echo "[$(scm_char)][$(scm_prompt_info)]"
-	fi
+function modern_scm_prompt {
+        CHAR=$(scm_char)
+        if [ $CHAR = $SCM_NONE_CHAR ]
+        then
+                return
+        else
+                echo "[$(scm_char)][$(scm_prompt_info)]"
+        fi
 }
 
-_omb_theme_PROMPT_COMMAND() {
+function _omb_theme_PROMPT_COMMAND {
 
 	case $HOSTNAME in
 		"clappy"*)

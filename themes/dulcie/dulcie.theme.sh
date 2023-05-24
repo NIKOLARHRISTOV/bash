@@ -15,22 +15,22 @@
 DULCIE_COLOR=${DULCIE_COLOR:=1}         # 0 = monochrome, 1 = colorful
 DULCIE_MULTILINE=${DULCIE_MULTILINE:=1} # 0 = Single line, 1 = SCM in separate line
 
-dulcie_color() {
-	echo -en "\[\e[38;5;${1}m\]"
+function dulcie_color {
+  echo -en "\[\e[38;5;${1}m\]"
 }
 
-dulcie_background() {
-	echo -en "\[\e[48;5;${1}m\]"
+function dulcie_background {
+  echo -en "\[\e[48;5;${1}m\]"
 }
 
-_omb_theme_PROMPT_COMMAND() {
-	color_user_root=$(dulcie_color 169)
-	color_user_nonroot="${_omb_prompt_green}"
-	color_host_local=$(dulcie_color 230)
-	color_host_remote=$(dulcie_color 214)
-	color_rootdir=$(dulcie_color 117)
-	color_workingdir=$(dulcie_color 117)
-	background_scm=$(dulcie_background 238)
+function _omb_theme_PROMPT_COMMAND {
+  color_user_root=$(dulcie_color 169)
+  color_user_nonroot="${_omb_prompt_green}"
+  color_host_local=$(dulcie_color 230)
+  color_host_remote=$(dulcie_color 214)
+  color_rootdir=$(dulcie_color 117)
+  color_workingdir=$(dulcie_color 117)
+  background_scm=$(dulcie_background 238)
 
 	SCM_THEME_ROOT_SUFFIX="|$(scm_char) "
 

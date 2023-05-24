@@ -55,44 +55,48 @@ case $TERM in
 		;;
 esac
 
-is_vim_shell() {
-	if [ ! -z "$VIMRUNTIME" ]; then
-		echo "${D_INTERMEDIATE_COLOR}on ${D_VIMSHELL_COLOR}\
+function is_vim_shell {
+  if [ ! -z "$VIMRUNTIME" ];
+  then
+    echo "${D_INTERMEDIATE_COLOR}on ${D_VIMSHELL_COLOR}\
 vim shell${D_DEFAULT_COLOR} "
 	fi
 }
 
-mitsuhikos_lastcommandfailed() {
-	code=$?
-	if [ $code != 0 ]; then
-		echo "${D_INTERMEDIATE_COLOR}exited ${D_CMDFAIL_COLOR}\
+function mitsuhikos_lastcommandfailed {
+  code=$?
+  if [ $code != 0 ];
+  then
+    echo "${D_INTERMEDIATE_COLOR}exited ${D_CMDFAIL_COLOR}\
 $code ${D_DEFAULT_COLOR}"
 	fi
 }
 
 # vcprompt for scm instead of oh-my-bash default
-demula_vcprompt() {
-	if [ ! -z "$VCPROMPT_EXECUTABLE" ]; then
-		local D_VCPROMPT_FORMAT="on ${D_SCM_COLOR}%s${D_INTERMEDIATE_COLOR}:\
+function demula_vcprompt {
+  if [ ! -z "$VCPROMPT_EXECUTABLE" ];
+  then
+    local D_VCPROMPT_FORMAT="on ${D_SCM_COLOR}%s${D_INTERMEDIATE_COLOR}:\
 ${D_BRANCH_COLOR}%b %r ${D_CHANGES_COLOR}%m%u ${D_DEFAULT_COLOR}"
 		$VCPROMPT_EXECUTABLE -f "$D_VCPROMPT_FORMAT"
 	fi
 }
 
 # checks if the plugin is installed before calling battery_charge
-safe_battery_charge() {
-	if [ -e "${OSH}/plugins/battery/battery.plugin.sh" ]; then
-		battery_charge
-	fi
+function safe_battery_charge {
+  if [ -e "${OSH}/plugins/battery/battery.plugin.sh" ];
+  then
+    battery_charge
+  fi
 }
 
 # -------------------------------------------------------------- PROMPT OUTPUT
-_omb_theme_PROMPT_COMMAND() {
-	local LAST_COMMAND_FAILED=$(mitsuhikos_lastcommandfailed)
-	local SAVE_CURSOR='\033[s'
-	local RESTORE_CURSOR='\033[u'
-	local MOVE_CURSOR_RIGHTMOST='\033[500C'
-	local MOVE_CURSOR_5_LEFT='\033[5D'
+function _omb_theme_PROMPT_COMMAND {
+  local LAST_COMMAND_FAILED=$(mitsuhikos_lastcommandfailed)
+  local SAVE_CURSOR='\033[s'
+  local RESTORE_CURSOR='\033[u'
+  local MOVE_CURSOR_RIGHTMOST='\033[500C'
+  local MOVE_CURSOR_5_LEFT='\033[5D'
 
 	if [ $(uname) = "Linux" ]; then
 		PS1="${TITLEBAR}

@@ -1,8 +1,8 @@
 #! bash oh-my-bash.module
-_pj() {
-	[ -z "$PROJECT_PATHS" ] && return
-	shift
-	[ "$1" == "open" ] && shift
+function _pj {
+  [ -z "$PROJECT_PATHS" ] && return
+  shift
+  [ "$1" == "open" ] && shift
 
 	local cur prev words cword
 	_init_completion || return

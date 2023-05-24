@@ -21,52 +21,54 @@
 #   1.  MAKE TERMINAL BETTER
 #   -----------------------------
 
-# Determines the use of the option `-v' on the first call
-# Ref. https://github.com/ohmybash/oh-my-bash/issues/351
-function _omb_alias_general_cp_init {
-	if (
-		tmp=$(_omb_util_mktemp)
-		trap 'rm -f "$tmp"{,.2}' EXIT
-		command cp -v "$tmp" "$tmp.2" &> /dev/null
-	); then
-		alias cp='cp -iv' && function _omb_alias_general_cp_init { command cp -iv "$@"; }
-	else
-		alias cp='cp -i' && function _omb_alias_general_cp_init { command cp -i "$@"; }
-	fi \
-		&& _omb_alias_general_cp_init "$@"
+# Preferred 'cp' implementation.  Determines the use of the option `-v' on the
+# first call Ref. https://github.com/ohmybash/oh-my-bash/issues/351
+function _omb_util_alias_select_cp {
+  if (tmp=$(_omb_util_mktemp); trap 'rm -f "$tmp"{,.2}' EXIT; command cp -v "$tmp" "$tmp.2" &>/dev/null); then
+    _omb_command='cp -iv'
+  else
+    _omb_command='cp -i'
+  fi
 }
-function _omb_alias_general_mv_init {
-	if (
-		tmp=$(_omb_util_mktemp)
-		trap 'rm -f "$tmp.2"' EXIT
-		command mv -v "$tmp" "$tmp.2" &> /dev/null
-	); then
-		alias mv='mv -iv' && function _omb_alias_general_mv_init { command mv -iv "$@"; }
-	else
-		alias mv='mv -i' && function _omb_alias_general_mv_init { command mv -i "$@"; }
-	fi \
-		&& _omb_alias_general_mv_init "$@"
-}
-function _omb_alias_general_mkdir_init {
-	if command mkdir -pv . &> /dev/null; then
-		alias mkdir='mkdir -pv' && function _omb_alias_general_mkdir_init { command mkdir -pv "$@"; }
-	else
-		alias mkdir='mkdir -p' && function _omb_alias_general_mkdir_init { command mkdir -p "$@"; }
-	fi \
-		&& _omb_alias_general_mkdir_init "$@"
-}
+_omb_util_alias_delayed cp force
 
-alias cp='_omb_alias_general_cp_init'            # Preferred 'cp' implementation
-alias mv='_omb_alias_general_mv_init'            # Preferred 'mv' implementation
-alias mkdir='_omb_alias_general_mkdir_init'      # Preferred 'mkdir' implementation
-alias ll='ls -lAFh'                              # Preferred 'ls' implementation
-alias less='less -FSRXc'                         # Preferred 'less' implementation
-alias nano='nano -W'                             # Preferred 'nano' implementation
-alias wget='wget -c'                             # Preferred 'wget' implementation (resume download)
-alias c='clear'                                  # c:            Clear terminal display
-alias path='echo -e ${PATH//:/\\n}'              # path:         Echo all executable Paths
-alias show_options='shopt'                       # Show_options: display bash options settings
-alias fix_stty='stty sane'                       # fix_stty:     Restore terminal settings when screwed up
-alias fix_term='echo -e "\033c"'                 # fix_term:     Reset the conosle.  Similar to the reset command
+# Preferred 'mv' implementation
+function _omb_util_alias_select_mv {
+  if (tmp=$(_omb_util_mktemp); trap 'rm -f "$tmp.2"' EXIT; command mv -v "$tmp" "$tmp.2" &>/dev/null); then
+    _omb_command='mv -iv'
+  else
+    _omb_command='mv -i'
+  fi
+}
+_omb_util_alias_delayed mv force
+
+# Preferred 'mkdir' implementation
+function _omb_util_alias_select_mkdir {
+  if command mkdir -pv . &>/dev/null; then
+    _omb_command='mkdir -pv'
+  else
+    _omb_command='mkdir -p'
+  fi
+}
+_omb_util_alias_delayed mkdir force
+
+# Preferred 'nano' implementation
+function _omb_util_alias_select_nano {
+  if LANG=C command nano --help 2>/dev/null | grep -q '^[[:space:]]*[-]W'; then
+    _omb_command='nano -W'
+  else
+    _omb_command='nano'
+  fi
+}
+_omb_util_alias_delayed nano force
+
+alias ll='ls -lAFh'                         # Preferred 'ls' implementation
+alias less='less -FSRXc'                    # Preferred 'less' implementation
+alias wget='wget -c'                        # Preferred 'wget' implementation (resume download)
+alias c='clear'                             # c:            Clear terminal display
+alias path='echo -e ${PATH//:/\\n}'         # path:         Echo all executable Paths
+alias show_options='shopt'                  # Show_options: display bash options settings
+alias fix_stty='stty sane'                  # fix_stty:     Restore terminal settings when screwed up
+alias fix_term='echo -e "\033c"'            # fix_term:     Reset the conosle.  Similar to the reset command
 alias cic='bind "set completion-ignore-case on"' # cic:          Make tab-completion case-insensitive
 alias src='source ~/.bashrc'                     # src:          Reload .bashrc file

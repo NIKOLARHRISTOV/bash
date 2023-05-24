@@ -76,12 +76,13 @@ function _svn_grcut() {
 
 # extract stuff from svn info output
 # _svn_info (URL|Repository Root)
-function _svn_info() {
-	local what=$1 line=
-	LANG=C LC_MESSAGES=C svn info --non-interactive 2> /dev/null \
-		| while read line; do
-			[[ $line == *"$what: "* ]] && echo ${line#*: }
-		done
+function _svn_info()
+{
+  local what=$1 line=
+  LANG=C LC_MESSAGES=C command svn info --non-interactive 2> /dev/null | \
+  while read line ; do
+    [[ $line == *"$what: "* ]] && echo ${line#*: }
+  done
 }
 
 # _svn_lls (dir|file|all) files...
@@ -665,9 +666,9 @@ _svn() {
 		# do we allow possible expensive completion here?
 		if [[ $SVN_BASH_COMPL_EXT == *svnstatus* ]]; then
 
-			# build status command and options
-			# "--quiet" removes 'unknown' files
-			local status='svn status --non-interactive'
+		# build status command and options
+		# "--quiet" removes 'unknown' files
+		local status='command svn status --non-interactive'
 
 			[[ $SVN_BASH_COMPL_EXT == *recurse* ]] \
 				|| status="$status --non-recursive"

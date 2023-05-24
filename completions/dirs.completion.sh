@@ -1,8 +1,8 @@
 #! bash oh-my-bash.module
 # Bash completion support for the 'dirs' plugin (commands G, R).
 
-_dirs-complete() {
-	local CURRENT_PROMPT="${COMP_WORDS[COMP_CWORD]}"
+function _dirs-complete {
+    local CURRENT_PROMPT="${COMP_WORDS[COMP_CWORD]}"
 
 	# parse all defined shortcuts from ~/.dirs
 	if [ -r "$HOME/.dirs" ]; then

@@ -8,6 +8,7 @@
 
 OMB_PROMPT_CONDAENV_FORMAT='(%s)'
 OMB_PROMPT_VIRTUALENV_FORMAT='(%s)'
+OMB_PROMPT_SHOW_PYTHON_VENV=${OMB_PROMPT_SHOW_PYTHON_VENV:=true}
 
 # ----------------------------------------------------------------- COLOR CONF
 D_DEFAULT_COLOR="$_omb_prompt_white"
@@ -38,36 +39,36 @@ case $TERM in
 		;;
 esac
 
-is_vim_shell() {
-	if [[ ${VIMRUNTIME-} ]]; then
-		echo "${D_INTERMEDIATE_COLOR}on ${D_VIMSHELL_COLOR}vim shell${D_DEFAULT_COLOR} "
-	fi
+function is_vim_shell {
+  if [[ ${VIMRUNTIME-} ]]; then
+    echo "${D_INTERMEDIATE_COLOR}on ${D_VIMSHELL_COLOR}vim shell${D_DEFAULT_COLOR} "
+  fi
 }
 
-mitsuhikos_lastcommandfailed() {
-	local status=$?
-	if ((status != 0)); then
-		echo " ${D_DEFAULT_COLOR}C:${D_CMDFAIL_COLOR}$code ${D_DEFAULT_COLOR}"
-	fi
+function mitsuhikos_lastcommandfailed {
+  local status=$?
+  if ((status != 0)); then
+    echo " ${D_DEFAULT_COLOR}C:${D_CMDFAIL_COLOR}$code ${D_DEFAULT_COLOR}"
+  fi
 }
 
 # vcprompt for scm instead of oh-my-bash default
-demula_vcprompt() {
-	if [[ ${VCPROMPT_EXECUTABLE-} ]]; then
-		local D_VCPROMPT_FORMAT="on ${D_SCM_COLOR}%s${D_INTERMEDIATE_COLOR}:${D_BRANCH_COLOR}%b %r ${D_CHANGES_COLOR}%m%u ${D_DEFAULT_COLOR}"
-		$VCPROMPT_EXECUTABLE -f "$D_VCPROMPT_FORMAT"
-	fi
+function demula_vcprompt {
+  if [[ ${VCPROMPT_EXECUTABLE-} ]]; then
+    local D_VCPROMPT_FORMAT="on ${D_SCM_COLOR}%s${D_INTERMEDIATE_COLOR}:${D_BRANCH_COLOR}%b %r ${D_CHANGES_COLOR}%m%u ${D_DEFAULT_COLOR}"
+    $VCPROMPT_EXECUTABLE -f "$D_VCPROMPT_FORMAT"
+  fi
 }
 
 # checks if the plugin is installed before calling battery_charge
-safe_battery_charge() {
-	if _omb_util_function_exists battery_charge; then
-		battery_charge
-	fi
+function safe_battery_charge {
+  if _omb_util_function_exists battery_charge; then
+    battery_charge
+  fi
 }
 
-prompt_git() {
-	local branchName=''
+function prompt_git {
+  local branchName=''
 
 	# Check if the current directory is in a Git repository.
 	if git rev-parse --is-inside-work-tree &> /dev/null; then
@@ -86,12 +87,12 @@ prompt_git() {
 	fi
 }
 
-limited_pwd() {
-	# Max length of PWD to display
-	local MAX_PWD_LENGTH=20
+function limited_pwd {
+  # Max length of PWD to display
+  local MAX_PWD_LENGTH=20
 
-	# Replace $HOME with ~ if possible
-	local RELATIVE_PWD=${PWD/#$HOME/\~}
+  # Replace $HOME with ~ if possible
+  local RELATIVE_PWD=${PWD/#$HOME/\~}
 
 	local offset=$((${#RELATIVE_PWD} - MAX_PWD_LENGTH))
 
@@ -105,15 +106,15 @@ limited_pwd() {
 }
 
 # -------------------------------------------------------------- PROMPT OUTPUT
-_omb_theme_PROMPT_COMMAND() {
-	local LAST_COMMAND_FAILED=$(mitsuhikos_lastcommandfailed)
-	local SAVE_CURSOR='\[\e7'
-	local RESTORE_CURSOR='\e8\]'
-	local MOVE_CURSOR_RIGHTMOST='\e['${COLUMNS:-9999}'C'
-	local MOVE_CURSOR_5_LEFT='\e[5D'
-	local THEME_CLOCK_FORMAT="%H:%M:%S %y-%m-%d"
-	# Replace $HOME with ~ if possible
-	local RELATIVE_PWD=${PWD/#$HOME/\~}
+function _omb_theme_PROMPT_COMMAND {
+  local LAST_COMMAND_FAILED=$(mitsuhikos_lastcommandfailed)
+  local SAVE_CURSOR='\[\e7'
+  local RESTORE_CURSOR='\e8\]'
+  local MOVE_CURSOR_RIGHTMOST='\e['${COLUMNS:-9999}'C'
+  local MOVE_CURSOR_5_LEFT='\e[5D'
+  local THEME_CLOCK_FORMAT="%H:%M:%S %y-%m-%d"
+  # Replace $HOME with ~ if possible
+  local RELATIVE_PWD=${PWD/#$HOME/\~}
 
 	local python_venv
 	_omb_prompt_get_python_venv

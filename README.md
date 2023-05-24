@@ -42,8 +42,16 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/mast
 bash -c "$(wget https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh -O -)"
 ```
 
-This replaces `~/.bashrc` with the version provided by Oh My Bash. The original
-`.bashrc` is backed up with the name `~/.bashrc.omb-TIMESTAMP`.
+This replaces `~/.bashrc` with the version provided by Oh My Bash. The original `.bashrc` is backed up with the name `~/.bashrc.omb-TIMESTAMP`.
+If `~/.bash_profile` does not exist, this also creates a new file `~/.bash_profile` with the default contents.
+
+⚠️ If `~/.bash_profile` already existed before Oh My Bash is installed, please make sure that`~/.bash_profile` contains the line `source ~/.bashrc` or `. ~/.bashrc`.
+If not, please add the following three lines in `~/.bash_profile`:
+```bash
+if [[ -f ~/.bashrc ]]; then
+  source ~/.bashrc
+fi
+```
 
 ## Using Oh My Bash
 
@@ -258,6 +266,20 @@ bundled with Oh My Bash, create a module of the same name in the `custom/`
 directory so that it will be loaded instead of the original one.
 
 ### Configuration
+
+#### Enable/disable python venv
+
+The python virtualenv/condaenv information in the prompt may be enabled by the following line in `~/.bashrc`.
+
+```bash
+OMB_PROMPT_SHOW_PYTHON_VENV=true
+```
+
+Some themes turn on it by default.  If you would like to turn it off, you may disable it by the following line in `~/.bashrc`:
+
+```bash
+OMB_PROMPT_SHOW_PYTHON_VENV=false
+```
 
 #### Disable internal uses of `sudo`
 

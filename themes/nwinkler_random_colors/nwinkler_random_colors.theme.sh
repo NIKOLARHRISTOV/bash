@@ -89,20 +89,18 @@ function prompt_end() {
 	echo -e "$PROMPT_END"
 }
 
-_omb_theme_PROMPT_COMMAND() {
-	local exit_status=$?
-	if [[ $exit_status -eq 0 ]]; then
-		PROMPT_END=$PROMPT_END_CLEAN
-	else
-		PROMPT_END=$PROMPT_END_DIRTY
-	fi
-	# Save history
-	history -a
-	history -c
-	history -r
-	PS1="($(clock_prompt)${_omb_prompt_reset_color}) $(scm_char) [${USERNAME_COLOR}\u${_omb_prompt_reset_color}@${HOSTNAME_COLOR}\H${_omb_prompt_reset_color}] ${PATH_COLOR}\w${_omb_prompt_reset_color}$(scm_prompt_info) ${_omb_prompt_reset_color}\n$(prompt_end) "
-	PS2='> '
-	PS4='+ '
+function _omb_theme_PROMPT_COMMAND {
+  local exit_status=$?
+  if [[ $exit_status -eq 0 ]]; then PROMPT_END=$PROMPT_END_CLEAN
+    else PROMPT_END=$PROMPT_END_DIRTY
+  fi
+  # Save history
+  history -a
+  history -c
+  history -r
+  PS1="($(clock_prompt)${_omb_prompt_reset_color}) $(scm_char) [${USERNAME_COLOR}\u${_omb_prompt_reset_color}@${HOSTNAME_COLOR}\H${_omb_prompt_reset_color}] ${PATH_COLOR}\w${_omb_prompt_reset_color}$(scm_prompt_info) ${_omb_prompt_reset_color}\n$(prompt_end) "
+  PS2='> '
+  PS4='+ '
 }
 
 _omb_util_add_prompt_command _omb_theme_PROMPT_COMMAND

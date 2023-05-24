@@ -13,8 +13,8 @@ GIT_THEME_PROMPT_SUFFIX="${_omb_prompt_green}|"
 RVM_THEME_PROMPT_PREFIX="|"
 RVM_THEME_PROMPT_SUFFIX="|"
 
-__bobby_clock() {
-	printf "$(clock_prompt) "
+function __bobby_clock {
+  printf "$(clock_prompt) "
 
 	if [ "${THEME_SHOW_CLOCK_CHAR}" == "true" ]; then
 		printf "$(clock_char) "

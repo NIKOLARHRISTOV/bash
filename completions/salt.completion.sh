@@ -12,20 +12,21 @@
 # TODO: cache results of some functions?  where? how long?
 # TODO: is it ok to use '--timeout 2' ?
 
-_salt_get_grains() {
-	if [ "$1" = 'local' ]; then
-		salt-call --out=txt -- grains.ls | sed 's/^.*\[//' | tr -d ",']" | sed 's:\([a-z0-9]\) :\1\: :g'
-	else
-		salt '*' --timeout 2 --out=txt -- grains.ls | sed 's/^.*\[//' | tr -d ",']" | sed 's:\([a-z0-9]\) :\1\: :g'
-	fi
+
+function _salt_get_grains {
+    if [ "$1" = 'local' ] ; then
+        salt-call --out=txt -- grains.ls | sed  's/^.*\[//' | tr -d ",']" |sed 's:\([a-z0-9]\) :\1\: :g'
+    else
+      salt '*' --timeout 2 --out=txt -- grains.ls | sed  's/^.*\[//' | tr -d ",']" |sed 's:\([a-z0-9]\) :\1\: :g'
+    fi
 }
 
-_salt_get_grain_values() {
-	if [ "$1" = 'local' ]; then
-		salt-call --out=txt -- grains.item $1 | sed 's/^\S*:\s//' | grep -v '^\s*$'
-	else
-		salt '*' --timeout 2 --out=txt -- grains.item $1 | sed 's/^\S*:\s//' | grep -v '^\s*$'
-	fi
+function _salt_get_grain_values {
+    if [ "$1" = 'local' ] ; then
+        salt-call --out=txt -- grains.item $1 |sed 's/^\S*:\s//' |grep -v '^\s*$'
+    else
+        salt '*' --timeout 2 --out=txt -- grains.item $1 |sed 's/^\S*:\s//' |grep -v '^\s*$'
+    fi
 }
 
 _salt() {
@@ -40,7 +41,19 @@ _salt() {
 		ppprev="${COMP_WORDS[COMP_CWORD - 3]}"
 	fi
 
-	opts="-h --help -d --doc --documentation --version --versions-report -c \
+function _salt {
+    local cur prev opts pprev ppprev
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    if [ ${COMP_CWORD} -gt 2 ]; then
+        pprev="${COMP_WORDS[COMP_CWORD-2]}"
+    fi
+    if [ ${COMP_CWORD} -gt 3 ]; then
+        ppprev="${COMP_WORDS[COMP_CWORD-3]}"
+    fi
+
+    opts="-h --help -d --doc --documentation --version --versions-report -c \
           --config-dir= -v --verbose -t --timeout= -s --static -b --batch= \
           --batch-size= -E --pcre -L --list -G --grain --grain-pcre -N \
           --nodegroup -R --range -C --compound -I --pillar \
@@ -125,12 +138,13 @@ _salt() {
 
 complete -F _salt salt
 
-_saltkey() {
-	local cur prev opts prev pprev
-	COMPREPLY=()
-	cur="${COMP_WORDS[COMP_CWORD]}"
-	prev="${COMP_WORDS[COMP_CWORD - 1]}"
-	opts="-c --config-dir= -h --help --version --versions-report -q --quiet \
+
+function _saltkey {
+    local cur prev opts prev pprev
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    opts="-c --config-dir= -h --help --version --versions-report -q --quiet \
           -y --yes --gen-keys= --gen-keys-dir= --keysize= --key-logfile= \
           -l --list= -L --list-all -a --accept= -A --accept-all \
           -r --reject= -R --reject-all -p --print= -P --print-all \
@@ -201,12 +215,12 @@ _saltkey() {
 
 complete -F _saltkey salt-key
 
-_saltcall() {
-	local cur prev opts pprev ppprev
-	COMPREPLY=()
-	cur="${COMP_WORDS[COMP_CWORD]}"
-	prev="${COMP_WORDS[COMP_CWORD - 1]}"
-	opts="-h --help -d --doc --documentation --version --versions-report \
+function _saltcall {
+    local cur prev opts pprev ppprev
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    opts="-h --help -d --doc --documentation --version --versions-report \
           -m --module-dirs= -g --grains --return= --local -c --config-dir= -l --log-level= \
           --out=pprint --out=yaml --out=overstatestage --out=json --out=raw \
           --out=highstate --out=key --out=txt --no-color --out-indent= "
@@ -253,12 +267,13 @@ _saltcall() {
 
 complete -F _saltcall salt-call
 
-_saltcp() {
-	local cur prev opts target prefpart postpart helper filt pprev ppprev
-	COMPREPLY=()
-	cur="${COMP_WORDS[COMP_CWORD]}"
-	prev="${COMP_WORDS[COMP_CWORD - 1]}"
-	opts="-t --timeout= -s --static -b --batch= --batch-size= \
+
+function _saltcp {
+    local cur prev opts target prefpart postpart helper filt pprev ppprev
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    opts="-t --timeout= -s --static -b --batch= --batch-size= \
           -h --help --version --versions-report -c --config-dir= \
           -E --pcre -L --list -G --grain --grain-pcre -N --nodegroup \
           -R --range -C --compound -I --pillar \

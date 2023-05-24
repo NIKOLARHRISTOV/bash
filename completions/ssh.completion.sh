@@ -3,13 +3,13 @@
 
 export COMP_WORDBREAKS=${COMP_WORDBREAKS/\:/}
 
-_sshcomplete() {
-	local CURRENT_PROMPT="${COMP_WORDS[COMP_CWORD]}"
-	if [[ ${CURRENT_PROMPT} == *@* ]]; then
-		local OPTIONS="-P ${CURRENT_PROMPT/@*/}@ -- ${CURRENT_PROMPT/*@/}"
-	else
-		local OPTIONS=" -- ${CURRENT_PROMPT}"
-	fi
+function _sshcomplete {
+    local CURRENT_PROMPT="${COMP_WORDS[COMP_CWORD]}"
+    if [[ ${CURRENT_PROMPT} == *@*  ]] ; then
+      local OPTIONS="-P ${CURRENT_PROMPT/@*/}@ -- ${CURRENT_PROMPT/*@/}"
+    else
+      local OPTIONS=" -- ${CURRENT_PROMPT}"
+    fi
 
 	# parse all defined hosts from .ssh/config
 	if [ -r "$HOME/.ssh/config" ]; then

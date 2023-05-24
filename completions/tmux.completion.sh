@@ -55,13 +55,13 @@ function _tmux_complete_window() {
 	COMPREPLY=(${COMPREPLY[@]:-} $(compgen -W "${sessions}" -- "${cur}"))
 }
 
-_tmux() {
-	local cur prev
-	local i cmd cmd_index option option_index
-	local opts=""
-	COMPREPLY=()
-	cur="${COMP_WORDS[COMP_CWORD]}"
-	prev="${COMP_WORDS[COMP_CWORD - 1]}"
+function _tmux {
+    local cur prev
+    local i cmd cmd_index option option_index
+    local opts=""
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
 
 	if [ ${prev} == -f ]; then
 		_tmux_filedir
