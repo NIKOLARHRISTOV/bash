@@ -8,24 +8,24 @@ SCM_HG_CHAR="${_omb_prompt_bold_brown}☿${_omb_prompt_normal}"
 SCM_THEME_PROMPT_PREFIX=""
 SCM_THEME_PROMPT_SUFFIX=""
 if [ ! -z $RVM_THEME_PROMPT_COLOR ]; then
-	RVM_THEME_PROMPT_COLOR=$(eval echo $$(echo ${RVM_THEME_PROMPT_COLOR}))
+    RVM_THEME_PROMPT_COLOR=$(eval echo $`echo ${RVM_THEME_PROMPT_COLOR}`);
 else
-	RVM_THEME_PROMPT_COLOR="${_omb_prompt_brown}"
+    RVM_THEME_PROMPT_COLOR="${_omb_prompt_brown}"
 fi
 RVM_THEME_PROMPT_PREFIX="(${RVM_THEME_PROMPT_COLOR}rb${_omb_prompt_normal}: "
 RVM_THEME_PROMPT_SUFFIX=") "
 if [ ! -z $VIRTUALENV_THEME_PROMPT_COLOR ]; then
-	VIRTUALENV_THEME_PROMPT_COLOR=$(eval echo $$(echo ${VIRTUALENV_THEME_PROMPT_COLOR}))
+    VIRTUALENV_THEME_PROMPT_COLOR=$(eval echo $`echo ${VIRTUALENV_THEME_PROMPT_COLOR}`);
 else
-	VIRTUALENV_THEME_PROMPT_COLOR="${_omb_prompt_green}"
+    VIRTUALENV_THEME_PROMPT_COLOR="${_omb_prompt_green}"
 fi
 OMB_PROMPT_VIRTUALENV_FORMAT="(${VIRTUALENV_THEME_PROMPT_COLOR}py${_omb_prompt_normal}: %s) "
 OMB_PROMPT_SHOW_PYTHON_VENV=${OMB_PROMPT_SHOW_PYTHON_VENV:=true}
 
 if [ ! -z $THEME_PROMPT_HOST_COLOR ]; then
-	THEME_PROMPT_HOST_COLOR=$(eval echo $$(echo ${THEME_PROMPT_HOST_COLOR}))
+    THEME_PROMPT_HOST_COLOR=$(eval echo $`echo ${THEME_PROMPT_HOST_COLOR}`);
 else
-	THEME_PROMPT_HOST_COLOR="$_omb_prompt_navy"
+    THEME_PROMPT_HOST_COLOR="$_omb_prompt_navy"
 fi
 
 function doubletime_scm_prompt {
@@ -40,15 +40,15 @@ function doubletime_scm_prompt {
 }
 
 function _omb_theme_PROMPT_COMMAND() {
-	# Save history
-	history -a
-	history -c
-	history -r
-	PS1="
+  # Save history
+  history -a
+  history -c
+  history -r
+  PS1="
 $(clock_prompt) $(scm_char) [${THEME_PROMPT_HOST_COLOR}\u@${THEME_PROMPT_HOST}$_omb_prompt_reset_color] $(_omb_prompt_print_python_venv)$(_omb_prompt_print_ruby_env)\w
 $(doubletime_scm_prompt)$_omb_prompt_reset_color $ "
-	PS2='> '
-	PS4='+ '
+  PS2='> '
+  PS4='+ '
 }
 
 _omb_util_add_prompt_command _omb_theme_PROMPT_COMMAND

@@ -4,9 +4,9 @@
 
 # Check that git tab completion is available
 if _omb_util_function_exists _git; then
-	# Duplicate and rename the 'list_all_commands' function
-	eval "$(declare -f __git_list_all_commands \
-		| sed 's/__git_list_all_commands/__git_list_all_commands_without_hub/')"
+  # Duplicate and rename the 'list_all_commands' function
+  eval "$(declare -f __git_list_all_commands | \
+        sed 's/__git_list_all_commands/__git_list_all_commands_without_hub/')"
 
   # Wrap the 'list_all_commands' function with extra hub commands
   function __git_list_all_commands {
@@ -25,12 +25,12 @@ EOF
     __git_list_all_commands_without_hub
   }
 
-	# Ensure cached commands are cleared
-	__git_all_commands=""
+  # Ensure cached commands are cleared
+  __git_all_commands=""
 
-	##########################
-	# hub command completions
-	##########################
+  ##########################
+  # hub command completions
+  ##########################
 
   # hub alias [-s] [SHELL]
   function _git_alias {
@@ -60,41 +60,41 @@ EOF
     local i c=2 u=-u repo subpage
     local subpages_="commits issues tree wiki pulls branches stargazers
       contributors network network/ graphs graphs/"
-		local subpages_network="members"
-		local subpages_graphs="commit-activity code-frequency punch-card"
-		while [ $c -lt $cword ]; do
-			i="${words[c]}"
-			case "$i" in
-				-u)
-					unset u
-					;;
-				*)
-					if [ -z "$repo" ]; then
-						repo=$i
-					else
-						subpage=$i
-					fi
-					;;
-			esac
-			((c++))
-		done
-		if [ -z "$repo" ]; then
-			__gitcomp "$u -- $(__hub_github_repos '\p')"
-		elif [ -z "$subpage" ]; then
-			case "$cur" in
-				*/*)
-					local pfx="${cur%/*}" cur_="${cur#*/}"
-					local subpages_var="subpages_$pfx"
-					__gitcomp "${!subpages_var}" "$pfx/" "$cur_"
-					;;
-				*)
-					__gitcomp "$u ${subpages_}"
-					;;
-			esac
-		else
-			__gitcomp "$u"
-		fi
-	}
+    local subpages_network="members"
+    local subpages_graphs="commit-activity code-frequency punch-card"
+    while [ $c -lt $cword ]; do
+      i="${words[c]}"
+      case "$i" in
+        -u)
+          unset u
+          ;;
+        *)
+          if [ -z "$repo" ]; then
+            repo=$i
+          else
+            subpage=$i
+          fi
+          ;;
+      esac
+      ((c++))
+    done
+    if [ -z "$repo" ]; then
+      __gitcomp "$u -- $(__hub_github_repos '\p')"
+    elif [ -z "$subpage" ]; then
+      case "$cur" in
+        */*)
+          local pfx="${cur%/*}" cur_="${cur#*/}"
+          local subpages_var="subpages_$pfx"
+          __gitcomp "${!subpages_var}" "$pfx/" "$cur_"
+          ;;
+        *)
+          __gitcomp "$u ${subpages_}"
+          ;;
+      esac
+    else
+      __gitcomp "$u"
+    fi
+  }
 
   # hub compare [-u] [USER[/REPOSITORY]] [[START...]END]
   function _git_compare {
@@ -126,59 +126,59 @@ EOF
       ((c--))
     done
 
-		# Here we want to find out the git remote name of user/repo, in order to
-		# generate an appropriate revision list
-		if [ -z "$arg_repo" ]; then
-			user=$(__hub_github_user)
-			if [ -z "$user" ]; then
-				for i in $(__hub_github_repos); do
-					remote=${i%%:*}
-					repo=${i#*:}
-					if [ "$remote" = origin ]; then
-						break
-					fi
-				done
-			else
-				for i in $(__hub_github_repos); do
-					remote=${i%%:*}
-					repo=${i#*:}
-					owner=${repo%%/*}
-					if [ "$user" = "$owner" ]; then
-						break
-					fi
-				done
-			fi
-		else
-			for i in $(__hub_github_repos); do
-				remote=${i%%:*}
-				repo=${i#*:}
-				owner=${repo%%/*}
-				case "$arg_repo" in
-					"$repo" | "$owner")
-						break
-						;;
-				esac
-			done
-		fi
+    # Here we want to find out the git remote name of user/repo, in order to
+    # generate an appropriate revision list
+    if [ -z "$arg_repo" ]; then
+      user=$(__hub_github_user)
+      if [ -z "$user" ]; then
+        for i in $(__hub_github_repos); do
+          remote=${i%%:*}
+          repo=${i#*:}
+          if [ "$remote" = origin ]; then
+            break
+          fi
+        done
+      else
+        for i in $(__hub_github_repos); do
+          remote=${i%%:*}
+          repo=${i#*:}
+          owner=${repo%%/*}
+          if [ "$user" = "$owner" ]; then
+            break
+          fi
+        done
+      fi
+    else
+      for i in $(__hub_github_repos); do
+        remote=${i%%:*}
+        repo=${i#*:}
+        owner=${repo%%/*}
+        case "$arg_repo" in
+          "$repo"|"$owner")
+            break
+            ;;
+        esac
+      done
+    fi
 
-		local pfx cur_="$cur"
-		case "$cur_" in
-			*..*)
-				pfx="${cur_%%..*}..."
-				cur_="${cur_##*..}"
-				__gitcomp_nl "$(__hub_revlist $remote)" "$pfx" "$cur_"
-				;;
-			*)
-				if [ -z "${arg_repo}${rev}" ]; then
-					__gitcomp "$u $(__hub_github_repos '\o\n\p') $(__hub_revlist $remote)"
-				elif [ -z "$rev" ]; then
-					__gitcomp "$u $(__hub_revlist $remote)"
-				else
-					__gitcomp "$u"
-				fi
-				;;
-		esac
-	}
+    local pfx cur_="$cur"
+    case "$cur_" in
+      *..*)
+        pfx="${cur_%%..*}..."
+        cur_="${cur_##*..}"
+        __gitcomp_nl "$(__hub_revlist $remote)" "$pfx" "$cur_"
+        ;;
+      *)
+        if [ -z "${arg_repo}${rev}" ]; then
+          __gitcomp "$u $(__hub_github_repos '\o\n\p') $(__hub_revlist $remote)"
+        elif [ -z "$rev" ]; then
+          __gitcomp "$u $(__hub_revlist $remote)"
+        else
+          __gitcomp "$u"
+        fi
+        ;;
+    esac
+  }
 
   # hub create [NAME] [-p] [-d DESCRIPTION] [-h HOMEPAGE]
   function _git_create {
@@ -265,9 +265,9 @@ EOF
     esac
   }
 
-	###################
-	# Helper functions
-	###################
+  ###################
+  # Helper functions
+  ###################
 
   # __hub_github_user [HOST]
   # Return $GITHUB_USER or the default github user defined in hub config
@@ -360,7 +360,8 @@ EOF
     fi
   }
 
-	# Enable completion for hub even when not using the alias
-	complete -o bashdefault -o default -o nospace -F _git gh 2> /dev/null \
-		|| complete -o default -o nospace -F _git gh
+  # Enable completion for hub even when not using the alias
+  complete -o bashdefault -o default -o nospace -F _git gh 2>/dev/null \
+    || complete -o default -o nospace -F _git gh
 fi
+

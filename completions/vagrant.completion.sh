@@ -55,10 +55,11 @@ function _vagrant {
     prev="${COMP_WORDS[COMP_CWORD-1]}"
     commands="snapshot box connect destroy docker-logs docker-run global-status halt help init list-commands login package plugin provision rdp reload resume rsync rsync-auto share ssh ssh-config status suspend up version"
 
-	if [ $COMP_CWORD == 1 ]; then
-		COMPREPLY=($(compgen -W "${commands}" -- ${cur}))
-		return 0
-	fi
+    if [ $COMP_CWORD == 1 ]
+    then
+      COMPREPLY=($(compgen -W "${commands}" -- ${cur}))
+      return 0
+    fi
 
     if [ $COMP_CWORD == 2 ]
     then
@@ -113,36 +114,34 @@ function _vagrant {
         esac
     fi
 
-		esac
-	fi
-
-	if [ $COMP_CWORD == 3 ]; then
-		action="${COMP_WORDS[COMP_CWORD - 2]}"
-		case "$action" in
-			"up")
-				if [ "$prev" == "--no-provision" ]; then
-					COMPREPLY=($(compgen -W "${vm_list}" -- ${cur}))
-					return 0
-				fi
-				;;
-			"box")
-				case "$prev" in
-					"remove" | "repackage")
-						local box_list=$(find "$HOME/.vagrant.d/boxes" -mindepth 1 -maxdepth 1 -type d -exec basename {} \; | sed -e 's/-VAGRANTSLASH-/\//')
-						COMPREPLY=($(compgen -W "${box_list}" -- ${cur}))
-						return 0
-						;;
-					*) ;;
-				esac
-				;;
-			"snapshot")
-				if [ "$prev" == "go" ]; then
-					local snapshot_list=$(vagrant snapshot list | awk '/Name:/ { print $2 }')
-					COMPREPLY=($(compgen -W "${snapshot_list}" -- ${cur}))
-					return 0
-				fi
-				;;
-		esac
-	fi
+    if [ $COMP_CWORD == 3 ]
+    then
+      action="${COMP_WORDS[COMP_CWORD-2]}"
+      case "$action" in
+          "up")
+              if [ "$prev" == "--no-provision" ]; then
+                  COMPREPLY=($(compgen -W "${vm_list}" -- ${cur}))
+                  return 0
+              fi
+              ;;
+          "box")
+              case "$prev" in
+                  "remove"|"repackage")
+                      local box_list=$(find "$HOME/.vagrant.d/boxes" -mindepth 1 -maxdepth 1 -type d -exec basename {} \;|sed -e 's/-VAGRANTSLASH-/\//')
+                      COMPREPLY=($(compgen -W "${box_list}" -- ${cur}))
+                      return 0
+                      ;;
+                  *)
+              esac
+              ;;
+          "snapshot")
+              if [ "$prev" == "go" ]; then
+                  local snapshot_list=$(vagrant snapshot list | awk '/Name:/ { print $2 }')
+                  COMPREPLY=($(compgen -W "${snapshot_list}" -- ${cur}))
+                  return 0
+              fi
+              ;;
+      esac
+    fi
 }
 complete -F _vagrant vagrant

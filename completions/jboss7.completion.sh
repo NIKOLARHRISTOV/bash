@@ -4,21 +4,8 @@
 # DATE: 2012-10-30
 # rparree-at-edc4it-dot-com
 
-_serverProfiles() {
-	if [[ $COMP_WORDS == *standalone.sh* ]]; then
-		serverdir="../standalone/configuration/"
-	else
-		# assume is domain.sh
-		serverdir="../domain/configuration/"
-	fi
 
-	for i in ${!COMP_WORDS[*]}; do
-		if [[ "${COMP_WORDS[i]}" == "-Djboss.server.base.dir" || "${COMP_WORDS[i]}" == "-Djboss.domain.base.dir" ]]; then
-			serverdir="${COMP_WORDS[i + 2]}/configuration"
-		fi
 
-	done
-	if [ -d "${serverdir}" ]; then
 
 function _serverProfiles {
     if [[ $COMP_WORDS == *standalone.sh* ]]
@@ -102,22 +89,8 @@ function _jboss {
            return 0
 
 
-	case $cur in
+    esac
 
-		-Djboss.socket.binding.port-offset=*)
-			cur=${cur#*=}
-			#static list of common bindings sets
-			local bindings="100 200 300 400 10000 20000 30000 40000"
-			COMPREPLY=($(compgen -W "${bindings}" -- ${cur}))
-			return 0
-			;;
-		-Djboss.default.jgroups.stack=*)
-			cur=${cur#*=}
-			#static list of standard JGroups stacks
-			local stacks="udp udp-async udp-sync tcp tcp-sync"
-			COMPREPLY=($(compgen -W "${stacks}" -- ${cur}))
-			return 0
-			;;
 
     case $prev in
         -u)
@@ -165,6 +138,5 @@ function _jboss {
 
 
 }
-
 complete -o nospace -F _jboss standalone.sh
 complete -o nospace -F _jboss domain.sh

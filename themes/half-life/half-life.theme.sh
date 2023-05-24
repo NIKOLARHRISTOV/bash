@@ -16,7 +16,7 @@ function _omb_theme_PROMPT_COMMAND {
   local ps_path="${_omb_prompt_green}\w${_omb_prompt_normal}"
   local ps_user_mark="${_omb_prompt_red}λ${_omb_prompt_normal}"
 
-	PS1="$ps_username in $ps_path$(_omb_theme_half_way_prompt_scm) $ps_user_mark "
+  PS1="$ps_username in $ps_path$(_omb_theme_half_way_prompt_scm) $ps_user_mark "
 }
 
 _omb_util_add_prompt_command _omb_theme_PROMPT_COMMAND

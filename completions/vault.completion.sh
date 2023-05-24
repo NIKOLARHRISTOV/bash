@@ -8,26 +8,26 @@
 # ---------------------------------------------------------------------------
 
 function _vault_mounts() {
-	(
-		set -euo pipefail
-		if ! vault mounts 2> /dev/null | awk 'NR > 1 {print $1}'; then
-			echo "secret"
-		fi
-	)
+  (
+    set -euo pipefail
+    if ! vault mounts 2> /dev/null | awk 'NR > 1 {print $1}'; then
+      echo "secret"
+    fi
+  )
 }
 
 function _vault() {
-	local VAULT_COMMANDS=$(vault 2>&1 | command grep -E '^ +' | awk '{print $1}')
+  local VAULT_COMMANDS=$(vault 2>&1 | command grep -E '^ +' | awk '{print $1}')
 
-	local cur
-	local prev
+  local cur
+  local prev
 
-	if [ $COMP_CWORD -gt 0 ]; then
-		cur=${COMP_WORDS[COMP_CWORD]}
-		prev=${COMP_WORDS[COMP_CWORD - 1]}
-	fi
+  if [ $COMP_CWORD -gt 0 ]; then
+    cur=${COMP_WORDS[COMP_CWORD]}
+    prev=${COMP_WORDS[COMP_CWORD-1]}
+  fi
 
-	local line=${COMP_LINE}
+  local line=${COMP_LINE}
 
   if [[ $prev =~ ^(policies|policy-write|policy-delete) ]]; then
     local policies=$(vault policies 2> /dev/null)

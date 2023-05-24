@@ -218,36 +218,36 @@ function _docker_machine {
     COMPREPLY=()
     local commands=(active config create env inspect ip kill ls regenerate-certs restart rm ssh scp start status stop upgrade url version help)
 
-	local flags=(--debug --native-ssh --github-api-token --bugsnag-api-token --help --version)
-	local wants_dir=(--storage-path)
-	local wants_file=(--tls-ca-cert --tls-ca-key --tls-client-cert --tls-client-key)
+    local flags=(--debug --native-ssh --github-api-token --bugsnag-api-token --help --version)
+    local wants_dir=(--storage-path)
+    local wants_file=(--tls-ca-cert --tls-ca-key --tls-client-cert --tls-client-key)
 
-	# Add the use subcommand, if we have an alias loaded
-	if [[ ${DOCKER_MACHINE_WRAPPED} = true ]]; then
-		commands=("${commands[@]}" use)
-	fi
+    # Add the use subcommand, if we have an alias loaded
+    if [[ ${DOCKER_MACHINE_WRAPPED} = true ]]; then
+        commands=("${commands[@]}" use)
+    fi
 
-	local cur prev words cword
-	_get_comp_words_by_ref -n : cur prev words cword
-	local i
-	local command=docker-machine
+    local cur prev words cword
+    _get_comp_words_by_ref -n : cur prev words cword
+    local i
+    local command=docker-machine
 
-	for ((i = 1; i < ${cword}; ++i)); do
-		local word=${words[i]}
-		if [[ " ${wants_file[*]} ${wants_dir[*]} " =~ " ${word} " ]]; then
-			# skip the next option
-			((++i))
-		elif [[ " ${commands[*]} " =~ " ${word} " ]]; then
-			command=${word}
-		fi
-	done
+    for (( i=1; i < ${cword}; ++i)); do
+        local word=${words[i]}
+        if [[ " ${wants_file[*]} ${wants_dir[*]} " =~ " ${word} " ]]; then
+            # skip the next option
+            (( ++i ))
+        elif [[ " ${commands[*]} " =~ " ${word} " ]]; then
+            command=${word}
+        fi
+    done
 
-	local completion_func=_docker_machine_"${command//-/_}"
-	if _omb_util_function_exists "${completion_func}"; then
-		"${completion_func}"
-	fi
+    local completion_func=_docker_machine_"${command//-/_}"
+    if _omb_util_function_exists "${completion_func}"; then
+        "${completion_func}"
+    fi
 
-	return 0
+    return 0
 }
 
 complete -F _docker_machine docker-machine

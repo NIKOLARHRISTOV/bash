@@ -17,7 +17,7 @@ SCM_HG_CHAR="${_omb_prompt_bold_brown}☿${_omb_prompt_normal}"
 
 PROMPT_CHAR="${OMB_THEME_BRACKET_COLOR}➞ ${_omb_prompt_normal}"
 if [[ $OSTYPE == *darwin* ]]; then
-	PROMPT_CHAR="${OMB_THEME_BRACKET_COLOR}➞  ${_omb_prompt_normal}"
+    PROMPT_CHAR="${OMB_THEME_BRACKET_COLOR}➞  ${_omb_prompt_normal}"
 fi
 
 #Mysql Prompt
@@ -25,7 +25,7 @@ export MYSQL_PS1="(\u@\h) [\d]> "
 
 TITLEBAR=""
 case $TERM in
-	xterm*) TITLEBAR="\[\033]0;\w\007\]" ;;
+    xterm*) TITLEBAR="\[\033]0;\w\007\]" ;;
 esac
 
 
@@ -77,22 +77,21 @@ function _omb_theme_PROMPT_COMMAND {
     local my_path="${OMB_THEME_STRING_COLOR}\w${_omb_prompt_normal}";
     local bracket_c="${OMB_THEME_BRACKET_COLOR}"
 
-	local line2
-	line2="${bracket_c}└─$(todo_txt_count)${PROMPT_CHAR}"
-	# nice prompt
-	case "$(id -u)" in
-		0)
-			my_user="${_omb_prompt_bold_brown}\u${_omb_prompt_normal}"
-			line2="${bracket_c}└─${PROMPT_CHAR}"
-			;;
-	esac
+    local line2 ; line2="${bracket_c}└─$(todo_txt_count)${PROMPT_CHAR}"
+    # nice prompt
+    case "$(id -u)" in
+        0)
+          my_user="${_omb_prompt_bold_brown}\u${_omb_prompt_normal}";
+          line2="${bracket_c}└─${PROMPT_CHAR}"
+        ;;
+    esac
 
-	PS1="${TITLEBAR}"
-	PS1="${PS1}${bracket_c}┌─[${my_user}${bracket_c}][$my_host${bracket_c}]"
-	PS1="${PS1}$(modern_scm_prompt)"
-	PS1="${PS1}$(__my_rvm_ruby_version)"
-	PS1="${PS1}${bracket_c}[${my_path}${bracket_c}]$(is_vim_shell)"
-	PS1="${PS1}\n${line2}"
+    PS1="${TITLEBAR}"
+    PS1="${PS1}${bracket_c}┌─[${my_user}${bracket_c}][$my_host${bracket_c}]"
+    PS1="${PS1}$(modern_scm_prompt)"
+    PS1="${PS1}$(__my_rvm_ruby_version)"
+    PS1="${PS1}${bracket_c}[${my_path}${bracket_c}]$(is_vim_shell)"
+    PS1="${PS1}\n${line2}"
 }
 
 PS2="└─${PROMPT_CHAR}"

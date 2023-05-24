@@ -15,11 +15,12 @@
 # The exit code functionality currently doesn't work if you are using the 'fasd' plugin,
 # since 'fasd' is messing with the $PROMPT_COMMAND
 
+
 PROMPT_END_CLEAN="${_omb_prompt_green}→${_omb_prompt_reset_color}"
 PROMPT_END_DIRTY="${_omb_prompt_brown}→${_omb_prompt_reset_color}"
 
 function prompt_end() {
-	echo -e "$PROMPT_END"
+  echo -e "$PROMPT_END"
 }
 
 function _omb_theme_PROMPT_COMMAND {

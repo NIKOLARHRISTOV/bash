@@ -126,54 +126,54 @@ function battery_charge {
   local BATTERY_OUTPUT="${DEPLETED_COLOR}${D_C}${D_C}${D_C}${D_C}${D_C}"
   local BATTERY_PERC=$(battery_percentage)
 
-	case $BATTERY_PERC in
-		no)
-			echo ""
-			;;
-		9*)
-			echo "${FULL_COLOR}${F_C}${F_C}${F_C}${F_C}${F_C}${_omb_prompt_normal}"
-			;;
-		8*)
-			echo "${FULL_COLOR}${F_C}${F_C}${F_C}${F_C}${HALF_COLOR}${F_C}${_omb_prompt_normal}"
-			;;
-		7*)
-			echo "${FULL_COLOR}${F_C}${F_C}${F_C}${F_C}${DEPLETED_COLOR}${D_C}${_omb_prompt_normal}"
-			;;
-		6*)
-			echo "${FULL_COLOR}${F_C}${F_C}${F_C}${HALF_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${_omb_prompt_normal}"
-			;;
-		5*)
-			echo "${FULL_COLOR}${F_C}${F_C}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${_omb_prompt_normal}"
-			;;
-		4*)
-			echo "${FULL_COLOR}${F_C}${F_C}${HALF_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${_omb_prompt_normal}"
-			;;
-		3*)
-			echo "${FULL_COLOR}${F_C}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${D_C}${_omb_prompt_normal}"
-			;;
-		2*)
-			echo "${FULL_COLOR}${F_C}${HALF_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${D_C}${_omb_prompt_normal}"
-			;;
-		1*)
-			echo "${FULL_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${D_C}${D_C}${_omb_prompt_normal}"
-			;;
-		05)
-			echo "${DANGER_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${D_C}${D_C}${_omb_prompt_normal}"
-			;;
-		04)
-			echo "${DANGER_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${D_C}${D_C}${_omb_prompt_normal}"
-			;;
-		03)
-			echo "${DANGER_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${D_C}${D_C}${_omb_prompt_normal}"
-			;;
-		02)
-			echo "${DANGER_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${D_C}${D_C}${_omb_prompt_normal}"
-			;;
-		0*)
-			echo "${HALF_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${D_C}${D_C}${_omb_prompt_normal}"
-			;;
-		*)
-			echo "${DANGER_COLOR}UNPLG${_omb_prompt_normal}"
-			;;
-	esac
+  case $BATTERY_PERC in
+    no)
+      echo ""
+    ;;
+    9*)
+      echo "${FULL_COLOR}${F_C}${F_C}${F_C}${F_C}${F_C}${_omb_prompt_normal}"
+    ;;
+    8*)
+      echo "${FULL_COLOR}${F_C}${F_C}${F_C}${F_C}${HALF_COLOR}${F_C}${_omb_prompt_normal}"
+    ;;
+    7*)
+      echo "${FULL_COLOR}${F_C}${F_C}${F_C}${F_C}${DEPLETED_COLOR}${D_C}${_omb_prompt_normal}"
+    ;;
+    6*)
+      echo "${FULL_COLOR}${F_C}${F_C}${F_C}${HALF_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${_omb_prompt_normal}"
+    ;;
+    5*)
+      echo "${FULL_COLOR}${F_C}${F_C}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${_omb_prompt_normal}"
+    ;;
+    4*)
+      echo "${FULL_COLOR}${F_C}${F_C}${HALF_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${_omb_prompt_normal}"
+    ;;
+    3*)
+      echo "${FULL_COLOR}${F_C}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${D_C}${_omb_prompt_normal}"
+    ;;
+    2*)
+      echo "${FULL_COLOR}${F_C}${HALF_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${D_C}${_omb_prompt_normal}"
+    ;;
+    1*)
+      echo "${FULL_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${D_C}${D_C}${_omb_prompt_normal}"
+    ;;
+    05)
+      echo "${DANGER_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${D_C}${D_C}${_omb_prompt_normal}"
+    ;;
+    04)
+      echo "${DANGER_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${D_C}${D_C}${_omb_prompt_normal}"
+    ;;
+    03)
+      echo "${DANGER_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${D_C}${D_C}${_omb_prompt_normal}"
+    ;;
+    02)
+      echo "${DANGER_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${D_C}${D_C}${_omb_prompt_normal}"
+    ;;
+    0*)
+      echo "${HALF_COLOR}${F_C}${DEPLETED_COLOR}${D_C}${D_C}${D_C}${D_C}${_omb_prompt_normal}"
+    ;;
+    *)
+      echo "${DANGER_COLOR}UNPLG${_omb_prompt_normal}"
+    ;;
+  esac
 }

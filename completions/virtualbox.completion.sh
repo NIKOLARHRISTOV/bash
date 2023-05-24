@@ -8,17 +8,17 @@ function __vboxmanage_startvm {
     RUNNING=$(vboxmanage list runningvms | cut -d' ' -f1 | tr -d '"')
     TOTAL=$(vboxmanage list vms | cut -d' ' -f1 | tr -d '"')
 
-	AVAILABLE=""
-	for VM in $TOTAL; do
-		MATCH=0
-		for RUN in $RUNNING "x"; do
-			if [ "$VM" == "$RUN" ]; then
-				MATCH=1
-			fi
-		done
-		(($MATCH == 0)) && AVAILABLE="$AVAILABLE $VM "
+    AVAILABLE=""
+    for VM in $TOTAL; do
+	MATCH=0;
+	for RUN in $RUNNING "x"; do
+	    if [ "$VM" == "$RUN" ]; then
+		MATCH=1
+	    fi
 	done
-	echo $AVAILABLE
+	(( $MATCH == 0 )) && AVAILABLE="$AVAILABLE $VM "
+    done
+    echo $AVAILABLE
 }
 
 function __vboxmanage_list {
@@ -36,19 +36,7 @@ function __vboxmanage_list {
 	PRUNED=$INPUT
     fi
 
-	PRUNED=""
-	if [ "$1" == "long" ]; then
-		for WORD in $INPUT; do
-			[ "$WORD" == "-l" ] && continue
-			[ "$WORD" == "--long" ] && continue
-
-			PRUNED="$PRUNED $WORD"
-		done
-	else
-		PRUNED=$INPUT
-	fi
-
-	echo $PRUNED
+    echo $PRUNED
 }
 
 
@@ -65,12 +53,7 @@ function __vboxmanage_list_vms {
 	VMS="${VMS}${VM}"
     done
 
-	for VM in $(vboxmanage list vms | cut -d' ' -f1 | tr -d '"'); do
-		[ "$VMS" != "" ] && VMS="${VMS}${SEPARATOR}"
-		VMS="${VMS}${VM}"
-	done
-
-	echo $VMS
+    echo $VMS
 }
 
 function __vboxmanage_list_runningvms {
@@ -86,12 +69,7 @@ function __vboxmanage_list_runningvms {
 	VMS="${VMS}${VM}"
     done
 
-	for VM in $(vboxmanage list runningvms | cut -d' ' -f1 | tr -d '"'); do
-		[ "$VMS" != "" ] && VMS="${VMS}${SEPARATOR}"
-		VMS="${VMS}${VM}"
-	done
-
-	echo $VMS
+    echo $VMS
 
 }
 
@@ -120,45 +98,41 @@ function __vboxmanage_default {
     opts=$realopts$(vboxmanage | grep -i vboxmanage | cut -d' ' -f2 | grep -v '\[' | sort | uniq)
     pruned=""
 
-	# echo ""
-	# echo "DEBUG: cur: $cur, prev: $prev"
-	# echo "DEBUG: default: |$p1|$p2|$p3|$p4|"
-	case ${cur} in
-		-*)
-			echo $opts
-			# COMPREPLY=($(compgen -W "${opts}" -- ${cur}))
-			return 0
-			;;
-	esac
+    # echo ""
+    # echo "DEBUG: cur: $cur, prev: $prev"
+    # echo "DEBUG: default: |$p1|$p2|$p3|$p4|"
+    case ${cur} in
+ 	-*)
+	    echo $opts
+ 	    # COMPREPLY=($(compgen -W "${opts}" -- ${cur}))
+ 	    return 0
+ 	    ;;
+    esac;
 
-	for WORD in $opts; do
-		MATCH=0
-		for OPT in ${COMP_WORDS[@]}; do
-			# opts=$(echo ${opts} | grep -v $OPT);
-			if [ "$OPT" == "$WORD" ]; then
-				MATCH=1
-				break
-			fi
-			if [ "$OPT" == "-v" ] && [ "$WORD" == "--version" ]; then
-				MATCH=1
-				break
-			fi
-			if [ "$OPT" == "--version" ] && [ "$WORD" == "-v" ]; then
-				MATCH=1
-				break
-			fi
-			if [ "$OPT" == "-q" ] && [ "$WORD" == "--nologo" ]; then
-				MATCH=1
-				break
-			fi
-			if [ "$OPT" == "--nologo" ] && [ "$WORD" == "-q" ]; then
-				MATCH=1
-				break
-			fi
-		done
-		(($MATCH == 1)) && continue
-		pruned="$pruned $WORD"
-
+    for WORD in $opts; do
+	MATCH=0
+	for OPT in ${COMP_WORDS[@]}; do
+		    # opts=$(echo ${opts} | grep -v $OPT);
+	    if [ "$OPT" == "$WORD" ]; then
+		MATCH=1
+		break;
+	    fi
+	    if [ "$OPT" == "-v" ] && [ "$WORD" == "--version" ]; then
+		MATCH=1
+		break;
+	    fi
+	    if [ "$OPT" == "--version" ] && [ "$WORD" == "-v" ]; then
+		MATCH=1
+		break;
+	    fi
+	    if [ "$OPT" == "-q" ] && [ "$WORD" == "--nologo" ]; then
+		MATCH=1
+		break;
+	    fi
+	    if [ "$OPT" == "--nologo" ] && [ "$WORD" == "-q" ]; then
+		MATCH=1
+		break;
+	    fi
 	done
 	(( $MATCH == 1 )) && continue;
 	pruned="$pruned $WORD"
@@ -177,8 +151,8 @@ function _vboxmanage {
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
 
-	# echo "cur: |$cur|"
-	# echo "prev: |$prev|"
+    # echo "cur: |$cur|"
+    # echo "prev: |$prev|"
 
     # In case current is complete command
     case $cur in
@@ -235,31 +209,14 @@ function _vboxmanage {
 		    return 0
 		    ;;
 		controlvm)
-			opts=$(__vboxmanage_list_vms)
-			COMPREPLY=($(compgen -W "${opts}" -- ${cur}))
-			return 0
-			;;
-	esac
+		    opts=$(__vboxmanage_controlvm)
+		    COMPREPLY=($(compgen -W "${opts}" -- ${cur}))
+		    return 0;
+		    ;;
+	    esac
+	fi
+    done
 
-	for VM in $(__vboxmanage_list_vms); do
-		if [ "$VM" == "$prev" ]; then
-			pprev=${COMP_WORDS[COMP_CWORD - 2]}
-			# echo "previous: $pprev"
-			case $pprev in
-				startvm)
-					opts="--type"
-					COMPREPLY=($(compgen -W "${opts}" -- ${cur}))
-					return 0
-					;;
-				controlvm)
-					opts=$(__vboxmanage_controlvm)
-					COMPREPLY=($(compgen -W "${opts}" -- ${cur}))
-					return 0
-					;;
-			esac
-		fi
-	done
-
-	# echo "Got to end withoug completion"
+    # echo "Got to end withoug completion"
 }
 complete -F _vboxmanage vboxmanage

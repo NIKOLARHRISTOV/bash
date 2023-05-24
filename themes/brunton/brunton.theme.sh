@@ -18,7 +18,8 @@ function is_vim_shell {
 
 function scm_prompt {
 	CHAR=$(scm_char)
-	if [ $CHAR = $SCM_NONE_CHAR ]; then
+	if [ $CHAR = $SCM_NONE_CHAR ]
+	then
 		return
 	else
 		echo " $(scm_char) (${_omb_prompt_white}$(scm_prompt_info)${_omb_prompt_normal})"

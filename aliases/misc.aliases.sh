@@ -27,16 +27,18 @@
 #   1.  FILE AND FOLDER MANAGEMENT
 #   -------------------------------
 
-alias numFiles='echo $(ls -1 | wc -l)'      # numFiles:     Count of non-hidden files in current dir
-alias make1mb='truncate -s 1m ./1MB.dat'    # make1mb:      Creates a file of 1mb size (all zeros)
-alias make5mb='truncate -s 5m ./5MB.dat'    # make5mb:      Creates a file of 5mb size (all zeros)
-alias make10mb='truncate -s 10m ./10MB.dat' # make10mb:     Creates a file of 10mb size (all zeros)
+alias numFiles='echo $(ls -1 | wc -l)'       # numFiles:     Count of non-hidden files in current dir
+alias make1mb='truncate -s 1m ./1MB.dat'     # make1mb:      Creates a file of 1mb size (all zeros)
+alias make5mb='truncate -s 5m ./5MB.dat'     # make5mb:      Creates a file of 5mb size (all zeros)
+alias make10mb='truncate -s 10m ./10MB.dat'  # make10mb:     Creates a file of 10mb size (all zeros)
+
 
 #   ---------------------------
 #   2.  SEARCHING
 #   ---------------------------
 
-alias qfind="find . -name " # qfind:    Quickly search for file
+alias qfind="find . -name "                 # qfind:    Quickly search for file
+
 
 #   ---------------------------
 #   3.  PROCESS MANAGEMENT
@@ -44,23 +46,24 @@ alias qfind="find . -name " # qfind:    Quickly search for file
 
 #   memHogsTop, memHogsPs:  Find memory hogs
 #   -----------------------------------------------------
-alias memHogsTop='top -l 1 -o rsize | head -20'
-alias memHogsPs='ps wwaxm -o pid,stat,vsize,rss,time,command | head -10'
+    alias memHogsTop='top -l 1 -o rsize | head -20'
+    alias memHogsPs='ps wwaxm -o pid,stat,vsize,rss,time,command | head -10'
 
 #   cpuHogs:  Find CPU hogs
 #   -----------------------------------------------------
-alias cpu_hogs='ps wwaxr -o pid,stat,%cpu,time,command | head -10'
+    alias cpu_hogs='ps wwaxr -o pid,stat,%cpu,time,command | head -10'
 
 #   topForever:  Continual 'top' listing (every 10 seconds)
 #   -----------------------------------------------------
-alias topForever='top -l 9999999 -s 10 -o cpu'
+    alias topForever='top -l 9999999 -s 10 -o cpu'
 
 #   ttop:  Recommended 'top' invocation to minimize resources
 #   ------------------------------------------------------------
 #       Taken from this macosxhints article
 #       http://www.macosxhints.com/article.php?story=20060816123853639
 #   ------------------------------------------------------------
-alias ttop="top -R -F -s 10 -o rsize"
+    alias ttop="top -R -F -s 10 -o rsize"
+
 
 #   ---------------------------
 #   4.  NETWORKING
@@ -101,6 +104,7 @@ alias timestamp='date "+%Y%m%dT%H%M%S"'
 alias today='date +"%A, %B %-d, %Y"'
 alias weeknum='date +%V'
 
+
 #   ---------------------------------------
 #   8.  WEB DEVELOPMENT
 #   ---------------------------------------
@@ -122,6 +126,6 @@ fi
 # Outputs List of Loadable Modules (llm) for current kernel
 alias llm="find /lib/modules/$(uname -r) -type f -name '*.ko*'"
 # Used for piping to remote pastebin from cmdline to generate a url
-_omb_util_binary_exists curl && ix() { curl -n -F 'f:1=<-' http://ix.io; }
+_omb_util_binary_exists curl && ix() { curl -n -F 'f:1=<-' http://ix.io ; }
 # Used for piping to clipboard
 _omb_util_binary_exists xclip && alias xcopy="xclip -se c"

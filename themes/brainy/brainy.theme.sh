@@ -10,7 +10,7 @@
 function ____brainy_top_left_parse {
 	ifs_old="${IFS}"
 	IFS="|"
-	args=($1)
+	args=( $1 )
 	IFS="${ifs_old}"
 	if [ -n "${args[3]}" ]; then
 		_TOP_LEFT+="${args[2]}${args[3]}"
@@ -25,7 +25,7 @@ function ____brainy_top_left_parse {
 function ____brainy_top_right_parse {
 	ifs_old="${IFS}"
 	IFS="|"
-	args=($1)
+	args=( $1 )
 	IFS="${ifs_old}"
 	_TOP_RIGHT+=" "
 	if [ -n "${args[3]}" ]; then
@@ -35,14 +35,14 @@ function ____brainy_top_right_parse {
 	if [ -n "${args[4]}" ]; then
 		_TOP_RIGHT+="${args[2]}${args[4]}"
 	fi
-	__TOP_RIGHT_LEN=$((__TOP_RIGHT_LEN + ${#args[1]} + ${#args[3]} + ${#args[4]} + 1))
-	((__SEG_AT_RIGHT += 1))
+	__TOP_RIGHT_LEN=$(( __TOP_RIGHT_LEN + ${#args[1]} + ${#args[3]} + ${#args[4]} + 1 ))
+	(( __SEG_AT_RIGHT += 1 ))
 }
 
 function ____brainy_bottom_parse {
 	ifs_old="${IFS}"
 	IFS="|"
-	args=($1)
+	args=( $1 )
 	IFS="${ifs_old}"
 	_BOTTOM+="${args[0]}${args[1]}"
 	[ ${#args[1]} -gt 0 ] && _BOTTOM+=" "
@@ -67,7 +67,7 @@ function ____brainy_top {
 		[ -n "${info}" ] && ____brainy_top_right_parse "${info}"
 	done
 
-	[ $__TOP_RIGHT_LEN -gt 0 ] && __TOP_RIGHT_LEN=$((__TOP_RIGHT_LEN - 1))
+	[ $__TOP_RIGHT_LEN -gt 0 ] && __TOP_RIGHT_LEN=$(( __TOP_RIGHT_LEN - 1 ))
 	___cursor_adjust="\033[${__TOP_RIGHT_LEN}D"
 	_TOP_LEFT+="${___cursor_adjust}"
 
@@ -139,7 +139,7 @@ function ___brainy_prompt_todo {
 	_omb_util_binary_exists todo.sh || return
 	color=$_omb_prompt_bold_white
 	box="[|]"
-	info="t:$(todo.sh ls | command grep -E "TODO: [0-9]+ of ([0-9]+)" | awk '{ print $4 }')"
+	info="t:$(todo.sh ls | command grep -E "TODO: [0-9]+ of ([0-9]+)" | awk '{ print $4 }' )"
 	printf "%s|%s|%s|%s" "${color}" "${info}" "${_omb_prompt_bold_green}" "${box}"
 }
 
@@ -204,16 +204,16 @@ function _brainy_completion {
 	segments="battery clock exitcode python ruby scm sudo todo"
 	case "${_action}" in
 		show)
-			COMPREPLY=($(compgen -W "${segments}" -- "${cur}"))
+			COMPREPLY=( $(compgen -W "${segments}" -- "${cur}") )
 			return 0
 			;;
 		hide)
-			COMPREPLY=($(compgen -W "${segments}" -- "${cur}"))
+			COMPREPLY=( $(compgen -W "${segments}" -- "${cur}") )
 			return 0
 			;;
 	esac
 
-	COMPREPLY=($(compgen -W "${actions}" -- "${cur}"))
+	COMPREPLY=( $(compgen -W "${actions}" -- "${cur}") )
 	return 0
 }
 
@@ -224,11 +224,9 @@ function brainy {
 	typeset func
 	case $action in
 		show)
-			func=__brainy_show
-			;;
+			func=__brainy_show;;
 		hide)
-			func=__brainy_hide
-			;;
+			func=__brainy_hide;;
 	esac
 	for seg in ${segs}; do
 		seg=$(printf "%s" "${seg}" | tr '[:lower:]' '[:upper:]')
@@ -290,8 +288,8 @@ function __brainy_ps2 {
 function _omb_theme_PROMPT_COMMAND {
     exitcode="$?"
 
-	PS1="$(__brainy_ps1)"
-	PS2="$(__brainy_ps2)"
+    PS1="$(__brainy_ps1)"
+    PS2="$(__brainy_ps2)"
 }
 
 _omb_util_add_prompt_command _omb_theme_PROMPT_COMMAND

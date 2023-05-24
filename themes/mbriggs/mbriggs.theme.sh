@@ -18,18 +18,18 @@ function git_short_sha() {
 }
 
 function _omb_theme_PROMPT_COMMAND() {
-	local return_status=""
-	local ruby="${_omb_prompt_brown}$(_omb_prompt_print_ruby_env)${_omb_prompt_reset_color}"
-	local user_host="${_omb_prompt_green}\h${_omb_prompt_reset_color}"
-	local current_path="\w"
-	local n_commands="\!"
-	local git_branch="$(git_short_sha)$(scm_prompt_info)"
-	local prompt_symbol='λ'
-	local open='('
-	local close=')'
-	local prompt_char=' \$ '
+    local return_status=""
+    local ruby="${_omb_prompt_brown}$(_omb_prompt_print_ruby_env)${_omb_prompt_reset_color}"
+    local user_host="${_omb_prompt_green}\h${_omb_prompt_reset_color}"
+    local current_path="\w"
+    local n_commands="\!"
+    local git_branch="$(git_short_sha)$(scm_prompt_info)"
+    local prompt_symbol='λ'
+    local open='('
+    local close=')'
+    local prompt_char=' \$ '
 
-	PS1="\n${n_commands} ${user_host} ${prompt_symbol} ${ruby} ${open}${current_path}${git_branch}${close}${return_status}\n${prompt_char}"
+    PS1="\n${n_commands} ${user_host} ${prompt_symbol} ${ruby} ${open}${current_path}${git_branch}${close}${return_status}\n${prompt_char}"
 }
 
 _omb_util_add_prompt_command _omb_theme_PROMPT_COMMAND

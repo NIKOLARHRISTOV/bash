@@ -18,7 +18,7 @@ function __drush_ps1 {
     __DRUPAL_SITE="$DRUPAL_SITE"
   fi
 
-	[[ -n "$__DRUPAL_SITE" ]] && printf "${1:- (%s)}" "$__DRUPAL_SITE"
+  [[ -n "$__DRUPAL_SITE" ]] && printf "${1:- (%s)}" "$__DRUPAL_SITE"
 }
 
 # Completion function, uses the "drush complete" command to retrieve

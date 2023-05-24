@@ -19,8 +19,8 @@ if [[ ! ${BASH_VERSINFO[0]-} ]] || ((BASH_VERSINFO[0] < 3 || BASH_VERSINFO[0] ==
   # shellcheck disable=SC2317
   return 2 &>/dev/null || exit 2
 elif ((BASH_VERSINFO[0] < 4)); then
-	printf "Warning: Bash >=4 is no longer required for Oh My Bash but is cool to have ;)\n" >&2
-	printf "Warning: Why don't you upgrade your Bash to 4 or higher?\n" >&2
+  printf "Warning: Bash >=4 is no longer required for Oh My Bash but is cool to have ;)\n" >&2
+  printf "Warning: Why don't you upgrade your Bash to 4 or higher?\n" >&2
 fi
 
 function _omb_install_print_version {
@@ -100,9 +100,9 @@ function _omb_install_readargs {
       esac
     fi
 
-		install_opts+=:error
-		printf 'install (oh-my-bash): %s\n' "$RED$BOLD[Error]$NORMAL unrecognized argument '$arg'." >&2
-	done
+    install_opts+=:error
+    printf 'install (oh-my-bash): %s\n' "$RED$BOLD[Error]$NORMAL unrecognized argument '$arg'." >&2
+  done
 }
 
 function _omb_install_run {
@@ -201,7 +201,7 @@ function _omb_install_system_bashrc {
   osh=${osh//$'\n'/$'\\\n'}
   local sed_script='/^export OSH=.*/c \
 '"export OSH=$osh"
-	_omb_install_run sed "$sed_script" "$OSH"/templates/bashrc.osh-template >| "$OSH"/bashrc
+  _omb_install_run sed "$sed_script" "$OSH"/templates/bashrc.osh-template >| "$OSH"/bashrc
 
   _omb_install_banner
   printf '%s\n' "${GREEN}To enable Oh My Bash, please copy '${BOLD}$OSH/bashrc${NORMAL}${GREEN}' to '${BOLD}~/.bashrc${NORMAL}${GREEN}'.${NORMAL}"
@@ -234,61 +234,61 @@ function _omb_install_main {
     NORMAL=""
   fi
 
-	local install_opts install_prefix
-	_omb_install_readargs "$@"
+  local install_opts install_prefix
+  _omb_install_readargs "$@"
 
-	if [[ :$install_opts: == *:error:* ]]; then
-		printf '\n'
-		install_opts+=:usage
-	fi
-	if [[ :$install_opts: == *:help:* ]]; then
-		_omb_install_print_help
-		install_opts+=:exit
-	else
-		if [[ :$install_opts: == *:version:* ]]; then
-			_omb_install_print_version
-			install_opts+=:exit
-		fi
-		if [[ :$install_opts: == *:usage:* ]]; then
-			_omb_install_print_usage
-			install_opts+=:exit
-		fi
-	fi
-	if [[ :$install_opts: == *:error:* ]]; then
-		return 2
-	elif [[ :$install_opts: == *:exit:* ]]; then
-		return 0
-	fi
+  if [[ :$install_opts: == *:error:* ]]; then
+    printf '\n'
+    install_opts+=:usage
+  fi
+  if [[ :$install_opts: == *:help:* ]]; then
+    _omb_install_print_help
+    install_opts+=:exit
+  else
+    if [[ :$install_opts: == *:version:* ]]; then
+      _omb_install_print_version
+      install_opts+=:exit
+    fi
+    if [[ :$install_opts: == *:usage:* ]]; then
+      _omb_install_print_usage
+      install_opts+=:exit
+    fi
+  fi
+  if [[ :$install_opts: == *:error:* ]]; then
+    return 2
+  elif [[ :$install_opts: == *:exit:* ]]; then
+    return 0
+  fi
 
-	if [[ $install_prefix ]]; then
-		[[ $install_prefix == /* ]] \
-			|| install_prefix=$PWD/$install_prefix
-		local OSH=$install_prefix/share/oh-my-bash
-	elif [[ ! $OSH ]]; then
-		OSH=~/.oh-my-bash
-	fi
+  if [[ $install_prefix ]]; then
+    [[ $install_prefix == /* ]] ||
+      install_prefix=$PWD/$install_prefix
+    local OSH=$install_prefix/share/oh-my-bash
+  elif [[ ! $OSH ]]; then
+    OSH=~/.oh-my-bash
+  fi
 
-	if [[ ! $OSH_REPOSITORY ]]; then
-		OSH_REPOSITORY=https://github.com/ohmybash/oh-my-bash.git
-	fi
+  if [[ ! $OSH_REPOSITORY ]]; then
+    OSH_REPOSITORY=https://github.com/ohmybash/oh-my-bash.git
+  fi
 
-	# Only enable exit-on-error after the non-critical colorization stuff,
-	# which may fail on systems lacking tput or terminfo
+  # Only enable exit-on-error after the non-critical colorization stuff,
+  # which may fail on systems lacking tput or terminfo
 
-	set -e
+  set -e
 
-	if [[ -d $OSH ]]; then
-		printf '%s\n' "${YELLOW}You already have Oh My Bash installed.${NORMAL}" >&2
-		printf '%s\n' "You'll need to remove '$OSH' if you want to re-install it." >&2
-		return 1
-	fi
+  if [[ -d $OSH ]]; then
+    printf '%s\n' "${YELLOW}You already have Oh My Bash installed.${NORMAL}" >&2
+    printf '%s\n' "You'll need to remove '$OSH' if you want to re-install it." >&2
+    return 1
+  fi
 
-	# Prevent the cloned repository from having insecure permissions. Failing to do
-	# so causes compinit() calls to fail with "command not found: compdef" errors
-	# for users with insecure umasks (e.g., "002", allowing group writability). Note
-	# that this will be ignored under Cygwin by default, as Windows ACLs take
-	# precedence over umasks except for filesystems mounted with option "noacl".
-	umask g-w,o-w
+  # Prevent the cloned repository from having insecure permissions. Failing to do
+  # so causes compinit() calls to fail with "command not found: compdef" errors
+  # for users with insecure umasks (e.g., "002", allowing group writability). Note
+  # that this will be ignored under Cygwin by default, as Windows ACLs take
+  # precedence over umasks except for filesystems mounted with option "noacl".
+  umask g-w,o-w
 
   printf '%s\n' "${BLUE}Cloning Oh My Bash...${NORMAL}"
   type -P git &>/dev/null || {
@@ -308,14 +308,14 @@ function _omb_install_main {
     return 1
   }
 
-	if [[ $install_prefix ]]; then
-		_omb_install_system_bashrc
-	else
-		_omb_install_user_bashrc
-	fi
+  if [[ $install_prefix ]]; then
+    _omb_install_system_bashrc
+  else
+    _omb_install_user_bashrc
+  fi
 }
 
-[[ ${BASH_EXECUTION_STRING-} && $0 == -* ]] \
-	&& set -- "$0" "$@"
+[[ ${BASH_EXECUTION_STRING-} && $0 == -* ]] &&
+  set -- "$0" "$@"
 
 _omb_install_main "$@" 5>&2

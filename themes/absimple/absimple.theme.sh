@@ -87,8 +87,8 @@ function _omb_theme_PROMPT_COMMAND {
     # ... and time
     PS1+="$(date +%H:%M:%S) "
 
-	# uncomment below to use right prompt
-	#     PS1='\[$(tput sc; printf "%*s" $COLUMNS "$PRIGHT"; tput rc)\]'$PR
-	PS1+=$PR
+    # uncomment below to use right prompt
+    #     PS1='\[$(tput sc; printf "%*s" $COLUMNS "$PRIGHT"; tput rc)\]'$PR
+    PS1+=$PR
 }
 _omb_util_add_prompt_command _omb_theme_PROMPT_COMMAND

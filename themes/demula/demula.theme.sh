@@ -47,12 +47,12 @@ D_VIMSHELL_COLOR="${_omb_prompt_teal}"
 
 # ------------------------------------------------------------------ FUNCTIONS
 case $TERM in
-	xterm*)
-		TITLEBAR="\033]0;\w\007"
-		;;
-	*)
-		TITLEBAR=""
-		;;
+  xterm*)
+      TITLEBAR="\033]0;\w\007"
+      ;;
+  *)
+      TITLEBAR=""
+      ;;
 esac
 
 function is_vim_shell {
@@ -60,7 +60,7 @@ function is_vim_shell {
   then
     echo "${D_INTERMEDIATE_COLOR}on ${D_VIMSHELL_COLOR}\
 vim shell${D_DEFAULT_COLOR} "
-	fi
+  fi
 }
 
 function mitsuhikos_lastcommandfailed {
@@ -69,7 +69,7 @@ function mitsuhikos_lastcommandfailed {
   then
     echo "${D_INTERMEDIATE_COLOR}exited ${D_CMDFAIL_COLOR}\
 $code ${D_DEFAULT_COLOR}"
-	fi
+  fi
 }
 
 # vcprompt for scm instead of oh-my-bash default
@@ -78,8 +78,8 @@ function demula_vcprompt {
   then
     local D_VCPROMPT_FORMAT="on ${D_SCM_COLOR}%s${D_INTERMEDIATE_COLOR}:\
 ${D_BRANCH_COLOR}%b %r ${D_CHANGES_COLOR}%m%u ${D_DEFAULT_COLOR}"
-		$VCPROMPT_EXECUTABLE -f "$D_VCPROMPT_FORMAT"
-	fi
+    $VCPROMPT_EXECUTABLE -f "$D_VCPROMPT_FORMAT"
+  fi
 }
 
 # checks if the plugin is installed before calling battery_charge
@@ -98,8 +98,9 @@ function _omb_theme_PROMPT_COMMAND {
   local MOVE_CURSOR_RIGHTMOST='\033[500C'
   local MOVE_CURSOR_5_LEFT='\033[5D'
 
-	if [ $(uname) = "Linux" ]; then
-		PS1="${TITLEBAR}
+  if [ $(uname) = "Linux" ];
+  then
+    PS1="${TITLEBAR}
 ${SAVE_CURSOR}${MOVE_CURSOR_RIGHTMOST}${MOVE_CURSOR_5_LEFT}\
 $(safe_battery_charge)${RESTORE_CURSOR}\
 ${D_USER_COLOR}\u ${D_INTERMEDIATE_COLOR}\
@@ -109,8 +110,8 @@ ${LAST_COMMAND_FAILED}\
 $(demula_vcprompt)\
 $(is_vim_shell)
 ${D_INTERMEDIATE_COLOR}$ ${D_DEFAULT_COLOR}"
-	else
-		PS1="${TITLEBAR}
+  else
+    PS1="${TITLEBAR}
 ${D_USER_COLOR}\u ${D_INTERMEDIATE_COLOR}\
 at ${D_MACHINE_COLOR}\h ${D_INTERMEDIATE_COLOR}\
 in ${D_DIR_COLOR}\w ${D_INTERMEDIATE_COLOR}\
@@ -119,9 +120,9 @@ $(demula_vcprompt)\
 $(is_vim_shell)\
 $(safe_battery_charge)
 ${D_INTERMEDIATE_COLOR}$ ${D_DEFAULT_COLOR}"
-	fi
+  fi
 
-	PS2="${D_INTERMEDIATE_COLOR}$ ${D_DEFAULT_COLOR}"
+  PS2="${D_INTERMEDIATE_COLOR}$ ${D_DEFAULT_COLOR}"
 }
 
 # Runs prompt (this bypasses oh-my-bash $PROMPT setting)

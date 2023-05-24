@@ -154,16 +154,6 @@ function mkiso {
   fi
 }
 
-		if [ ! -f "${destpath}${isoname}.iso" ]; then
-			echo "writing ${isoname}.iso to ${destpath} from ${srcpath}"
-			mkisofs -V "${isoname}" -iso-level 3 -r -o "${destpath}${isoname}.iso" "${srcpath}"
-		else
-			echo "${destpath}${isoname}.iso already exists"
-		fi
-	else
-		echo "mkisofs cmd does not exist, please install cdrtools"
-	fi
-}
 
 #   ---------------------------
 #   3.  SEARCHING
@@ -181,6 +171,7 @@ function bigfind {
   fi
   du -a "$1" | sort -n -r | head -n 10
 }
+
 
 #   ---------------------------
 #   4.  PROCESS MANAGEMENT
@@ -310,6 +301,7 @@ function passgen {
 #   ---------------------------------------
 #   7.  DATE & TIME MANAGEMENT
 #   ---------------------------------------
+
 
 #   ---------------------------------------
 #   8.  WEB DEVELOPMENT
