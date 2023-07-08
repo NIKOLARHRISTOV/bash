@@ -7,7 +7,7 @@ function __apm {
     local cur prev options apm_command
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
-    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    prev="${COMP_WORDS[COMP_CWORD - 1]}"
     __apm_get_command
     if [[ $cur = -* ]]; then
         options="--color"
@@ -32,24 +32,29 @@ function __apm {
 }
 function __apm_get_command {
     local i
-    for ((i=1; i < $COMP_CWORD; ++i)); do
+    for ((i = 1; i < $COMP_CWORD; ++i)); do
         local arg=${COMP_WORDS[$i]}
         case $arg in
         [^-]*)
             apm_command=$arg
-            return;;
+            return
+            ;;
         --version)
             apm_command=-
-            return;;
+            return
+            ;;
         --help)
             apm_command=help
-            return;;
+            return
+            ;;
         publish)
             apm_command=publish
-            return;;
+            return
+            ;;
         config)
             apm_command=config
-            return;;
+            return
+            ;;
         esac
     done
 }

@@ -14,16 +14,18 @@ function _omb_theme_PROMPT_COMMAND() {
   local TITLEBAR
   case $TERM in
   xterm* | screen)
-    TITLEBAR=$'\1\e]0;'$USER@${HOSTNAME%%.*}:${PWD/#$HOME/~}$'\e\\\2' ;;
+    TITLEBAR=$'\1\e]0;'$USER@${HOSTNAME%%.*}:${PWD/#$HOME/~}$'\e\\\2'
+    ;;
   *)
-    TITLEBAR= ;;
+    TITLEBAR=
+    ;;
   esac
 
   local SC
   if ((status == 0)); then
-    SC="$_omb_prompt_teal-$_omb_prompt_bold_green(${_omb_prompt_green}^_^$_omb_prompt_bold_green)";
+    SC="$_omb_prompt_teal-$_omb_prompt_bold_green(${_omb_prompt_green}^_^$_omb_prompt_bold_green)"
   else
-    SC="$_omb_prompt_teal-$_omb_prompt_bold_green(${_omb_prompt_brown}T_T$_omb_prompt_bold_green)";
+    SC="$_omb_prompt_teal-$_omb_prompt_bold_green(${_omb_prompt_brown}T_T$_omb_prompt_bold_green)"
   fi
 
   local BC=$(battery_percentage)
@@ -38,6 +40,5 @@ SCM_THEME_PROMPT_DIRTY=" ${_omb_prompt_brown}✗"
 SCM_THEME_PROMPT_CLEAN=" ${_omb_prompt_bold_green}✓"
 SCM_THEME_PROMPT_PREFIX="${_omb_prompt_bold_teal}("
 SCM_THEME_PROMPT_SUFFIX="${_omb_prompt_bold_teal})${_omb_prompt_reset_color}"
-
 
 _omb_util_add_prompt_command _omb_theme_PROMPT_COMMAND

@@ -6,7 +6,7 @@
 function _omb_plugin_fasd_prompt_func {
   local sink=${OMB_PLUGIN_FASD_SINK:-/dev/null}
   [[ $sink == /dev/null ]] && return 0
-  fasd --proc "$(fasd --sanitize "$(history 1 | command sed 's/^[ ]*[0-9]*[ ]*//')")" >> "$sink" 2>&1
+  fasd --proc "$(fasd --sanitize "$(history 1 | command sed 's/^[ ]*[0-9]*[ ]*//')")" >>"$sink" 2>&1
 }
 
 function _omb_plugin_fasd_initialize {

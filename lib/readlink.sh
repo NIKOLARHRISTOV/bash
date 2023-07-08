@@ -61,7 +61,7 @@ function _omb_util_readlink__resolve_physical_directory {
 function _omb_util_readlink__resolve_loop {
   local path=$1
   builtin eval -- "$_omb_util_readlink_visited_init"
-  while [[ -h $path ]]; do
+  while [[ -L $path ]]; do
     local link
     _omb_util_readlink__visited "$path" && break
     _omb_util_readlink__readlink "$path" || break
@@ -81,16 +81,18 @@ function _omb_util_readlink__resolve {
   _omb_util_readlink_type=
 
   case $OSTYPE in
-  (cygwin | msys | linux-gnu)
+  cygwin | msys | linux-gnu)
     # These systems provide "readlink -f".
     local readlink
     readlink=$(type -P readlink)
     case $readlink in
-    (/bin/readlink | /usr/bin/readlink)
+    /bin/readlink | /usr/bin/readlink)
       # shellcheck disable=SC2100
       _omb_util_readlink_type=readlink-f
-      function _omb_util_readlink__resolve { readlink -f -- "$1"; } ;;
-    esac ;;
+      function _omb_util_readlink__resolve { readlink -f -- "$1"; }
+      ;;
+    esac
+    ;;
   esac
 
   if [[ ! $_omb_util_readlink_type ]]; then
@@ -102,7 +104,7 @@ function _omb_util_readlink__resolve {
 }
 
 function _omb_util_readlink {
-  if [[ -h $1 ]]; then
+  if [[ -L $1 ]]; then
     _omb_util_readlink__resolve "$1"
   else
     echo "$1"

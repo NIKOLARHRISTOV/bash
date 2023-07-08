@@ -45,8 +45,7 @@
 #
 # Distributed under the [MIT License](http://creativecommons.org/licenses/MIT/)
 
-_git_flow ()
-{
+_git_flow() {
 	local subcommands="init feature release hotfix"
 	local subcommand="$(__git_find_subcommand "$subcommands")"
 	if [ -z "$subcommand" ]; then
@@ -73,8 +72,7 @@ _git_flow ()
 	esac
 }
 
-__git_flow_feature ()
-{
+__git_flow_feature() {
 	local subcommands="list start finish publish track diff rebase checkout pull"
 	local subcommand="$(__git_find_subcommand "$subcommands")"
 	if [ -z "$subcommand" ]; then
@@ -87,7 +85,7 @@ __git_flow_feature ()
 		__gitcomp "$(__git_remotes)"
 		return
 		;;
-	checkout|finish|diff|rebase)
+	checkout | finish | diff | rebase)
 		__gitcomp "$(__git_flow_list_features)"
 		return
 		;;
@@ -105,23 +103,19 @@ __git_flow_feature ()
 	esac
 }
 
-__git_flow_list_features ()
-{
-	git flow feature list 2> /dev/null | tr -d ' |*'
+__git_flow_list_features() {
+	git flow feature list 2>/dev/null | tr -d ' |*'
 }
 
-__git_flow_list_remote_features ()
-{
-	git branch -r 2> /dev/null | grep "origin/$(__git_flow_feature_prefix)" | awk '{ sub(/^origin\/$(__git_flow_feature_prefix)/, "", $1); print }'
+__git_flow_list_remote_features() {
+	git branch -r 2>/dev/null | grep "origin/$(__git_flow_feature_prefix)" | awk '{ sub(/^origin\/$(__git_flow_feature_prefix)/, "", $1); print }'
 }
 
-__git_flow_feature_prefix ()
-{
-	git config gitflow.prefix.feature 2> /dev/null || echo "feature/"
+__git_flow_feature_prefix() {
+	git config gitflow.prefix.feature 2>/dev/null || echo "feature/"
 }
 
-__git_flow_release ()
-{
+__git_flow_release() {
 	local subcommands="list start finish"
 	local subcommand="$(__git_find_subcommand "$subcommands")"
 	if [ -z "$subcommand" ]; then
@@ -141,13 +135,11 @@ __git_flow_release ()
 
 }
 
-__git_flow_list_releases ()
-{
-	git flow release list 2> /dev/null
+__git_flow_list_releases() {
+	git flow release list 2>/dev/null
 }
 
-__git_flow_hotfix ()
-{
+__git_flow_hotfix() {
 	local subcommands="list start finish"
 	local subcommand="$(__git_find_subcommand "$subcommands")"
 	if [ -z "$subcommand" ]; then
@@ -166,12 +158,11 @@ __git_flow_hotfix ()
 	esac
 }
 
-__git_flow_list_hotfixes ()
-{
-	git flow hotfix list 2> /dev/null
+__git_flow_list_hotfixes() {
+	git flow hotfix list 2>/dev/null
 }
 
 # temporarily wrap __git_find_on_cmdline() for backwards compatibility
-if [ -z "`type -t __git_find_subcommand`" ]; then
+if [ -z "$(type -t __git_find_subcommand)" ]; then
 	alias __git_find_subcommand=__git_find_on_cmdline
 fi

@@ -22,7 +22,6 @@
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-
 # USAGE:
 # bm -a bookmarkname - saves the curr dir as bookmarkname
 # bm -g bookmarkname - jumps to the that bookmark
@@ -35,7 +34,7 @@
 
 # setup file to store bookmarks
 if [ ! -n "$SDIRS" ]; then
-    SDIRS=~/.sdirs
+  SDIRS=~/.sdirs
 fi
 touch "$SDIRS"
 
@@ -43,44 +42,44 @@ touch "$SDIRS"
 function bm {
   option="${1}"
   case ${option} in
-    # save current directory to bookmarks [ bm -a BOOKMARK_NAME ]
-    -a)
-      _save_bookmark "$2"
+  # save current directory to bookmarks [ bm -a BOOKMARK_NAME ]
+  -a)
+    _save_bookmark "$2"
     ;;
-    # delete bookmark [ bm -d BOOKMARK_NAME ]
-    -d)
-      _delete_bookmark "$2"
+  # delete bookmark [ bm -d BOOKMARK_NAME ]
+  -d)
+    _delete_bookmark "$2"
     ;;
-    # jump to bookmark [ bm -g BOOKMARK_NAME ]
-    -g)
-      _goto_bookmark "$2"
+  # jump to bookmark [ bm -g BOOKMARK_NAME ]
+  -g)
+    _goto_bookmark "$2"
     ;;
-    # print bookmark [ bm -p BOOKMARK_NAME ]
-    -p)
-      _print_bookmark "$2"
+  # print bookmark [ bm -p BOOKMARK_NAME ]
+  -p)
+    _print_bookmark "$2"
     ;;
-    # show bookmark list [ bm -l ]
-    -l)
-      _list_bookmark
+  # show bookmark list [ bm -l ]
+  -l)
+    _list_bookmark
     ;;
-    # help [ bm -h ]
-    -h)
+  # help [ bm -h ]
+  -h)
+    _echo_usage
+    ;;
+  *)
+    if [[ $1 == -* ]]; then
+      # unrecognized option. echo error message and usage [ bm -X ]
+      echo "Unknown option '$1'"
       _echo_usage
-    ;;
-    *)
-      if [[ $1 == -* ]]; then
-        # unrecognized option. echo error message and usage [ bm -X ]
-        echo "Unknown option '$1'"
-        _echo_usage
-        kill -SIGINT $$
-        exit 1
-      elif [[ $1 == "" ]]; then
-        # no args supplied - echo usage [ bm ]
-        _echo_usage
-      else
-        # non-option supplied as first arg.  assume goto [ bm BOOKMARK_NAME ]
-        _goto_bookmark "$1"
-      fi
+      kill -SIGINT $$
+      exit 1
+    elif [[ $1 == "" ]]; then
+      # no args supplied - echo usage [ bm ]
+      _echo_usage
+    else
+      # non-option supplied as first arg.  assume goto [ bm BOOKMARK_NAME ]
+      _goto_bookmark "$1"
+    fi
     ;;
   esac
 }
@@ -101,8 +100,8 @@ function _save_bookmark {
   _bookmark_name_valid "$@"
   if [ -z "$exit_message" ]; then
     _purge_line "$SDIRS" "export DIR_$1="
-    CURDIR=$(echo $PWD| sed "s#^$HOME#\$HOME#g")
-    echo "export DIR_$1=\"$CURDIR\"" >> $SDIRS
+    CURDIR=$(echo $PWD | sed "s#^$HOME#\$HOME#g")
+    echo "export DIR_$1=\"$CURDIR\"" >>$SDIRS
   fi
 }
 
@@ -117,57 +116,57 @@ function _delete_bookmark {
 
 # jump to bookmark
 function _goto_bookmark {
-    source $SDIRS
-    target="$(eval $(echo echo $(echo \$DIR_$1)))"
-    if [ -d "$target" ]; then
-        cd "$target"
-    elif [ ! -n "$target" ]; then
-        printf '%s\n' "${_omb_term_brown}WARNING: '${1}' bashmark does not exist${_omb_term_reset}"
-    else
-        printf '%s\n' "${_omb_term_brown}WARNING: '${target}' does not exist${_omb_term_reset}"
-    fi
+  source $SDIRS
+  target="$(eval $(echo echo $(echo \$DIR_$1)))"
+  if [ -d "$target" ]; then
+    cd "$target"
+  elif [ ! -n "$target" ]; then
+    printf '%s\n' "${_omb_term_brown}WARNING: '${1}' bashmark does not exist${_omb_term_reset}"
+  else
+    printf '%s\n' "${_omb_term_brown}WARNING: '${target}' does not exist${_omb_term_reset}"
+  fi
 }
 
 # list bookmarks with dirname
 function _list_bookmark {
-    source $SDIRS
-    # if color output is not working for you, comment out the line below '\033[1;32m' == "red"
-    env | sort | awk '/DIR_.+/{split(substr($0,5),parts,"="); printf("\033[0;33m%-20s\033[0m %s\n", parts[1], parts[2]);}'
-    # uncomment this line if color output is not working with the line above
-    # env | grep "^DIR_" | cut -c5- | sort |grep "^.*="
+  source $SDIRS
+  # if color output is not working for you, comment out the line below '\033[1;32m' == "red"
+  env | sort | awk '/DIR_.+/{split(substr($0,5),parts,"="); printf("\033[0;33m%-20s\033[0m %s\n", parts[1], parts[2]);}'
+  # uncomment this line if color output is not working with the line above
+  # env | grep "^DIR_" | cut -c5- | sort |grep "^.*="
 }
 
 # print bookmark
 function _print_bookmark {
-    source $SDIRS
-    echo "$(eval $(echo echo $(echo \$DIR_$1)))"
+  source $SDIRS
+  echo "$(eval $(echo echo $(echo \$DIR_$1)))"
 }
 
 # list bookmarks without dirname
 function _l {
-    source $SDIRS
-    env | grep "^DIR_" | cut -c5- | sort | grep "^.*=" | cut -f1 -d "="
+  source $SDIRS
+  env | grep "^DIR_" | cut -c5- | sort | grep "^.*=" | cut -f1 -d "="
 }
 
 # validate bookmark name
 function _bookmark_name_valid {
-    exit_message=""
-    if [ -z $1 ]; then
-        exit_message="bookmark name required"
-        echo $exit_message
-    elif [ "$1" != "$(echo $1 | sed 's/[^A-Za-z0-9_]//g')" ]; then
-        exit_message="bookmark name is not valid"
-        echo $exit_message
-    fi
+  exit_message=""
+  if [ -z $1 ]; then
+    exit_message="bookmark name required"
+    echo $exit_message
+  elif [ "$1" != "$(echo $1 | sed 's/[^A-Za-z0-9_]//g')" ]; then
+    exit_message="bookmark name is not valid"
+    echo $exit_message
+  fi
 }
 
 # completion command
 function _comp {
-    local curw
-    COMPREPLY=()
-    curw=${COMP_WORDS[COMP_CWORD]}
-    COMPREPLY=($(compgen -W '`_l`' -- $curw))
-    return 0
+  local curw
+  COMPREPLY=()
+  curw=${COMP_WORDS[COMP_CWORD]}
+  COMPREPLY=($(compgen -W '`_l`' -- $curw))
+  return 0
 }
 
 # ZSH completion command
@@ -183,7 +182,7 @@ function _purge_line {
     trap "/bin/rm -f -- '$t'" EXIT
 
     # purge line
-    sed "/$2/d" "$1" >| "$t"
+    sed "/$2/d" "$1" >|"$t"
     /bin/mv "$t" "$1"
 
     # cleanup temp file
@@ -210,7 +209,7 @@ else
   complete -F _comp d
 fi
 
-alias s='bm -a'       # Save a bookmark [bookmark_name]
-alias g='bm -g'       # Go to bookmark [bookmark_name]
-alias p='bm -p'       # Print bookmark of a path [path]
-alias d='bm -d'       # Delete a bookmark [bookmark_name]
+alias s='bm -a' # Save a bookmark [bookmark_name]
+alias g='bm -g' # Go to bookmark [bookmark_name]
+alias p='bm -p' # Print bookmark of a path [path]
+alias d='bm -d' # Delete a bookmark [bookmark_name]

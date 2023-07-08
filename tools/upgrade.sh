@@ -16,11 +16,11 @@ function _omb_upgrade {
     BOLD=$(tput bold 2>/dev/null || tput md 2>/dev/null)
     NORMAL=$(tput sgr0 2>/dev/null || tput me 2>/dev/null)
   else
-	  RED=""
-	  GREEN=""
-	  BLUE=""
-	  BOLD=""
-	  NORMAL=""
+    RED=""
+    GREEN=""
+    BLUE=""
+    BOLD=""
+    NORMAL=""
   fi
 
   printf '%s\n' "${BLUE}Updating Oh My Bash${NORMAL}"
@@ -34,9 +34,9 @@ function _omb_upgrade {
     printf '%s\n' "oh-my-bash: running 'git rebase --abort'..."
     command git --git-dir="$OSH/.git" --work-tree="$OSH" rebase --abort
     printf "${RED}%s${NORMAL}\n" \
-           'There was an error updating.' \
-           "If you have uncommited changes in '$BOLD$OSH$NORMAL$RED', please commit, stash or discard them and retry updating." \
-           "If you have your own local commits in '$BOLD$OSH$NORMAL$RED' that conflict with the upstream changes, please resolve conflicts and merge the upstream manually."
+      'There was an error updating.' \
+      "If you have uncommited changes in '$BOLD$OSH$NORMAL$RED', please commit, stash or discard them and retry updating." \
+      "If you have your own local commits in '$BOLD$OSH$NORMAL$RED' that conflict with the upstream changes, please resolve conflicts and merge the upstream manually."
     return 1
   fi
 

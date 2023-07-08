@@ -53,8 +53,7 @@ __git_flow_config_file_options="
 	--local --global --system --file=
 	"
 
-_git_flow ()
-{
+_git_flow() {
 	local subcommands="init feature release hotfix support help version config finish delete publish rebase"
 	local subcommand="$(__git_find_on_cmdline "$subcommands")"
 	if [ -z "$subcommand" ]; then
@@ -93,8 +92,7 @@ _git_flow ()
 	esac
 }
 
-__git_flow_init ()
-{
+__git_flow_init() {
 	local subcommands="help"
 	local subcommand="$(__git_find_on_cmdline "$subcommands")"
 	if [ -z "$subcommand" ]; then
@@ -113,8 +111,7 @@ __git_flow_init ()
 	esac
 }
 
-__git_flow_feature ()
-{
+__git_flow_feature() {
 	local subcommands="list start finish publish track diff rebase checkout pull help delete"
 	local subcommand="$(__git_find_on_cmdline "$subcommands")"
 
@@ -196,8 +193,7 @@ __git_flow_feature ()
 	esac
 }
 
-__git_flow_release ()
-{
+__git_flow_release() {
 	local subcommands="list start finish track publish help delete"
 	local subcommand="$(__git_find_on_cmdline "$subcommands")"
 	if [ -z "$subcommand" ]; then
@@ -265,7 +261,7 @@ __git_flow_release ()
 		return
 		;;
 	start)
-	case "$cur" in
+		case "$cur" in
 		--*)
 			__gitcomp "
 					--nofetch --fetch
@@ -282,8 +278,7 @@ __git_flow_release ()
 
 }
 
-__git_flow_hotfix ()
-{
+__git_flow_hotfix() {
 	local subcommands="list start finish track publish help delete"
 	local subcommand="$(__git_find_on_cmdline "$subcommands")"
 	if [ -z "$subcommand" ]; then
@@ -366,8 +361,7 @@ __git_flow_hotfix ()
 	esac
 }
 
-__git_flow_support ()
-{
+__git_flow_support() {
 	local subcommands="list start help"
 	local subcommand="$(__git_find_on_cmdline "$subcommands")"
 	if [ -z "$subcommand" ]; then
@@ -406,8 +400,7 @@ __git_flow_support ()
 	esac
 }
 
-__git_flow_config ()
-{
+__git_flow_config() {
 	local subcommands="list set base"
 	local subcommand="$(__git_find_on_cmdline "$subcommands")"
 	if [ -z "$subcommand" ]; then
@@ -450,21 +443,19 @@ __git_flow_config ()
 	esac
 }
 
-__git_flow_prefix ()
-{
+__git_flow_prefix() {
 	case "$1" in
-	feature|release|hotfix|support)
-		git config "gitflow.prefix.$1" 2> /dev/null || echo "$1/"
+	feature | release | hotfix | support)
+		git config "gitflow.prefix.$1" 2>/dev/null || echo "$1/"
 		return
 		;;
 	esac
 }
 
-__git_flow_list_local_branches ()
-{
+__git_flow_list_local_branches() {
 	if [ -n "$1" ]; then
 		local prefix="$(__git_flow_prefix $1)"
-		git for-each-ref --shell --format="ref=%(refname:short)" refs/heads/$prefix | \
+		git for-each-ref --shell --format="ref=%(refname:short)" refs/heads/$prefix |
 			while read -r entry; do
 				eval "$entry"
 				ref="${ref#$prefix}"
@@ -476,24 +467,22 @@ __git_flow_list_local_branches ()
 	fi
 }
 
-__git_flow_list_remote_branches ()
-{
+__git_flow_list_remote_branches() {
 	local prefix="$(__git_flow_prefix $1)"
-	local origin="$(git config gitflow.origin 2> /dev/null || echo "origin")"
-	git for-each-ref --shell --format='%(refname:short)' refs/remotes/$origin/$prefix | \
-			while read -r entry; do
-				eval "$entry"
-				ref="${ref##$prefix}"
-				echo "$ref"
-			done | sort
+	local origin="$(git config gitflow.origin 2>/dev/null || echo "origin")"
+	git for-each-ref --shell --format='%(refname:short)' refs/remotes/$origin/$prefix |
+		while read -r entry; do
+			eval "$entry"
+			ref="${ref##$prefix}"
+			echo "$ref"
+		done | sort
 }
 
-__git_flow_list_branches ()
-{
-	local origin="$(git config gitflow.origin 2> /dev/null || echo "origin")"
+__git_flow_list_branches() {
+	local origin="$(git config gitflow.origin 2>/dev/null || echo "origin")"
 	if [ -n "$1" ]; then
 		local prefix="$(__git_flow_prefix $1)"
-		git for-each-ref --shell --format="ref=%(refname:short)" refs/heads/$prefix refs/remotes/$origin/$prefix | \
+		git for-each-ref --shell --format="ref=%(refname:short)" refs/heads/$prefix refs/remotes/$origin/$prefix |
 			while read -r entry; do
 				eval "$entry"
 				ref="${ref##$prefix}"
@@ -505,6 +494,6 @@ __git_flow_list_branches ()
 }
 
 # alias __git_find_on_cmdline for backwards compatibility
-if [ -z "`type -t __git_find_on_cmdline`" ]; then
+if [ -z "$(type -t __git_find_on_cmdline)" ]; then
 	alias __git_find_on_cmdline=__git_find_subcommand
 fi

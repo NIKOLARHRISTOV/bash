@@ -28,8 +28,8 @@ RBFU_THEME_PROMPT_PREFIX="|"
 RBFU_THEME_PROMPT_SUFFIX="| "
 
 function git_prompt_info {
-  git_prompt_vars
-  echo -e "$SCM_PREFIX$SCM_BRANCH$SCM_STATE$SCM_GIT_AHEAD$SCM_GIT_BEHIND$SCM_GIT_STASH$SCM_SUFFIX"
+    git_prompt_vars
+    echo -e "$SCM_PREFIX$SCM_BRANCH$SCM_STATE$SCM_GIT_AHEAD$SCM_GIT_BEHIND$SCM_GIT_STASH$SCM_SUFFIX"
 }
 
 LAST_PROMPT=""
@@ -44,7 +44,7 @@ function _omb_theme_PROMPT_COMMAND() {
     fi
 
     local wrap_char=""
-    [[ ${#new_PS1} -gt $(($COLUMNS/1)) ]] && wrap_char="\n"
+    [[ ${#new_PS1} -gt $(($COLUMNS / 1)) ]] && wrap_char="\n"
     PS1="${new_PS1}${_omb_prompt_green}${wrap_char}→${_omb_prompt_reset_color} "
 }
 

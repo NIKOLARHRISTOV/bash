@@ -12,7 +12,6 @@
 # the last call exited with an error, and whether background jobs are
 # running in this shell.
 
-
 # Note: a most part of this theme is the same as "agnoster", so let us source
 # the original theme "agnoster" and just override its functions.  In this way,
 # the maintenance becomes easier.
@@ -21,7 +20,6 @@ source "$OSH/themes/agnoster/agnoster.theme.sh"
 ######################################################################
 ### Segment drawing
 # A few utility functions to make it easy and re-usable to draw segmented prompts
-
 
 # prints history followed by HH:MM, useful for remembering what
 # we did previously
@@ -40,11 +38,11 @@ function prompt_dir {
 function __command_rprompt {
     local times= n=$COLUMNS tz
     for tz in ZRH:Europe/Zurich PIT:US/Eastern \
-              MTV:US/Pacific TOK:Asia/Tokyo; do
+        MTV:US/Pacific TOK:Asia/Tokyo; do
         [ $n -gt 40 ] || break
         times="$times ${tz%%:*}\e[30;1m:\e[0;36;1m"
         times="$times$(TZ=${tz#*:} date +%H:%M:%S)\e[0m"
-        n=$(( $n - 10 ))
+        n=$(($n - 10))
     done
     [ -z "$times" ] || printf "%${n}s$times\\r" ''
 }
@@ -58,8 +56,8 @@ function build_prompt {
     [[ -z ${AG_NO_HIST+x} ]] && prompt_histdt
     #[[ -z ${AG_NO_CONTEXT+x} ]] && prompt_context
     if [[ ${OMB_PROMPT_SHOW_PYTHON_VENV-} ]]; then
-      prompt_virtualenv
-      prompt_condaenv
+        prompt_virtualenv
+        prompt_condaenv
     fi
     prompt_dir
     prompt_git
@@ -80,7 +78,7 @@ function _omb_theme_PROMPT_COMMAND {
 
     PS1=""
     # date randomly or once per hour
-    if (( $(shuf -i 1-20 -n 1 --random-source=/dev/urandom) == 1 )) ; then #TK || (($PSDATE != $(date +%H))) ; then
+    if (($(shuf -i 1-20 -n 1 --random-source=/dev/urandom) == 1)); then #TK || (($PSDATE != $(date +%H))) ; then
         PS1+="\$(date +%a) $(date +%Y-%m-%d) "
     fi
     PSDATE=$(date +%H)

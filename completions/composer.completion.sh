@@ -1,7 +1,6 @@
 #! bash oh-my-bash.module
 
-_composer()
-{
+_composer() {
     local cur script coms opts com
     COMPREPLY=()
     _get_comp_words_by_ref -n : cur words
@@ -22,92 +21,92 @@ _composer()
     done
 
     # completing for an option
-    if [[ ${cur} == --* ]] ; then
+    if [[ ${cur} == --* ]]; then
         opts="--help --quiet --verbose --version --ansi --no-ansi --no-interaction --profile --no-plugins --working-dir"
 
         case "$com" in
-            about)
+        about)
             opts="${opts} "
             ;;
-            archive)
+        archive)
             opts="${opts} --format --dir --file"
             ;;
-            browse)
+        browse)
             opts="${opts} --homepage --show"
             ;;
-            clear-cache)
+        clear-cache)
             opts="${opts} "
             ;;
-            config)
+        config)
             opts="${opts} --global --editor --auth --unset --list --file --absolute"
             ;;
-            create-project)
+        create-project)
             opts="${opts} --stability --prefer-source --prefer-dist --repository --repository-url --dev --no-dev --no-custom-installers --no-scripts --no-progress --no-secure-http --keep-vcs --no-install --ignore-platform-reqs"
             ;;
-            depends)
+        depends)
             opts="${opts} --recursive --tree"
             ;;
-            diagnose)
+        diagnose)
             opts="${opts} "
             ;;
-            dump-autoload)
+        dump-autoload)
             opts="${opts} --no-scripts --optimize --classmap-authoritative --apcu --no-dev"
             ;;
-            exec)
+        exec)
             opts="${opts} --list"
             ;;
-            global)
+        global)
             opts="${opts} "
             ;;
-            help)
+        help)
             opts="${opts} --xml --format --raw"
             ;;
-            init)
+        init)
             opts="${opts} --name --description --author --type --homepage --require --require-dev --stability --license --repository"
             ;;
-            install)
+        install)
             opts="${opts} --prefer-source --prefer-dist --dry-run --dev --no-dev --no-custom-installers --no-autoloader --no-scripts --no-progress --no-suggest --optimize-autoloader --classmap-authoritative --apcu-autoloader --ignore-platform-reqs"
             ;;
-            licenses)
+        licenses)
             opts="${opts} --format --no-dev"
             ;;
-            list)
+        list)
             opts="${opts} --xml --raw --format"
             ;;
-            outdated)
+        outdated)
             opts="${opts} --outdated --all --direct --strict"
             ;;
-            prohibits)
+        prohibits)
             opts="${opts} --recursive --tree"
             ;;
-            remove)
+        remove)
             opts="${opts} --dev --no-progress --no-update --no-scripts --update-no-dev --update-with-dependencies --no-update-with-dependencies --ignore-platform-reqs --optimize-autoloader --classmap-authoritative --apcu-autoloader"
             ;;
-            require)
+        require)
             opts="${opts} --dev --prefer-source --prefer-dist --no-progress --no-suggest --no-update --no-scripts --update-no-dev --update-with-dependencies --ignore-platform-reqs --prefer-stable --prefer-lowest --sort-packages --optimize-autoloader --classmap-authoritative --apcu-autoloader"
             ;;
-            run-script)
+        run-script)
             opts="${opts} --timeout --dev --no-dev --list"
             ;;
-            search)
+        search)
             opts="${opts} --only-name --type"
             ;;
-            self-update)
+        self-update)
             opts="${opts} --rollback --clean-backups --no-progress --update-keys --stable --preview --snapshot"
             ;;
-            show)
+        show)
             opts="${opts} --all --installed --platform --available --self --name-only --path --tree --latest --outdated --minor-only --direct --strict"
             ;;
-            status)
+        status)
             opts="${opts} "
             ;;
-            suggests)
+        suggests)
             opts="${opts} --by-package --by-suggestion --no-dev"
             ;;
-            update)
+        update)
             opts="${opts} --prefer-source --prefer-dist --dry-run --dev --no-dev --lock --no-custom-installers --no-autoloader --no-scripts --no-progress --no-suggest --with-dependencies --optimize-autoloader --classmap-authoritative --apcu-autoloader --ignore-platform-reqs --prefer-stable --prefer-lowest --interactive --root-reqs"
             ;;
-            validate)
+        validate)
             opts="${opts} --no-check-all --no-check-lock --no-check-publish --with-dependencies --strict"
             ;;
 
@@ -116,7 +115,7 @@ _composer()
         COMPREPLY=($(compgen -W "${opts}" -- ${cur}))
         __ltrim_colon_completions "$cur"
 
-        return 0;
+        return 0
     fi
 
     # completing for a command

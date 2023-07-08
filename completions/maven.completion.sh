@@ -4,122 +4,113 @@
 #  - https://github.com/juven/maven-bash-completion
 #  - https://github.com/parisjug/maven-bash-completion
 
-function_exists()
-{
-	_omb_util_function_exists "$1"
-	return "$?"
+function_exists() {
+    _omb_util_function_exists "$1"
+    return "$?"
 }
 
 function_exists _get_comp_words_by_ref ||
-_get_comp_words_by_ref ()
-{
-    local exclude cur_ words_ cword_;
-    if [ "$1" = "-n" ]; then
-        exclude=$2;
-        shift 2;
-    fi;
-    __git_reassemble_comp_words_by_ref "$exclude";
-    cur_=${words_[cword_]};
-    while [ $# -gt 0 ]; do
-        case "$1" in
+    _get_comp_words_by_ref() {
+        local exclude cur_ words_ cword_
+        if [ "$1" = "-n" ]; then
+            exclude=$2
+            shift 2
+        fi
+        __git_reassemble_comp_words_by_ref "$exclude"
+        cur_=${words_[cword_]}
+        while [ $# -gt 0 ]; do
+            case "$1" in
             cur)
                 cur=$cur_
-            ;;
+                ;;
             prev)
-                prev=${words_[$cword_-1]}
-            ;;
+                prev=${words_[$cword_ - 1]}
+                ;;
             words)
                 words=("${words_[@]}")
-            ;;
+                ;;
             cword)
                 cword=$cword_
-            ;;
-        esac;
-        shift;
-    done
-}
+                ;;
+            esac
+            shift
+        done
+    }
 
 function_exists __ltrim_colon_completions ||
-__ltrim_colon_completions()
-{
-	if [[ "$1" == *:* && "$COMP_WORDBREAKS" == *:* ]]; then
-		# Remove colon-word prefix from COMPREPLY items
-		local colon_word=${1%${1##*:}}
-		local i=${#COMPREPLY[*]}
-		while [[ $((--i)) -ge 0 ]]; do
-			COMPREPLY[$i]=${COMPREPLY[$i]#"$colon_word"}
-		done
-	fi
-}
+    __ltrim_colon_completions() {
+        if [[ "$1" == *:* && "$COMP_WORDBREAKS" == *:* ]]; then
+            # Remove colon-word prefix from COMPREPLY items
+            local colon_word=${1%${1##*:}}
+            local i=${#COMPREPLY[*]}
+            while [[ $((--i)) -ge 0 ]]; do
+                COMPREPLY[$i]=${COMPREPLY[$i]#"$colon_word"}
+            done
+        fi
+    }
 
 function_exists __find_mvn_projects ||
-__find_mvn_projects()
-{
-    find . -name 'pom.xml' -not -path '*/target/*' -prune | while read LINE ; do
-        local withoutPom=${LINE%/pom.xml}
-        local module=${withoutPom#./}
-        if [[ -z ${module} ]]; then
-            echo "."
-        else
-            echo ${module}
-        fi
-    done
-}
+    __find_mvn_projects() {
+        find . -name 'pom.xml' -not -path '*/target/*' -prune | while read LINE; do
+            local withoutPom=${LINE%/pom.xml}
+            local module=${withoutPom#./}
+            if [[ -z ${module} ]]; then
+                echo "."
+            else
+                echo ${module}
+            fi
+        done
+    }
 
 function_exists _realpath ||
-_realpath ()
-{
-    if [[ -f "$1" ]]
-    then
-        # file *must* exist
-        if cd "$(echo "${1%/*}")" &>/dev/null
-        then
-	    # file *may* not be local
-	    # exception is ./file.ext
-	    # try 'cd .; cd -;' *works!*
- 	    local tmppwd="$PWD"
-	    cd - &>/dev/null
+    _realpath() {
+        if [[ -f "$1" ]]; then
+            # file *must* exist
+            if cd "$(echo "${1%/*}")" &>/dev/null; then
+                # file *may* not be local
+                # exception is ./file.ext
+                # try 'cd .; cd -;' *works!*
+                local tmppwd="$PWD"
+                cd - &>/dev/null
+            else
+                # file *must* be local
+                local tmppwd="$PWD"
+            fi
         else
-	    # file *must* be local
-	    local tmppwd="$PWD"
+            # file *cannot* exist
+            return 1 # failure
         fi
-    else
-        # file *cannot* exist
-        return 1 # failure
-    fi
 
-    # reassemble realpath
-    echo "$tmppwd"/"${1##*/}"
-    return 1 #success
-}
+        # reassemble realpath
+        echo "$tmppwd"/"${1##*/}"
+        return 1 #success
+    }
 
 function_exists __pom_hierarchy ||
-__pom_hierarchy()
-{
-    local pom=`_realpath "pom.xml"`
-    POM_HIERARCHY+=("$pom")
-    while [ -n "$pom" ] && grep -q "<parent>" "$pom"; do
-	    ## look for a new relativePath for parent pom.xml
-        local parent_pom_relative=`grep -e "<relativePath>.*</relativePath>" "$pom" | sed 's/.*<relativePath>//' | sed 's/<\/relativePath>.*//g'`
+    __pom_hierarchy() {
+        local pom=$(_realpath "pom.xml")
+        POM_HIERARCHY+=("$pom")
+        while [ -n "$pom" ] && grep -q "<parent>" "$pom"; do
+            ## look for a new relativePath for parent pom.xml
+            local parent_pom_relative=$(grep -e "<relativePath>.*</relativePath>" "$pom" | sed 's/.*<relativePath>//' | sed 's/<\/relativePath>.*//g')
 
-    	## <parent> is present but not defined, assume ../pom.xml
-    	if [ -z "$parent_pom_relative" ]; then
-    	    parent_pom_relative="../pom.xml"
-    	fi
+            ## <parent> is present but not defined, assume ../pom.xml
+            if [ -z "$parent_pom_relative" ]; then
+                parent_pom_relative="../pom.xml"
+            fi
 
-    	## if pom exists continue else break
-    	parent_pom=`_realpath "${pom%/*}/$parent_pom_relative"`
-        if [ -n "$parent_pom" ]; then
-            pom=$parent_pom
-    	else
-    	    break
-        fi
-    	POM_HIERARCHY+=("$pom")
-    done
-}
+            ## if pom exists continue else break
+            parent_pom=$(_realpath "${pom%/*}/$parent_pom_relative")
+            if [ -n "$parent_pom" ]; then
+                pom=$parent_pom
+            else
+                break
+            fi
+            POM_HIERARCHY+=("$pom")
+        done
+    }
 
-_mvn()
-{
+_mvn() {
     local cur prev
     COMPREPLY=()
     POM_HIERARCHY=()
@@ -198,62 +189,61 @@ _mvn()
     local plugin_goals_wildfly="wildfly:add-resource|wildfly:deploy|wildfly:deploy-only|wildfly:deploy-artifact|wildfly:redeploy|wildfly:redeploy-only|wildfly:undeploy|wildfly:undeploy-artifact|wildfly:run|wildfly:start|wildfly:shutdown|wildfly:execute-commands"
 
     ## some plugin (like jboss-as) has '-' which is not allowed in shell var name, to use '_' then replace
-    local common_plugins=`compgen -v | grep "^plugin_goals_.*" | sed 's/plugin_goals_//g' | tr '_' '-' | tr '\n' '|'`
+    local common_plugins=$(compgen -v | grep "^plugin_goals_.*" | sed 's/plugin_goals_//g' | tr '_' '-' | tr '\n' '|')
 
     local options="-Dmaven.test.skip=true|-DskipTests|-DskipITs|-Dtest|-Dit.test|-DfailIfNoTests|-Dmaven.surefire.debug|-DenableCiProfile|-Dpmd.skip=true|-Dcheckstyle.skip=true|-Dtycho.mode=maven|-Dmaven.javadoc.skip=true|-Dgwt.compiler.skip|-Dcobertura.skip=true|-Dfindbugs.skip=true||-DperformRelease=true|-Dgpg.skip=true|-DforkCount"
 
-    local profile_settings=`[ -e ~/.m2/settings.xml ] && grep -e "<profile>" -A 1 ~/.m2/settings.xml | grep -e "<id>.*</id>" | sed 's/.*<id>//' | sed 's/<\/id>.*//g' | tr '\n' '|' `
+    local profile_settings=$([ -e ~/.m2/settings.xml ] && grep -e "<profile>" -A 1 ~/.m2/settings.xml | grep -e "<id>.*</id>" | sed 's/.*<id>//' | sed 's/<\/id>.*//g' | tr '\n' '|')
 
     local profiles="${profile_settings}|"
-    for item in ${POM_HIERARCHY[*]}
-    do
-        local profile_pom=`[ -e $item ] && grep -e "<profile>" -A 1 $item | grep -e "<id>.*</id>" | sed 's/.*<id>//' | sed 's/<\/id>.*//g' | tr '\n' '|' `
+    for item in ${POM_HIERARCHY[*]}; do
+        local profile_pom=$([ -e $item ] && grep -e "<profile>" -A 1 $item | grep -e "<id>.*</id>" | sed 's/.*<id>//' | sed 's/<\/id>.*//g' | tr '\n' '|')
         local profiles="${profiles}|${profile_pom}"
     done
 
     local IFS=$'|\n'
 
-    if [[ ${cur} == -D* ]] ; then
-      COMPREPLY=( $(compgen -S ' ' -W "${options}" -- ${cur}) )
+    if [[ ${cur} == -D* ]]; then
+        COMPREPLY=($(compgen -S ' ' -W "${options}" -- ${cur}))
 
-    elif [[ ${prev} == -P ]] ; then
-      if [[ ${cur} == *,* ]] ; then
-        COMPREPLY=( $(compgen -S ',' -W "${profiles}" -P "${cur%,*}," -- ${cur##*,}) )
-      else
-        COMPREPLY=( $(compgen -S ',' -W "${profiles}" -- ${cur}) )
-      fi
-
-    elif [[ ${cur} == --* ]] ; then
-      COMPREPLY=( $(compgen -W "${long_opts}" -S ' ' -- ${cur}) )
-
-    elif [[ ${cur} == -* ]] ; then
-        COMPREPLY=( $(compgen -W "${opts}" -S ' ' -- ${cur}) )
-
-    elif [[ ${prev} == -pl ]] ; then
-        if [[ ${cur} == *,* ]] ; then
-            COMPREPLY=( $(compgen -W "$(__find_mvn_projects)" -S ',' -P "${cur%,*}," -- ${cur##*,}) )
+    elif [[ ${prev} == -P ]]; then
+        if [[ ${cur} == *,* ]]; then
+            COMPREPLY=($(compgen -S ',' -W "${profiles}" -P "${cur%,*}," -- ${cur##*,}))
         else
-            COMPREPLY=( $(compgen -W "$(__find_mvn_projects)" -S ',' -- ${cur}) )
+            COMPREPLY=($(compgen -S ',' -W "${profiles}" -- ${cur}))
         fi
 
-    elif [[ ${prev} == -rf || ${prev} == --resume-from ]] ; then
-        COMPREPLY=( $(compgen -d -S ' ' -- ${cur}) )
+    elif [[ ${cur} == --* ]]; then
+        COMPREPLY=($(compgen -W "${long_opts}" -S ' ' -- ${cur}))
 
-    elif [[ ${cur} == *:* ]] ; then
+    elif [[ ${cur} == -* ]]; then
+        COMPREPLY=($(compgen -W "${opts}" -S ' ' -- ${cur}))
+
+    elif [[ ${prev} == -pl ]]; then
+        if [[ ${cur} == *,* ]]; then
+            COMPREPLY=($(compgen -W "$(__find_mvn_projects)" -S ',' -P "${cur%,*}," -- ${cur##*,}))
+        else
+            COMPREPLY=($(compgen -W "$(__find_mvn_projects)" -S ',' -- ${cur}))
+        fi
+
+    elif [[ ${prev} == -rf || ${prev} == --resume-from ]]; then
+        COMPREPLY=($(compgen -d -S ' ' -- ${cur}))
+
+    elif [[ ${cur} == *:* ]]; then
         local plugin
         for plugin in $common_plugins; do
-          if [[ ${cur} == ${plugin}:* ]]; then
-            ## note that here is an 'unreplace', see the comment at common_plugins
-            var_name="plugin_goals_${plugin//-/_}"
-            COMPREPLY=( $(compgen -W "${!var_name}" -S ' ' -- ${cur}) )
-          fi
+            if [[ ${cur} == ${plugin}:* ]]; then
+                ## note that here is an 'unreplace', see the comment at common_plugins
+                var_name="plugin_goals_${plugin//-/_}"
+                COMPREPLY=($(compgen -W "${!var_name}" -S ' ' -- ${cur}))
+            fi
         done
 
     else
-        if echo "${common_lifecycle_phases}" | tr '|' '\n' | grep -q -e "^${cur}" ; then
-          COMPREPLY=( $(compgen -S ' ' -W "${common_lifecycle_phases}" -- ${cur}) )
+        if echo "${common_lifecycle_phases}" | tr '|' '\n' | grep -q -e "^${cur}"; then
+            COMPREPLY=($(compgen -S ' ' -W "${common_lifecycle_phases}" -- ${cur}))
         elif echo "${common_plugins}" | tr '|' '\n' | grep -q -e "^${cur}"; then
-          COMPREPLY=( $(compgen -S ':' -W "${common_plugins}" -- ${cur}) )
+            COMPREPLY=($(compgen -S ':' -W "${common_plugins}" -- ${cur}))
         fi
     fi
 

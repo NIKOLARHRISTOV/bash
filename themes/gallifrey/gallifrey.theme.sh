@@ -16,26 +16,27 @@ SCM_HG_CHAR="h"
 
 function scm_prompt {
     CHAR=$(scm_char)
-    if [ $CHAR = $SCM_NONE_CHAR ]
-        then
-            return
-        else
-            echo "$(scm_prompt_info) "
+    if [ $CHAR = $SCM_NONE_CHAR ]; then
+        return
+    else
+        echo "$(scm_prompt_info) "
     fi
 }
 
 function _omb_theme_PROMPT_COMMAND {
-    ps_host="${_omb_prompt_green}\h${_omb_prompt_normal}";
-    ps_user_mark="${_omb_prompt_bold}\$${_omb_prompt_normal}";
+    ps_host="${_omb_prompt_green}\h${_omb_prompt_normal}"
+    ps_user_mark="${_omb_prompt_bold}\$${_omb_prompt_normal}"
     ps_root_mark="${_omb_prompt_normal}§"
-    ps_path="${_omb_prompt_normal}\w";
+    ps_path="${_omb_prompt_normal}\w"
 
     # make it work
     case $(id -u) in
-        0) PS1="$ps_host $ps_path $(scm_prompt)$ps_root_mark "
-            ;;
-        *) PS1="$ps_host $ps_path $(scm_prompt)$ps_user_mark "
-            ;;
+    0)
+        PS1="$ps_host $ps_path $(scm_prompt)$ps_root_mark "
+        ;;
+    *)
+        PS1="$ps_host $ps_path $(scm_prompt)$ps_user_mark "
+        ;;
     esac
 }
 

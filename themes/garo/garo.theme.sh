@@ -36,7 +36,8 @@ function _omb_theme_PROMPT_COMMAND() {
     local RC="$?"
 
     local hostname="${_omb_prompt_bold_gray}\u"
-    local python_venv; _omb_prompt_get_python_venv
+    local python_venv
+    _omb_prompt_get_python_venv
     python_venv=$_omb_prompt_white$python_venv
 
     # Set return status color

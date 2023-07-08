@@ -12,7 +12,6 @@ if [ -f /etc/profile.d/bash_completion.sh ]; then
   . /etc/profile.d/bash_completion.sh
 fi
 
-
 if [ $(uname) = "Darwin" ] && _omb_util_command_exists brew; then
   BREW_PREFIX=$(brew --prefix)
 

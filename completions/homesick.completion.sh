@@ -4,8 +4,7 @@
 # The homebrew bash completion script was used as inspiration.
 # Originally from https://github.com/liborw/homesick-completion
 
-_homesick_complete()
-{
+_homesick_complete() {
     local cur="${COMP_WORDS[COMP_CWORD]}"
     local options="--skip --force --pretend --quiet"
     local actions="cd clone commit destroy diff generate help list open pull push rc show_path status symlink track unlink version"
@@ -13,7 +12,7 @@ _homesick_complete()
 
     # Subcommand list
     [[ ${COMP_CWORD} -eq 1 ]] && {
-        COMPREPLY=( $(compgen -W "${options} ${actions}" -- ${cur}) )
+        COMPREPLY=($(compgen -W "${options} ${actions}" -- ${cur}))
         return
     }
 
@@ -27,8 +26,7 @@ _homesick_complete()
 
     # Find the number of non-"--" commands
     local num=0
-    for word in ${COMP_WORDS[@]}
-    do
+    for word in ${COMP_WORDS[@]}; do
         if [[ $word != -* ]]; then
             num=$((++num))
         fi
@@ -36,21 +34,21 @@ _homesick_complete()
 
     case "$prev" in
     # Commands that take a castle
-    cd|commit|destroy|diff|open|pull|push|rc|show_path|status|symlink|unlink)
-        COMPREPLY=( $(compgen -W "${repos}" -- ${cur}) )
+    cd | commit | destroy | diff | open | pull | push | rc | show_path | status | symlink | unlink)
+        COMPREPLY=($(compgen -W "${repos}" -- ${cur}))
         return
         ;;
     # Commands that take command
     help)
-        COMPREPLY=( $(compgen -W "${actions}" -- ${cur}) )
+        COMPREPLY=($(compgen -W "${actions}" -- ${cur}))
         return
         ;;
     # Track command take file and repo
     track)
         if [[ "$num" -eq 2 ]]; then
-            COMPREPLY=( $(compgen -X -f ${cur}) )
+            COMPREPLY=($(compgen -X -f ${cur}))
         elif [[ "$num" -ge 3 ]]; then
-            COMPREPLY=( $(compgen -W "${repos}" -- ${cur}) )
+            COMPREPLY=($(compgen -W "${repos}" -- ${cur}))
         fi
         return
         ;;
@@ -58,4 +56,3 @@ _homesick_complete()
 }
 
 complete -o bashdefault -o default -F _homesick_complete homesick
-

@@ -7,7 +7,7 @@ function _omb_upgrade_current_epoch {
 }
 
 function _omb_upgrade_update_timestamp {
-  echo "LAST_EPOCH=$(_omb_upgrade_current_epoch)" >| ~/.osh-update
+  echo "LAST_EPOCH=$(_omb_upgrade_current_epoch)" >|~/.osh-update
 }
 
 function _omb_upgrade_check {
@@ -35,9 +35,8 @@ function _omb_upgrade_check {
   # update ~/.osh-update
   _omb_upgrade_update_timestamp
   if [[ $DISABLE_UPDATE_PROMPT == true ]] ||
-       { read -rp '[Oh My Bash] Would you like to check for updates? [Y/n]: ' line &&
-           [[ $line == Y* || $line == y* || ! $line ]]; }
-  then
+    { read -rp '[Oh My Bash] Would you like to check for updates? [Y/n]: ' line &&
+      [[ $line == Y* || $line == y* || ! $line ]]; }; then
     source "$OSH"/tools/upgrade.sh
   fi
 }

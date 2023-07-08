@@ -32,20 +32,18 @@
 # It accepts 2 arguments though the second is optional:
 # 1: List of possible completion words.
 # 2: Generate possible completion matches for this word (optional).
-__packercomp ()
-{
+__packercomp() {
     local cur_="${2-$cur}"
 
     case "$cur_" in
-    -*=)
-        ;;
+    -*=) ;;
     *)
         local c i=0 IFS=$' \t\n'
         for c in $1; do
             if [[ $c == "$cur_"* ]]; then
                 case $c in
-                    -*=*|*.) ;;
-                    *) c="$c " ;;
+                -*=* | *.) ;;
+                *) c="$c " ;;
                 esac
                 COMPREPLY[i++]="$c"
             fi
@@ -55,67 +53,62 @@ __packercomp ()
 }
 
 # Generates completion reply for template files in cwd.
-__packercomp_template_file ()
-{
+__packercomp_template_file() {
     local IFS=$'\n'
 
     COMPREPLY=($(compgen -S " " -A file -X '!*.json' -- "${cur}"))
 }
 
 # Generates completion for the build command.
-__packer_build ()
-{
+__packer_build() {
     local builders="
         amazon-ebs amazon-instance amazon-chroot digitalocean docker
         googlecompute openstack parallels-iso parallels-pvm qemu
         virtualbox-iso virtualbox-ovf vmware-iso vmware-vmx"
 
     case "$cur" in
-        -parallel=*)
-            __packercomp "false true" "${cur##-parallel=}"
-            return
-            ;;
-        -except=*)
-            __packercomp "$builders" "${cur##-except=}"
-            return
-            ;;
-        -only=*)
-            __packercomp "$builders" "${cur##-only=}"
-            return
-            ;;
-        -*)
-            __packercomp "-debug -force -machine-readable -except= -only= -parallel= -var -var-file"
-            return
-            ;;
-        *)
+    -parallel=*)
+        __packercomp "false true" "${cur##-parallel=}"
+        return
+        ;;
+    -except=*)
+        __packercomp "$builders" "${cur##-except=}"
+        return
+        ;;
+    -only=*)
+        __packercomp "$builders" "${cur##-only=}"
+        return
+        ;;
+    -*)
+        __packercomp "-debug -force -machine-readable -except= -only= -parallel= -var -var-file"
+        return
+        ;;
+    *) ;;
     esac
 
     __packercomp_template_file
 }
 
 # Generates completion for the fix command.
-__packer_fix ()
-{
+__packer_fix() {
     __packercomp_template_file
 }
 
 # Generates completion for the inspect command.
-__packer_inspect ()
-{
+__packer_inspect() {
     case "$cur" in
-        -*)
-            __packercomp "-machine-readable"
-            return
-            ;;
-        *)
+    -*)
+        __packercomp "-machine-readable"
+        return
+        ;;
+    *) ;;
     esac
 
     __packercomp_template_file
 }
 
 # Generates completion for the validate command.
-__packer_validate ()
-{
+__packer_validate() {
     __packercomp_template_file
 }
 
@@ -124,8 +117,7 @@ __packer_validate ()
 # Searches for a command in $COMP_WORDS. If one is found
 # the appropriate function from above is called, if not
 # completion for global options is done.
-_packer_completion ()
-{
+_packer_completion() {
     cur=${COMP_WORDS[COMP_CWORD]}
     # Words containing an equal sign get split into tokens in bash > 4, which
     # doesn't come in handy here.
@@ -138,20 +130,23 @@ _packer_completion ()
     while [ $c -lt $COMP_CWORD ]; do
         i="${COMP_WORDS[c]}"
         case "$i" in
-            -*) ;;
-            *) command="$i"; break ;;
+        -*) ;;
+        *)
+            command="$i"
+            break
+            ;;
         esac
         ((c++))
     done
 
     if [ -z "$command" ]; then
         case "$cur" in
-            '-'*)
-                __packercomp "-machine-readable --help --version"
-                ;;
-            *)
-                __packercomp "build fix inspect validate"
-                ;;
+        '-'*)
+            __packercomp "-machine-readable --help --version"
+            ;;
+        *)
+            __packercomp "build fix inspect validate"
+            ;;
         esac
         return
     fi
@@ -161,4 +156,3 @@ _packer_completion ()
 }
 
 complete -o nospace -F _packer_completion packer
-

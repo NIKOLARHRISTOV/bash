@@ -60,7 +60,8 @@ function _omb_install_readargs {
   install_opts=
   install_prefix=
   while (($#)); do
-    local arg=$1; shift
+    local arg=$1
+    shift
     if [[ :$install_opts: != *:literal:* ]]; then
       case $arg in
       --prefix=*)
@@ -71,24 +72,30 @@ function _omb_install_readargs {
           install_opts+=:error
           printf 'install (oh-my-bash): %s\n' "$RED$BOLD[Error]$NORMAL ${RED}the option argument for '--prefix' is empty.$NORMAL" >&2
         fi
-        continue ;;
+        continue
+        ;;
       --prefix)
         if (($#)); then
-          install_prefix=$1; shift
+          install_prefix=$1
+          shift
         else
           install_opts+=:error
           printf 'install (oh-my-bash): %s\n' "$RED$BOLD[Error]$NORMAL ${RED}an option argument for '$arg' is missing.$NORMAL" >&2
         fi
-        continue ;;
+        continue
+        ;;
       --help | --usage | --unattended | --dry-run)
         install_opts+=:${arg#--}
-        continue ;;
+        continue
+        ;;
       --version | -v)
         install_opts+=:version
-        continue ;;
+        continue
+        ;;
       --)
         install_opts+=:literal
-        continue ;;
+        continue
+        ;;
       -*)
         install_opts+=:error
         if [[ $arg == -[!-]?* ]]; then
@@ -96,7 +103,8 @@ function _omb_install_readargs {
         else
           printf 'install (oh-my-bash): %s\n' "$RED$BOLD[Error]$NORMAL ${RED}unrecognized option '$arg'.$NORMAL" >&2
         fi
-        continue ;;
+        continue
+        ;;
       esac
     fi
 
@@ -149,7 +157,7 @@ function _omb_install_has_proper_bash_profile {
 ##   @var[in] OSH
 function _omb_install_user_bashrc {
   printf '%s\n' "${BLUE}Looking for an existing bash config...${NORMAL}"
-  if [[ -f ~/.bashrc || -h ~/.bashrc ]]; then
+  if [[ -f ~/.bashrc || -L ~/.bashrc ]]; then
     # shellcheck disable=SC2155
     local bashrc_backup=~/.bashrc.omb-backup-$(date +%Y%m%d%H%M%S)
     printf '%s\n' "${YELLOW}Found ~/.bashrc.${NORMAL} ${GREEN}Backing up to $bashrc_backup${NORMAL}"
@@ -159,7 +167,7 @@ function _omb_install_user_bashrc {
   printf '%s\n' "${BLUE}Copying the Oh-My-Bash template file to ~/.bashrc${NORMAL}"
   sed "/^export OSH=/ c\\
 export OSH='${OSH//\'/\'\\\'\'}'
-  " "$OSH"/templates/bashrc.osh-template >| ~/.bashrc.omb-temp &&
+  " "$OSH"/templates/bashrc.osh-template >|~/.bashrc.omb-temp &&
     _omb_install_run mv -f ~/.bashrc.omb-temp ~/.bashrc
 
   # If "source ~/.bashrc" is not found in ~/.bash_profile or ~/.profile, we try
@@ -167,7 +175,7 @@ export OSH='${OSH//\'/\'\\\'\'}'
   # for user to add "source ~/.bashrc" in the existing ~/.bash_profile.
   if ! _omb_install_has_proper_bash_profile; then
     if [[ ! -e ~/.bash_profile ]]; then
-      if [[ -h ~/.bash_profile ]]; then
+      if [[ -L ~/.bash_profile ]]; then
         _omb_install_run rm -f ~/.bash_profile
       fi
       _omb_install_run cp -f "$OSH"/templates/bash_profile.osh-template ~/.bash_profile
@@ -201,7 +209,7 @@ function _omb_install_system_bashrc {
   osh=${osh//$'\n'/$'\\\n'}
   local sed_script='/^export OSH=.*/c \
 '"export OSH=$osh"
-  _omb_install_run sed "$sed_script" "$OSH"/templates/bashrc.osh-template >| "$OSH"/bashrc
+  _omb_install_run sed "$sed_script" "$OSH"/templates/bashrc.osh-template >|"$OSH"/bashrc
 
   _omb_install_banner
   printf '%s\n' "${GREEN}To enable Oh My Bash, please copy '${BOLD}$OSH/bashrc${NORMAL}${GREEN}' to '${BOLD}~/.bashrc${NORMAL}${GREEN}'.${NORMAL}"
@@ -297,7 +305,7 @@ function _omb_install_main {
   }
   # The Windows (MSYS) Git is not compatible with normal use on cygwin
   if [[ $OSTYPE == cygwin ]]; then
-    if command git --version | command grep msysgit > /dev/null; then
+    if command git --version | command grep msysgit >/dev/null; then
       echo "Error: Windows/MSYS Git is not supported on Cygwin"
       echo "Error: Make sure the Cygwin git package is installed and is first on the path"
       return 1

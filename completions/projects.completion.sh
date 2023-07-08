@@ -17,8 +17,8 @@ function _pj {
   for i in ${PROJECT_PATHS//:/$'\n'}; do
     # create an array of matched subdirs
     k="${#COMPREPLY[@]}"
-    for j in $( compgen -d $i/$cur ); do
-      if [[ ( $mark_symdirs && -h $j || $mark_dirs && ! -h $j ) && ! -d ${j#$i/} ]]; then
+    for j in $(compgen -d $i/$cur); do
+      if [[ ($mark_symdirs && -L $j || $mark_dirs && ! -L $j) && ! -d ${j#$i/} ]]; then
         j+="/"
       fi
       COMPREPLY[k++]=${j#$i/}
@@ -37,4 +37,3 @@ function _pj {
 
 complete -F _pj -o nospace pj
 complete -F _pj -o nospace pjo
-

@@ -3,7 +3,7 @@
 function _omb_completion_git_initialize {
     if ! _omb_util_function_exists __gitdir; then
         local git_paths path
-        IFS=$'\n' read -r -d '' -a git_paths <<< "$(type -aP git)"
+        IFS=$'\n' read -r -d '' -a git_paths <<<"$(type -aP git)"
         # Note: Falling back on /usr (should already be in the array)
         git_paths+=("/usr/bin/git")
         for path in "${git_paths[@]}"; do

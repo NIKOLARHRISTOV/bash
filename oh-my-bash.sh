@@ -6,8 +6,8 @@
 # /etc/gdm3/Xsession sources ~/.profile and checks stderr.  If there is any
 # stderr ourputs, it refuses to start the session.
 case $- in
-  *i*) ;;
-    *) return;;
+*i*) ;;
+*) return ;;
 esac
 
 if [ -z "${BASH_VERSION-}" ]; then
@@ -53,7 +53,8 @@ function _omb_module_require {
   local status=0
   local -a files=()
   while (($#)); do
-    local type=lib name=$1; shift
+    local type=lib name=$1
+    shift
     [[ $name == *:* ]] && type=${name%%:*} name=${name#*:}
     name=${name%.bash}
     name=${name%.sh}
@@ -62,15 +63,16 @@ function _omb_module_require {
 
     local -a locations=()
     case $type in
-    lib)        locations=({"$OSH_CUSTOM","$OSH"}/lib/"$name".{bash,sh}) ;;
-    plugin)     locations=({"$OSH_CUSTOM","$OSH"}/plugins/"$name"/"$name".plugin.{bash,sh}) ;;
-    alias)      locations=({"$OSH_CUSTOM","$OSH"}/aliases/"$name".aliases.{bash,sh}) ;;
+    lib) locations=({"$OSH_CUSTOM","$OSH"}/lib/"$name".{bash,sh}) ;;
+    plugin) locations=({"$OSH_CUSTOM","$OSH"}/plugins/"$name"/"$name".plugin.{bash,sh}) ;;
+    alias) locations=({"$OSH_CUSTOM","$OSH"}/aliases/"$name".aliases.{bash,sh}) ;;
     completion) locations=({"$OSH_CUSTOM","$OSH"}/completions/"$name".completion.{bash,sh}) ;;
-    theme)      locations=({"$OSH_CUSTOM"{,/themes},"$OSH"/themes}/"$name"/"$name".theme.{bash,sh}) ;;
+    theme) locations=({"$OSH_CUSTOM"{,/themes},"$OSH"/themes}/"$name"/"$name".theme.{bash,sh}) ;;
     *)
       echo "oh-my-bash (module_require): unknown module type '$type'." >&2
       status=2
-      continue ;;
+      continue
+      ;;
     esac
 
     local path
@@ -85,7 +87,7 @@ function _omb_module_require {
     status=127
   done
 
-  if ((status==0)); then
+  if ((status == 0)); then
     local path
     for path in "${files[@]}"; do
       source "$path" || status=$?
@@ -95,11 +97,11 @@ function _omb_module_require {
   return "$status"
 }
 
-function _omb_module_require_lib        { _omb_module_require "${@/#/lib:}"; }
-function _omb_module_require_plugin     { _omb_module_require "${@/#/plugin:}"; }
-function _omb_module_require_alias      { _omb_module_require "${@/#/alias:}"; }
+function _omb_module_require_lib { _omb_module_require "${@/#/lib:}"; }
+function _omb_module_require_plugin { _omb_module_require "${@/#/plugin:}"; }
+function _omb_module_require_alias { _omb_module_require "${@/#/alias:}"; }
 function _omb_module_require_completion { _omb_module_require "${@/#/completion:}"; }
-function _omb_module_require_theme      { _omb_module_require "${@/#/theme:}"; }
+function _omb_module_require_theme { _omb_module_require "${@/#/theme:}"; }
 
 # Load all of the config files in ~/.oh-my-bash/lib that end in .sh
 # TIP: Add files you don't want in git to .gitignore
@@ -140,7 +142,7 @@ unset -v _omb_init_files _omb_init_file
 if [[ $OSH_THEME == random ]]; then
   _omb_util_glob_expand _omb_init_files '"$OSH"/themes/*/*.theme.sh'
   if ((${#_omb_init_files[@]})); then
-    _omb_init_file=${_omb_init_files[RANDOM%${#_omb_init_files[@]}]}
+    _omb_init_file=${_omb_init_files[RANDOM % ${#_omb_init_files[@]}]}
     source "$_omb_init_file"
     OMB_THEME_RANDOM_SELECTED=${_omb_init_file##*/}
     OMB_THEME_RANDOM_SELECTED=${OMB_THEME_RANDOM_SELECTED%.theme.bash}
@@ -156,10 +158,10 @@ if [[ $PROMPT ]]; then
   export PS1="\["$PROMPT"\]"
 fi
 
-if ! _omb_util_command_exists '__git_ps1' ; then
+if ! _omb_util_command_exists '__git_ps1'; then
   source "$OSH/tools/git-prompt.sh"
 fi
 
 # Adding Support for other OSes
 [ -s /usr/bin/gloobus-preview ] && PREVIEW="gloobus-preview" ||
-[ -s /Applications/Preview.app ] && PREVIEW="/Applications/Preview.app" || PREVIEW="less"
+  [ -s /Applications/Preview.app ] && PREVIEW="/Applications/Preview.app" || PREVIEW="less"

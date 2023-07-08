@@ -38,7 +38,7 @@
 # Make sure this is bash that's running and return otherwise.
 # Use POSIX syntax for this line:
 if [ -z "${BASH_VERSION-}" ]; then
-    return 1;
+    return 1
 fi
 
 # We only support Bash 3.1+.
@@ -76,13 +76,13 @@ __bp_install_string=$'__bp_trap_string="$(trap -p DEBUG)"\ntrap - DEBUG\n__bp_in
 # Fails if any of the given variables are readonly
 # Reference https://stackoverflow.com/a/4441178
 function __bp_require_not_readonly {
-  local var
-  for var; do
-    if ! ( unset "$var" 2> /dev/null ); then
-      echo "bash-preexec requires write access to ${var}" >&2
-      return 1
-    fi
-  done
+    local var
+    for var; do
+        if ! (unset "$var" 2>/dev/null); then
+            echo "bash-preexec requires write access to ${var}" >&2
+            return 1
+        fi
+    done
 }
 
 # Remove ignorespace and or replace ignoreboth from HISTCONTROL
@@ -91,11 +91,11 @@ function __bp_require_not_readonly {
 function __bp_adjust_histcontrol {
     local histcontrol
     histcontrol="${HISTCONTROL:-}"
-    histcontrol="${histcontrol//ignorespace}"
+    histcontrol="${histcontrol//ignorespace/}"
     # Replace ignoreboth with ignoredups
     if [[ "$histcontrol" == *"ignoreboth"* ]]; then
-        histcontrol="ignoredups:${histcontrol//ignoreboth}"
-    fi;
+        histcontrol="ignoredups:${histcontrol//ignoreboth/}"
+    fi
     export HISTCONTROL="$histcontrol"
 }
 
@@ -114,11 +114,10 @@ declare -a preexec_functions
 # name passed as $1
 function __bp_trim_whitespace {
     local var=${1:?} text=${2:-}
-    text="${text#"${text%%[![:space:]]*}"}"   # remove leading whitespace characters
-    text="${text%"${text##*[![:space:]]}"}"   # remove trailing whitespace characters
+    text="${text#"${text%%[![:space:]]*}"}" # remove leading whitespace characters
+    text="${text%"${text##*[![:space:]]}"}" # remove trailing whitespace characters
     printf -v "$var" '%s' "$text"
 }
-
 
 # Trims whitespace and removes any leading or trailing semicolons from $2 and
 # writes the resulting string to the variable name passed as $1. Used for
@@ -136,9 +135,8 @@ function __bp_sanitize_string {
 # It sets a variable to indicate that the prompt was just displayed,
 # to allow the DEBUG trap to know that the next command is likely interactive.
 function __bp_interactive_mode {
-    __bp_preexec_interactive_mode="on";
+    __bp_preexec_interactive_mode="on"
 }
-
 
 # This function is installed as part of the PROMPT_COMMAND.
 # It will invoke any functions defined in the precmd_functions array.
@@ -153,8 +151,8 @@ function __bp_precmd_invoke_cmd {
     # Don't invoke precmds if we are inside an execution of an "original
     # prompt command" by another precmd execution loop. This avoids infinite
     # recursion.
-    if (( __bp_inside_precmd > 0 )); then
-      return
+    if ((__bp_inside_precmd > 0)); then
+        return
     fi
     local __bp_inside_precmd=1
 
@@ -184,7 +182,7 @@ function __bp_set_ret_value {
 function __bp_in_prompt_command {
 
     local prompt_command_array
-    IFS=$'\n;' read -rd '' -a prompt_command_array <<< "${PROMPT_COMMAND:-}"
+    IFS=$'\n;' read -rd '' -a prompt_command_array <<<"${PROMPT_COMMAND:-}"
 
     local trimmed_arg
     __bp_trim_whitespace trimmed_arg "${1:-}"
@@ -210,8 +208,8 @@ function __bp_preexec_invoke_exec {
     # https://stackoverflow.com/questions/40944532/bash-preserve-in-a-debug-trap#40944702
     __bp_last_argument_prev_command="${1:-}"
     # Don't invoke preexecs if we are inside of another preexec.
-    if (( __bp_inside_preexec > 0 )); then
-      return
+    if ((__bp_inside_preexec > 0)); then
+        return
     fi
     local __bp_inside_preexec=1
 
@@ -242,7 +240,7 @@ function __bp_preexec_invoke_exec {
         fi
     fi
 
-    if  __bp_in_prompt_command "${BASH_COMMAND:-}"; then
+    if __bp_in_prompt_command "${BASH_COMMAND:-}"; then
         # If we're executing something inside our prompt_command then we don't
         # want to call preexec. Bash prior to 3.1 can't detect this at all :/
         __bp_preexec_interactive_mode=""
@@ -291,7 +289,7 @@ function __bp_preexec_invoke_exec {
 function __bp_install {
     # Exit if we already have this installed.
     if [[ "${PROMPT_COMMAND:-}" == *"__bp_precmd_invoke_cmd"* ]]; then
-        return 1;
+        return 1
     fi
 
     trap '__bp_preexec_invoke_exec "$_"' DEBUG
@@ -319,15 +317,15 @@ function __bp_install {
     if [[ -n "${__bp_enable_subshells:-}" ]]; then
 
         # Set so debug trap will work be invoked in subshells.
-        set -o functrace > /dev/null 2>&1
-        shopt -s extdebug > /dev/null 2>&1
-    fi;
+        set -o functrace >/dev/null 2>&1
+        shopt -s extdebug >/dev/null 2>&1
+    fi
 
     local existing_prompt_command
     # Remove setting our trap install string and sanitize the existing prompt command string
     existing_prompt_command="${PROMPT_COMMAND:-}"
-    existing_prompt_command="${existing_prompt_command//${__bp_install_string}[;$'\n']}" # Edge case of appending to PROMPT_COMMAND
-    existing_prompt_command="${existing_prompt_command//$__bp_install_string}"
+    existing_prompt_command="${existing_prompt_command//${__bp_install_string}[;$'\n']/}" # Edge case of appending to PROMPT_COMMAND
+    existing_prompt_command="${existing_prompt_command//$__bp_install_string/}"
     __bp_sanitize_string existing_prompt_command "$existing_prompt_command"
 
     # Install our hooks in PROMPT_COMMAND to allow our trap to know when we've
@@ -335,7 +333,7 @@ function __bp_install {
     PROMPT_COMMAND=$'__bp_precmd_invoke_cmd\n'
     if [[ -n "$existing_prompt_command" ]]; then
         PROMPT_COMMAND+=${existing_prompt_command}$'\n'
-    fi;
+    fi
     PROMPT_COMMAND+='__bp_interactive_mode'
 
     # Add two functions to our arrays for convenience
@@ -360,11 +358,11 @@ function __bp_install_after_session_init {
     __bp_sanitize_string sanitized_prompt_command "${PROMPT_COMMAND:-}"
     if [[ -n "$sanitized_prompt_command" ]]; then
         PROMPT_COMMAND=${sanitized_prompt_command}$'\n'
-    fi;
+    fi
     PROMPT_COMMAND+=${__bp_install_string}
 }
 
 # Run our install so long as we're not delaying it.
 if [[ -z "${__bp_delay_install:-}" ]]; then
     __bp_install_after_session_init
-fi;
+fi

@@ -34,28 +34,31 @@
 
 #   mcd:   Makes new Dir and jumps inside
 #   --------------------------------------------------------------------
-function mcd { mkdir -p -- "$*" ; cd -- "$*" || exit ; }
+function mcd {
+  mkdir -p -- "$*"
+  cd -- "$*" || exit
+}
 
 #   mans:   Search manpage given in agument '1' for term given in argument '2' (case insensitive)
 #           displays paginated result with colored search terms and two lines surrounding each hit.
 #           Example: mans mplayer codec
 #   --------------------------------------------------------------------
-function mans { man "$1" | grep -iC2 --color=always "$2" | less ; }
+function mans { man "$1" | grep -iC2 --color=always "$2" | less; }
 
 #   showa: to remind yourself of an alias (given some part of it)
 #   ------------------------------------------------------------
-function showa { /usr/bin/grep --color=always -i -a1 "$@" ~/Library/init/bash/aliases.bash | grep -v '^\s*$' | less -FSRXc ; }
+function showa { /usr/bin/grep --color=always -i -a1 "$@" ~/Library/init/bash/aliases.bash | grep -v '^\s*$' | less -FSRXc; }
 
 #   quiet: mute output of a command
 #   ------------------------------------------------------------
 function quiet {
-  "$@" &> /dev/null &
+  "$@" &>/dev/null &
 }
 
 #   lsgrep: search through directory contents with grep
 #   ------------------------------------------------------------
 # shellcheck disable=SC2010
-function lsgrep { ls | grep "$*" ; }
+function lsgrep { ls | grep "$*"; }
 
 #   banish-cookies: redirect .adobe and .macromedia files to /dev/null
 #   ------------------------------------------------------------
@@ -76,30 +79,29 @@ function hstats {
   history | awk '{print $2}' | sort | uniq -c | sort -rn | head -"$NUM"
 }
 
-
 #   -------------------------------
 #   2.  FILE AND FOLDER MANAGEMENT
 #   -------------------------------
 
-function zipf { zip -r "$1".zip "$1" ; }           # zipf:         To create a ZIP archive of a folder
+function zipf { zip -r "$1".zip "$1"; } # zipf:         To create a ZIP archive of a folder
 
 #   extract:  Extract most know archives with one command
 #   ---------------------------------------------------------
 function extract {
-  if [ -f "$1" ] ; then
+  if [ -f "$1" ]; then
     case "$1" in
-    *.tar.bz2)   tar xjf "$1"     ;;
-    *.tar.gz)    tar xzf "$1"     ;;
-    *.bz2)       bunzip2 "$1"     ;;
-    *.rar)       unrar e "$1"     ;;
-    *.gz)        gunzip "$1"      ;;
-    *.tar)       tar xf "$1"      ;;
-    *.tbz2)      tar xjf "$1"     ;;
-    *.tgz)       tar xzf "$1"     ;;
-    *.zip)       unzip "$1"       ;;
-    *.Z)         uncompress "$1"  ;;
-    *.7z)        7z x "$1"        ;;
-    *)     echo "'$1' cannot be extracted via extract()" ;;
+    *.tar.bz2) tar xjf "$1" ;;
+    *.tar.gz) tar xzf "$1" ;;
+    *.bz2) bunzip2 "$1" ;;
+    *.rar) unrar e "$1" ;;
+    *.gz) gunzip "$1" ;;
+    *.tar) tar xf "$1" ;;
+    *.tbz2) tar xjf "$1" ;;
+    *.tgz) tar xzf "$1" ;;
+    *.zip) unzip "$1" ;;
+    *.Z) uncompress "$1" ;;
+    *.7z) 7z x "$1" ;;
+    *) echo "'$1' cannot be extracted via extract()" ;;
     esac
   else
     echo "'$1' is not a valid file"
@@ -118,7 +120,7 @@ function buf {
 #   del:  move files to hidden folder in tmp, that gets cleared on each reboot
 #   ---------------------------------------------------------
 function del {
-  mkdir -p /tmp/.trash && mv "$@" /tmp/.trash;
+  mkdir -p /tmp/.trash && mv "$@" /tmp/.trash
 }
 
 #   mkiso:  creates iso from current dir in the parent dir (unless defined)
@@ -154,16 +156,15 @@ function mkiso {
   fi
 }
 
-
 #   ---------------------------
 #   3.  SEARCHING
 #   ---------------------------
 
-function ff { /usr/bin/find . -name "$@" ; }      # ff:       Find file under the current directory
+function ff { /usr/bin/find . -name "$@"; } # ff:       Find file under the current directory
 # shellcheck disable=SC2145
-function ffs { /usr/bin/find . -name "$@"'*' ; }  # ffs:      Find file whose name starts with a given string
+function ffs { /usr/bin/find . -name "$@"'*'; } # ffs:      Find file whose name starts with a given string
 # shellcheck disable=SC2145
-function ffe { /usr/bin/find . -name '*'"$@" ; }  # ffe:      Find file whose name ends with a given string
+function ffe { /usr/bin/find . -name '*'"$@"; } # ffe:      Find file whose name ends with a given string
 function bigfind {
   if [[ $# -lt 1 ]]; then
     echo_warn "Usage: bigfind DIRECTORY"
@@ -171,7 +172,6 @@ function bigfind {
   fi
   du -a "$1" | sort -n -r | head -n 10
 }
-
 
 #   ---------------------------
 #   4.  PROCESS MANAGEMENT
@@ -183,12 +183,11 @@ function bigfind {
 #       E.g. findPid '/d$/' finds pids of all processes with names ending in 'd'
 #       Without the 'sudo' it will only find processes of the current user
 #   -----------------------------------------------------
-function findPid { lsof -t -c "$@" ; }
+function findPid { lsof -t -c "$@"; }
 
 #   my_ps: List processes owned by my user:
 #   ------------------------------------------------------------
-function my_ps { ps "$@" -u "$USER" -o pid,%cpu,%mem,start,time,bsdtime,command ; }
-
+function my_ps { ps "$@" -u "$USER" -o pid,%cpu,%mem,start,time,bsdtime,command; }
 
 #   ---------------------------
 #   5.  NETWORKING
@@ -197,11 +196,9 @@ function my_ps { ps "$@" -u "$USER" -o pid,%cpu,%mem,start,time,bsdtime,command 
 #   ips:  display all ip addresses for this host
 #   -------------------------------------------------------------------
 function ips {
-  if _omb_util_command_exists ifconfig
-  then
+  if _omb_util_command_exists ifconfig; then
     ifconfig | awk '/inet /{ print $2 }'
-  elif _omb_util_command_exists ip
-  then
+  elif _omb_util_command_exists ip; then
     ip addr | grep -oP 'inet \K[\d.]+'
   else
     echo "You don't have ifconfig or ip command installed!"
@@ -225,16 +222,22 @@ function myip {
 #   -------------------------------------------------------------------
 function ii {
   echo -e "\\nYou are logged on ${_omb_term_brown}$HOST"
-  echo -e "\\nAdditionnal information:$NC " ; uname -a
-  echo -e "\\n${_omb_term_brown}Users logged on:$NC " ; w -h
-  echo -e "\\n${_omb_term_brown}Current date :$NC " ; date
-  echo -e "\\n${_omb_term_brown}Machine stats :$NC " ; uptime
-  [[ "$OSTYPE" == darwin* ]] && echo -e "\\n${_omb_term_brown}Current network location :$NC " ; scselect
-  echo -e "\\n${_omb_term_brown}Public facing IP Address :$NC " ;myip
-  [[ "$OSTYPE" == darwin* ]] && echo -e "\\n${_omb_term_brown}DNS Configuration:$NC " ; scutil --dns
+  echo -e "\\nAdditionnal information:$NC "
+  uname -a
+  echo -e "\\n${_omb_term_brown}Users logged on:$NC "
+  w -h
+  echo -e "\\n${_omb_term_brown}Current date :$NC "
+  date
+  echo -e "\\n${_omb_term_brown}Machine stats :$NC "
+  uptime
+  [[ "$OSTYPE" == darwin* ]] && echo -e "\\n${_omb_term_brown}Current network location :$NC "
+  scselect
+  echo -e "\\n${_omb_term_brown}Public facing IP Address :$NC "
+  myip
+  [[ "$OSTYPE" == darwin* ]] && echo -e "\\n${_omb_term_brown}DNS Configuration:$NC "
+  scutil --dns
   echo
 }
-
 
 #   ---------------------------------------
 #   6.  SYSTEMS OPERATIONS & INFORMATION
@@ -277,7 +280,7 @@ function usage {
 function pickfrom {
   local file=$1
   [ -z "$file" ] && reference "$FUNCNAME" && return
-  length=$(wc -l < "$file")
+  length=$(wc -l <"$file")
   n=$( ($RANDOM \* "$length" / 32768 + 1))
   head -n "$n" "$file" | tail -1
 }
@@ -297,24 +300,19 @@ function passgen {
   echo "Without (use this as the password): $(echo $pass | tr -d ' ')"
 }
 
-
 #   ---------------------------------------
 #   7.  DATE & TIME MANAGEMENT
 #   ---------------------------------------
-
 
 #   ---------------------------------------
 #   8.  WEB DEVELOPMENT
 #   ---------------------------------------
 
-function httpHeaders { /usr/bin/curl -I -L "$@" ; }             # httpHeaders:      Grabs headers from web page
+function httpHeaders { /usr/bin/curl -I -L "$@"; } # httpHeaders:      Grabs headers from web page
 
 #   httpDebug:  Download a web page and show info on what took time
 #   -------------------------------------------------------------------
-function httpDebug { /usr/bin/curl "$@" -o /dev/null -w "dns: %{time_namelookup} connect: %{time_connect} pretransfer: %{time_pretransfer} starttransfer: %{time_starttransfer} total: %{time_total}\\n" ; }
-
-
-
+function httpDebug { /usr/bin/curl "$@" -o /dev/null -w "dns: %{time_namelookup} connect: %{time_connect} pretransfer: %{time_pretransfer} starttransfer: %{time_starttransfer} total: %{time_total}\\n"; }
 
 #   ---------------------------------------
 #   X.  REMINDERS & NOTES

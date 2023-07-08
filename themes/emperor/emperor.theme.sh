@@ -29,8 +29,8 @@ function get_hour_color {
 }
 
 function __emperor_clock {
-  THEME_CLOCK_COLOR=$(get_hour_color)
-  clock_prompt
+    THEME_CLOCK_COLOR=$(get_hour_color)
+    clock_prompt
 }
 
 function _omb_theme_PROMPT_COMMAND() {

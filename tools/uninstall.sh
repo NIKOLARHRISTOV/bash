@@ -65,17 +65,17 @@ fi
 
 _omb_uninstall_bashrc_uninstalled=
 if [ -e ~/.bashrc ] || [ -h ~/.bashrc ]; then
-  _omb_uninstall_bashrc_uninstalled=".bashrc.omb-uninstalled-$(date +%Y%m%d%H%M%S)";
-  printf '%s\n' "Found ~/.bashrc -- Renaming to ~/${_omb_uninstall_bashrc_uninstalled}";
-  command mv ~/.bashrc ~/"${_omb_uninstall_bashrc_uninstalled}";
+  _omb_uninstall_bashrc_uninstalled=".bashrc.omb-uninstalled-$(date +%Y%m%d%H%M%S)"
+  printf '%s\n' "Found ~/.bashrc -- Renaming to ~/${_omb_uninstall_bashrc_uninstalled}"
+  command mv ~/.bashrc ~/"${_omb_uninstall_bashrc_uninstalled}"
 fi
 
 if [ -n "$_omb_uninstall_bashrc_original" ]; then
-  printf '%s\n' "Found $_omb_uninstall_bashrc_original -- Restoring to ~/.bashrc";
-  command mv "$_omb_uninstall_bashrc_original" ~/.bashrc;
+  printf '%s\n' "Found $_omb_uninstall_bashrc_original -- Restoring to ~/.bashrc"
+  command mv "$_omb_uninstall_bashrc_original" ~/.bashrc
   printf '%s\n' "Your original bash config was restored. Please restart your session."
 else
-  command sed '/oh-my-bash\.sh/s/^/: #/' ~/"${_omb_uninstall_bashrc_uninstalled:-.bashrc}" >| ~/.bashrc.omb-temp && \
+  command sed '/oh-my-bash\.sh/s/^/: #/' ~/"${_omb_uninstall_bashrc_uninstalled:-.bashrc}" >|~/.bashrc.omb-temp &&
     command mv ~/.bashrc.omb-temp ~/.bashrc
 fi
 
@@ -89,5 +89,6 @@ case $- in
   if [ -n "${BASH_VERSION-}" ]; then
     declare -f _omb_util_unload >/dev/null 2>&1 && _omb_util_unload
     source ~/.bashrc
-  fi ;;
+  fi
+  ;;
 esac

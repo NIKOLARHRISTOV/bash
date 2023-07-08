@@ -38,16 +38,17 @@ function _docker_machine_create {
 
 function _docker_machine_env {
     case "${prev}" in
-        --shell)
-            # What are the options for --shell?
-            COMPREPLY=()
-            ;;
-        *)
-            if [[ "${cur}" == -* ]]; then
-                COMPREPLY=($(compgen -W "--swarm --shell --unset --no-proxy --help" -- "${cur}"))
-            else
-                COMPREPLY=($(compgen -W "$(docker-machine ls -q)" -- "${cur}"))
-            fi
+    --shell)
+        # What are the options for --shell?
+        COMPREPLY=()
+        ;;
+    *)
+        if [[ "${cur}" == -* ]]; then
+            COMPREPLY=($(compgen -W "--swarm --shell --unset --no-proxy --help" -- "${cur}"))
+        else
+            COMPREPLY=($(compgen -W "$(docker-machine ls -q)" -- "${cur}"))
+        fi
+        ;;
     esac
 }
 
@@ -62,16 +63,16 @@ function _docker_machine_use {
 
 function _docker_machine_inspect {
     case "${prev}" in
-        -f|--format)
-            COMPREPLY=()
-            ;;
-        *)
-            if [[ "${cur}" == -* ]]; then
-                COMPREPLY=($(compgen -W "--format --help" -- "${cur}"))
-            else
-                COMPREPLY=($(compgen -W "$(docker-machine ls -q)" -- "${cur}"))
-            fi
-            ;;
+    -f | --format)
+        COMPREPLY=()
+        ;;
+    *)
+        if [[ "${cur}" == -* ]]; then
+            COMPREPLY=($(compgen -W "--format --help" -- "${cur}"))
+        else
+            COMPREPLY=($(compgen -W "$(docker-machine ls -q)" -- "${cur}"))
+        fi
+        ;;
     esac
 }
 
@@ -93,12 +94,12 @@ function _docker_machine_kill {
 
 function _docker_machine_ls {
     case "${prev}" in
-        --filter)
-            COMPREPLY=()
-            ;;
-        *)
-            COMPREPLY=($(compgen -W "--quiet --filter --format --timeout --help" -- "${cur}"))
-            ;;
+    --filter)
+        COMPREPLY=()
+        ;;
+    *)
+        COMPREPLY=($(compgen -W "--quiet --filter --format --timeout --help" -- "${cur}"))
+        ;;
     esac
 }
 
@@ -232,11 +233,11 @@ function _docker_machine {
     local i
     local command=docker-machine
 
-    for (( i=1; i < ${cword}; ++i)); do
+    for ((i = 1; i < ${cword}; ++i)); do
         local word=${words[i]}
         if [[ " ${wants_file[*]} ${wants_dir[*]} " =~ " ${word} " ]]; then
             # skip the next option
-            (( ++i ))
+            ((++i))
         elif [[ " ${commands[*]} " =~ " ${word} " ]]; then
             command=${word}
         fi
