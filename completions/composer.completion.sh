@@ -6,8 +6,8 @@ _composer() {
     _get_comp_words_by_ref -n : cur words
 
     # for an alias, get the real script behind it
-    if [[ $(type -t ${words[0]}) == "alias" ]]; then
-        script=$(alias ${words[0]} | sed -E "s/alias ${words[0]}='(.*)'/\1/")
+    if [[ $(type -t "${words[0]}") == "alias" ]]; then
+        script=$(alias "${words[0]}" | sed -E "s/alias ${words[0]}='(.*)'/\1/")
     else
         script=${words[0]}
     fi
@@ -112,7 +112,7 @@ _composer() {
 
         esac
 
-        COMPREPLY=($(compgen -W "${opts}" -- ${cur}))
+        COMPREPLY=($(compgen -W "${opts}" -- "${cur}"))
         __ltrim_colon_completions "$cur"
 
         return 0
@@ -122,7 +122,7 @@ _composer() {
     if [[ $cur == $com ]]; then
         coms="about archive browse clear-cache config create-project depends diagnose dump-autoload exec global help init install licenses list outdated prohibits remove require run-script search self-update show status suggests update validate"
 
-        COMPREPLY=($(compgen -W "${coms}" -- ${cur}))
+        COMPREPLY=($(compgen -W "${coms}" -- "${cur}"))
         __ltrim_colon_completions "$cur"
 
         return 0

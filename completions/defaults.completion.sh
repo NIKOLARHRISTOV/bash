@@ -31,11 +31,11 @@ _defaults() {
 	cmds='read read-type write rename delete domains find help'
 
 	if [[ $COMP_CWORD -eq 1 ]]; then
-		COMPREPLY=($(compgen -W "$host_opts $cmds" -- $cur))
+		COMPREPLY=($(compgen -W "$host_opts $cmds" -- "$cur"))
 		return 0
 	elif [[ $COMP_CWORD -eq 2 ]]; then
 		if [[ "$prev" == "-currentHost" ]]; then
-			COMPREPLY=($(compgen -W "$cmds" -- $cur))
+			COMPREPLY=($(compgen -W "$cmds" -- "$cur"))
 			return 0
 		elif [[ "$prev" == "-host" ]]; then
 			return 0
@@ -91,7 +91,7 @@ _defaults() {
 		fi
 	fi
 
-	keys=$(defaults read $domain 2>/dev/null | sed -n -e '/^    [^}) ]/p' | sed -e 's/^    \([^" ]\{1,\}\) = .*$/\1/g' -e 's/^    "\([^"]\{1,\}\)" = .*$/\1/g' | sed -e 's/ /\\ /g')
+	keys=$(defaults read "$domain" 2>/dev/null | sed -n -e '/^    [^}) ]/p' | sed -e 's/^    \([^" ]\{1,\}\) = .*$/\1/g' -e 's/^    "\([^"]\{1,\}\)" = .*$/\1/g' | sed -e 's/ /\\ /g')
 
 	case $cmd in
 	read | read-type)
@@ -108,16 +108,16 @@ _defaults() {
 			# Complete value type
 			# Unfortunately ${COMP_WORDS[key_index]} fails on keys with spaces
 			local value_types='-string -data -integer -float -boolean -date -array -array-add -dict -dict-add'
-			local cur_type=$(defaults read-type $domain ${COMP_WORDS[key_index]} 2>/dev/null | sed -e 's/^Type is \(.*\)/-\1/' -e's/dictionary/dict/' | grep "^$cur")
+			local cur_type=$(defaults read-type "$domain" "${COMP_WORDS[key_index]}" 2>/dev/null | sed -e 's/^Type is \(.*\)/-\1/' -e's/dictionary/dict/' | grep "^$cur")
 			if [[ $cur_type ]]; then
 				COMPREPLY=($cur_type)
 			else
-				COMPREPLY=($(compgen -W "$value_types" -- $cur))
+				COMPREPLY=($(compgen -W "$value_types" -- "$cur"))
 			fi
 		elif [[ $((key_index + 2)) -eq $COMP_CWORD ]]; then
 			# Complete value
 			# Unfortunately ${COMP_WORDS[key_index]} fails on keys with spaces
-			COMPREPLY=($(defaults read $domain ${COMP_WORDS[key_index]} 2>/dev/null | grep -i "^${cur//\\/\\\\}"))
+			COMPREPLY=($(defaults read "$domain" "${COMP_WORDS[key_index]}" 2>/dev/null | grep -i "^${cur//\\/\\\\}"))
 		fi
 		;;
 	rename)

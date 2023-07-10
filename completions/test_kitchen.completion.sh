@@ -15,15 +15,15 @@ function __kitchen_options {
 
   case $prev in
   converge | create | destroy | diagnose | list | login | setup | test | verify)
-    COMPREPLY=($(compgen -W "$(__kitchen_instance_list)" -- ${cur}))
+    COMPREPLY=($(compgen -W "$(__kitchen_instance_list)" -- "${cur}"))
     return 0
     ;;
   driver)
-    COMPREPLY=($(compgen -W "create discover help" -- ${cur}))
+    COMPREPLY=($(compgen -W "create discover help" -- "${cur}"))
     return 0
     ;;
   *)
-    COMPREPLY=($(compgen -W "console converge create destroy driver help init list login setup test verify version" -- ${cur}))
+    COMPREPLY=($(compgen -W "console converge create destroy driver help init list login setup test verify version" -- "${cur}"))
     return 0
     ;;
   esac
