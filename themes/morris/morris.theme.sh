@@ -5,18 +5,18 @@
 # added TITLEBAR for updating the tab and window titles with the pwd
 case $TERM in
 xterm*)
-	TITLEBAR=$(printf "\033]0;%s@%s:%s\007" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}")
-	;;
+  TITLEBAR=$(printf "\033]0;%s@%s:%s\007" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}")
+  ;;
 screen)
-	TITLEBAR=$(printf "\033]0;%s@%s:%s\033\\" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}")
-	;;
+  TITLEBAR=$(printf "\033]0;%s@%s:%s\033\\" "${USER}" "${HOSTNAME%%.*}" "${PWD/#$HOME/~}")
+  ;;
 *)
-	TITLEBAR=""
-	;;
+  TITLEBAR=""
+  ;;
 esac
 
 function _omb_theme_PROMPT_COMMAND() {
-	PS1="${TITLEBAR}[\u@\h \W $(scm_prompt_info)]\$ "
+  PS1="${TITLEBAR}[\u@\h \W $(scm_prompt_info)]\$ "
 }
 
 # scm theming
