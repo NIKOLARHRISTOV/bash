@@ -91,7 +91,7 @@ function default() {
 }
 
 #
-# Set enviroment variable "$1" to default value "$2" if "$1" is not yet defined.
+# Set Environment variable "$1" to default value "$2" if "$1" is not yet defined.
 #
 # Arguments:
 #    1. name - The env variable to set
