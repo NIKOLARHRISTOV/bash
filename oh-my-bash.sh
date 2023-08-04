@@ -97,7 +97,7 @@ function _omb_module_require {
   return "$status"
 }
 
-function _omb_module_require_lib { _omb_module_require "${@/#/lib:}"; }
+function _omb_module_require_lib { _omb_module_require "${@/#/Library:}"; }
 function _omb_module_require_plugin { _omb_module_require "${@/#/plugin:}"; }
 function _omb_module_require_alias { _omb_module_require "${@/#/alias:}"; }
 function _omb_module_require_completion { _omb_module_require "${@/#/completion:}"; }

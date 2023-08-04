@@ -3,8 +3,8 @@
 # P.C. Shyamshankar <sykora@lucentbeing.com>
 # Copied from http://github.com/sykora/etc/blob/master/zsh/functions/spectrum/
 
-_omb_module_require lib:omb-deprecate
-_omb_module_require lib:omb-prompt-colors
+_omb_module_require Library:omb-deprecate
+_omb_module_require Library:omb-prompt-colors
 
 # typeset in bash does not have associative arrays, declare does in bash 4.0+
 # https://stackoverflow.com/a/6047948

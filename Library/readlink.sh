@@ -8,7 +8,7 @@
 ##   print the real path of the filename which is possibly a symbolic link.
 ##
 
-_omb_module_require lib:utils
+_omb_module_require Library:utils
 
 if ((_omb_bash_version >= 40000)); then
   _omb_util_readlink_visited_init='local -A visited=()'
