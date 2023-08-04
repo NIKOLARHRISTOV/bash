@@ -1,8 +1,8 @@
 #! bash oh-my-bash.module
 #
-# 2022-01-20 Koichi Murase: renamed from "themes/colours.theme.sh" to "lib/omb-prompt-colors.sh"
+# 2022-01-20 Koichi Murase: renamed from "themes/colours.theme.sh" to "Library/omb-prompt-colors.sh"
 
-_omb_module_require lib:omb-deprecate
+_omb_module_require Library:omb-deprecate
 
 function _omb_theme__construct_sgr {
   out=

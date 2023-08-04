@@ -53,7 +53,7 @@ function _omb_module_require {
   local status=0
   local -a files=()
   while (($#)); do
-    local type=lib name=$1
+    local type=Library name=$1
     shift
     [[ $name == *:* ]] && type=${name%%:*} name=${name#*:}
     name=${name%.bash}
@@ -63,7 +63,7 @@ function _omb_module_require {
 
     local -a locations=()
     case $type in
-    lib) locations=({"$OSH_CUSTOM","$OSH"}/lib/"$name".{bash,sh}) ;;
+    Library) locations=({"$OSH_CUSTOM","$OSH"}/Library/"$name".{bash,sh}) ;;
     plugin) locations=({"$OSH_CUSTOM","$OSH"}/plugins/"$name"/"$name".plugin.{bash,sh}) ;;
     alias) locations=({"$OSH_CUSTOM","$OSH"}/aliases/"$name".aliases.{bash,sh}) ;;
     completion) locations=({"$OSH_CUSTOM","$OSH"}/completions/"$name".completion.{bash,sh}) ;;
@@ -97,16 +97,16 @@ function _omb_module_require {
   return "$status"
 }
 
-function _omb_module_require_lib { _omb_module_require "${@/#/lib:}"; }
+function _omb_module_require_lib { _omb_module_require "${@/#/Library:}"; }
 function _omb_module_require_plugin { _omb_module_require "${@/#/plugin:}"; }
 function _omb_module_require_alias { _omb_module_require "${@/#/alias:}"; }
 function _omb_module_require_completion { _omb_module_require "${@/#/completion:}"; }
 function _omb_module_require_theme { _omb_module_require "${@/#/theme:}"; }
 
-# Load all of the config files in ~/.oh-my-bash/lib that end in .sh
+# Load all of the config files in ~/.oh-my-bash/Library that end in .sh
 # TIP: Add files you don't want in git to .gitignore
 _omb_module_require_lib utils
-_omb_util_glob_expand _omb_init_files '{"$OSH","$OSH_CUSTOM"}/lib/*.{bash,sh}'
+_omb_util_glob_expand _omb_init_files '{"$OSH","$OSH_CUSTOM"}/Library/*.{bash,sh}'
 _omb_init_files=("${_omb_init_files[@]##*/}")
 _omb_init_files=("${_omb_init_files[@]%.bash}")
 _omb_init_files=("${_omb_init_files[@]%.sh}")

@@ -62,7 +62,7 @@ OSH_THEME="font"
 # HIST_STAMPS='yyyy-mm-dd'
 
 # Uncomment the following line if you do not want OMB to overwrite the existing
-# aliases by the default OMB aliases defined in lib/*.sh
+# aliases by the default OMB aliases defined in Library/*.sh
 # OMB_DEFAULT_ALIASES="check"
 
 # Would you like to use another custom folder than $OSH/custom?
