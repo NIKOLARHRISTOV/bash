@@ -1,7 +1,7 @@
 #! bash oh-my-bash.module
 #------------------------------------------------------------------------------
 # Note on copyright (2022-08-23): The aliases defined in this file seems to
-# originally come from a blog post [1].  See also the comments in lib/base.sh.
+# originally come from a blog post [1].  See also the comments in Library/base.sh.
 #
 # [1] Nathaniel Landau, "My Mac OSX Bash Profile",
 #     https://natelandau.com/my-mac-osx-bash_profile/, 2013-07-02.
@@ -118,7 +118,7 @@ fi
 
 # Aliases by Jacob Hrbek
 # Outputs List of Loadable Modules (llm) for current kernel
-alias llm="find /lib/modules/$(uname -r) -type f -name '*.ko*'"
+alias llm="find /Library/modules/$(uname -r) -type f -name '*.ko*'"
 # Used for piping to remote pastebin from cmdline to generate a url
 _omb_util_binary_exists curl && ix() { curl -n -F 'f:1=<-' http://ix.io; }
 # Used for piping to clipboard

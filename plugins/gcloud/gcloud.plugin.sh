@@ -12,7 +12,7 @@ function _omb_plugin_gcloud_set_home_var() {
       "/opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk"
       "/usr/share/google-cloud-sdk"
       "/snap/google-cloud-sdk/current"
-      "/usr/lib/google-cloud-sdk"
+      "/usr/Library/google-cloud-sdk"
       "/usr/lib64/google-cloud-sdk"
       "/opt/google-cloud-sdk"
       "/opt/local/libexec/google-cloud-sdk"

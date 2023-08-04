@@ -272,7 +272,7 @@ function is_alias {
   [[ -f $base_dir/aliases/$name/$name.aliases.sh ]]
 }
 
-# lib/utils.sh -- Logging functions
+# Library/utils.sh -- Logging functions
 _omb_deprecate_function 20000 type_exists _omb_util_binary_exists
 
 _omb_deprecate_const 20000 ncolors "$_omb_term_colors" "${_omb_deprecate_msg_please_use/'%s'/_omb_term_colors}"

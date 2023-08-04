@@ -62,7 +62,7 @@ if [ -x /usr/bin/dircolors ]; then
   #_omb_util_alias ls='dir --color=auto'
   #_omb_util_alias vdir='vdir --color=auto'
 
-  # Note: aliases "grep", "fgrep", and "egrep" are merged in lib/grep.sh
+  # Note: aliases "grep", "fgrep", and "egrep" are merged in Library/grep.sh
 fi
 
 function _omb_util_alias_select_ls {
@@ -77,7 +77,7 @@ _omb_util_alias_delayed ls
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-# ls aliases are moved to "lib/directories.sh"
+# ls aliases are moved to "Library/directories.sh"
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
