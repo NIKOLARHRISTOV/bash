@@ -33,31 +33,31 @@
 
 # ----------------------------------------------------------------- DEF COLOR
 
-_omb_deprecate_const 20000 RCol "$_omb_prompt_normal" "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_normal}"
-_omb_deprecate_const 20000 Bla "$_omb_prompt_black" "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_black}"
-_omb_deprecate_const 20000 Red "$_omb_prompt_brown" "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_brown}"
-_omb_deprecate_const 20000 Gre "$_omb_prompt_green" "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_green}"
-_omb_deprecate_const 20000 Yel "$_omb_prompt_olive" "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_olive}"
-_omb_deprecate_const 20000 Blu "$_omb_prompt_navy" "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_navy}"
-_omb_deprecate_const 20000 Pur "$_omb_prompt_purple" "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_purple}"
-_omb_deprecate_const 20000 Cya "$_omb_prompt_teal" "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_teal}"
-_omb_deprecate_const 20000 Whi "$_omb_prompt_silver" "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_silver}"
-_omb_deprecate_const 20000 BBla "$_omb_prompt_bold_black" "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_bold_black}"
-_omb_deprecate_const 20000 BRed "$_omb_prompt_bold_brown" "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_bold_brown}"
-_omb_deprecate_const 20000 BGre "$_omb_prompt_bold_green" "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_bold_green}"
-_omb_deprecate_const 20000 BYel "$_omb_prompt_bold_olive" "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_bold_olive}"
-_omb_deprecate_const 20000 BBlu "$_omb_prompt_bold_navy" "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_bold_navy}"
+_omb_deprecate_const 20000 RCol "$_omb_prompt_normal"      "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_normal}"
+_omb_deprecate_const 20000 Bla  "$_omb_prompt_black"       "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_black}"
+_omb_deprecate_const 20000 Red  "$_omb_prompt_brown"       "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_brown}"
+_omb_deprecate_const 20000 Gre  "$_omb_prompt_green"       "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_green}"
+_omb_deprecate_const 20000 Yel  "$_omb_prompt_olive"       "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_olive}"
+_omb_deprecate_const 20000 Blu  "$_omb_prompt_navy"        "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_navy}"
+_omb_deprecate_const 20000 Pur  "$_omb_prompt_purple"      "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_purple}"
+_omb_deprecate_const 20000 Cya  "$_omb_prompt_teal"        "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_teal}"
+_omb_deprecate_const 20000 Whi  "$_omb_prompt_silver"      "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_silver}"
+_omb_deprecate_const 20000 BBla "$_omb_prompt_bold_black"  "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_bold_black}"
+_omb_deprecate_const 20000 BRed "$_omb_prompt_bold_brown"  "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_bold_brown}"
+_omb_deprecate_const 20000 BGre "$_omb_prompt_bold_green"  "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_bold_green}"
+_omb_deprecate_const 20000 BYel "$_omb_prompt_bold_olive"  "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_bold_olive}"
+_omb_deprecate_const 20000 BBlu "$_omb_prompt_bold_navy"   "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_bold_navy}"
 _omb_deprecate_const 20000 BPur "$_omb_prompt_bold_purple" "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_bold_purple}"
-_omb_deprecate_const 20000 BCya "$_omb_prompt_bold_teal" "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_bold_teal}"
+_omb_deprecate_const 20000 BCya "$_omb_prompt_bold_teal"   "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_bold_teal}"
 _omb_deprecate_const 20000 BWhi "$_omb_prompt_bold_silver" "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_bold_silver}"
-_omb_deprecate_const 20000 IBla "$_omb_prompt_gray" "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_gray}"
-_omb_deprecate_const 20000 IRed "$_omb_prompt_red" "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_red}"
-_omb_deprecate_const 20000 IGre "$_omb_prompt_lime" "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_lime}"
-_omb_deprecate_const 20000 IYel "$_omb_prompt_yellow" "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_yellow}"
-_omb_deprecate_const 20000 IBlu "$_omb_prompt_blue" "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_blue}"
-_omb_deprecate_const 20000 IPur "$_omb_prompt_magenta" "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_magenta}"
-_omb_deprecate_const 20000 ICya "$_omb_prompt_cyan" "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_cyan}"
-_omb_deprecate_const 20000 IWhi "$_omb_prompt_white" "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_white}"
+_omb_deprecate_const 20000 IBla "$_omb_prompt_gray"        "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_gray}"
+_omb_deprecate_const 20000 IRed "$_omb_prompt_red"         "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_red}"
+_omb_deprecate_const 20000 IGre "$_omb_prompt_lime"        "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_lime}"
+_omb_deprecate_const 20000 IYel "$_omb_prompt_yellow"      "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_yellow}"
+_omb_deprecate_const 20000 IBlu "$_omb_prompt_blue"        "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_blue}"
+_omb_deprecate_const 20000 IPur "$_omb_prompt_magenta"     "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_magenta}"
+_omb_deprecate_const 20000 ICya "$_omb_prompt_cyan"        "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_cyan}"
+_omb_deprecate_const 20000 IWhi "$_omb_prompt_white"       "${_omb_deprecate_msg_please_use/'%s'/_omb_prompt_white}"
 
 # ----------------------------------------------------------------- COLOR CONF
 D_DEFAULT_COLOR="$_omb_prompt_silver"
@@ -75,12 +75,12 @@ D_VIMSHELL_COLOR="$_omb_prompt_teal"
 
 # ------------------------------------------------------------------ FUNCTIONS
 case $TERM in
-xterm*)
-  TITLEBAR='\[\e]0;\w\e\\\]'
-  ;;
-*)
-  TITLEBAR=""
-  ;;
+  xterm*)
+    TITLEBAR='\[\e]0;\w\e\\\]'
+    ;;
+  *)
+    TITLEBAR=""
+    ;;
 esac
 
 function is_vim_shell {
@@ -119,7 +119,7 @@ function prompt_git {
   if command git rev-parse --is-inside-work-tree &>/dev/null; then
 
     # check if the current directory is in .git before running git checks
-    if [[ $(command git rev-parse --is-inside-git-dir 2>/dev/null) == false ]]; then
+    if [[ $(command git rev-parse --is-inside-git-dir 2> /dev/null) == false ]]; then
 
       # Ensure the index is up to date.
       command git update-index --really-refresh -q &>/dev/null
@@ -150,10 +150,9 @@ function prompt_git {
     # If HEAD isn’t a symbolic ref, get the short SHA for the latest commit
     # Otherwise, just give up.
     branchName=$(
-      command git symbolic-ref --quiet --short HEAD 2>/dev/null ||
-        command git rev-parse --short HEAD 2>/dev/null ||
-        echo '(unknown)'
-    )
+      command git symbolic-ref --quiet --short HEAD 2> /dev/null ||
+        command git rev-parse --short HEAD 2> /dev/null ||
+        echo '(unknown)')
 
     [[ $s ]] && s=" [$s]"
 

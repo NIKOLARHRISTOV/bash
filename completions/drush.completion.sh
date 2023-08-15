@@ -11,7 +11,8 @@ _omb_util_command_exists drush || return
 
 function __drush_ps1 {
   f="${TMPDIR:-/tmp/}/drush-env/drush-drupal-site-$$"
-  if [ -f $f ]; then
+  if [ -f $f ]
+  then
     __DRUPAL_SITE=$(cat "$f")
   else
     __DRUPAL_SITE="$DRUPAL_SITE"
@@ -29,7 +30,7 @@ function _drush_completion {
   # The '< /dev/null' is a work around for a bug in php libedit stdin handling.
   # Note that libedit in place of libreadline in some distributions. See:
   # https://bugs.launchpad.net/ubuntu/+source/php5/+bug/322214
-  COMPREPLY=($(drush --early=includes/complete.inc "${COMP_WORDS[@]}" </dev/null 2>/dev/null))
+  COMPREPLY=( $(drush --early=includes/complete.inc "${COMP_WORDS[@]}" < /dev/null 2> /dev/null) )
 }
 
 # Register our completion function. We include common short aliases for Drush.

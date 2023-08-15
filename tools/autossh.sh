@@ -36,28 +36,35 @@ else
 fi
 
 # Progress or something
-start_progress() {
-  while true; do
+start_progress()
+{
+  while true
+  do
     echo -ne "#"
     sleep 1
   done
 }
 
-quick_progress() {
-  while true; do
+quick_progress()
+{
+  while true
+  do
     echo -ne "#"
     sleep .033
   done
 }
 
-long_progress() {
-  while true; do
+long_progress()
+{
+  while true
+  do
     echo -ne "#"
     sleep 3
   done
 }
 
-dot_progress() {
+dot_progress()
+{
   for i in {1..100}; do
     printf "." $i -1 $i
     sleep .033
@@ -66,7 +73,8 @@ dot_progress() {
   sleep 1
 }
 
-stop_progress() {
+stop_progress()
+{
   kill $1
   wait $1 2>/dev/null
   echo -en "\n"
@@ -81,13 +89,15 @@ history -c
 history -r
 
 # Input method
-get_input() {
+get_input()
+{
   read -e -p "${BLUE}$1${NORMAL}" "$2"
   history -s "${!2}"
 }
 
 # Echo in bold
-echo_b() {
+echo_b()
+{
   if [ "$1" = "-e" ]; then
     echo -e "${BOLD}$2${NORMAL}"
   else
@@ -96,34 +106,36 @@ echo_b() {
 }
 
 # Echo in colour
-echo_c() {
+echo_c()
+{
   case "$1" in
-  red | r | -red | -r | --red | --r) echo "${RED}$2${NORMAL}" ;;
-  green | g | -green | -g | --green | --g) echo "${GREEN}$2${NORMAL}" ;;
-  blue | b | -blue | -b | --blue | --b) echo "${BLUE}$2${NORMAL}" ;;
-  yellow | y | -yellow | -y | --yellow | --y) echo "${YELLOW}$2${NORMAL}" ;;
-  *) echo "$(BOLD)$2$(RESET)" ;;
+    red | r | -red | -r | --red | --r ) echo "${RED}$2${NORMAL}" ;;
+    green | g | -green | -g | --green | --g ) echo "${GREEN}$2${NORMAL}" ;;
+    blue | b | -blue | -b | --blue | --b ) echo "${BLUE}$2${NORMAL}" ;;
+    yellow | y | -yellow | -y | --yellow | --y ) echo "${YELLOW}$2${NORMAL}" ;;
+    * ) echo "$(BOLD)$2$(RESET)" ;;
   esac
 }
 
 # Get data from parameters
 if [[ ! -n "$remote_param" && -n "$1" ]]; then
-  remote_param="$1"
-  remote_user="${remote_param%%@*}"
-  remote_ip="${remote_param##*@}"
+    remote_param="$1"
+    remote_user="${remote_param%%@*}"
+    remote_ip="${remote_param##*@}"
 fi
 
 # Get input data and save to history
-save_input() {
+save_input()
+{
   if [[ ! -n "$remote_user" && ! -n "$1" ]]; then
     while get_input "SSH Username > " remote_user; do
       case ${remote_user%% *} in
-      *)
-        if [ -n "$remote_user" ]; then
-          break
-        else
-          continue
-        fi
+        * )
+            if [ -n "$remote_user" ]; then
+              break
+            else
+              continue
+            fi
         ;;
       esac
     done
@@ -131,12 +143,12 @@ save_input() {
   if [[ ! -n "$remote_ip" && ! -n "$1" ]]; then
     while get_input "SSH Alias/IP-address > " remote_ip; do
       case ${remote_ip%% *} in
-      *)
-        if [ -n "$remote_ip" ]; then
-          break
-        else
-          continue
-        fi
+        * )
+            if [ -n "$remote_ip" ]; then
+              break
+            else
+              continue
+            fi
         ;;
       esac
     done
@@ -144,11 +156,14 @@ save_input() {
 }
 
 # Infinitie loop to keep connecting
-auto_connect() {
+auto_connect()
+{
   while true; do
-    exist=$(ps aux | grep $remote_user@$remote_ip | grep 22)
-    if test -n "$exist"; then
-      if test $ALIVE -eq 0; then
+    exist=`ps aux | grep $remote_user@$remote_ip | grep 22`
+    if test -n "$exist"
+    then
+      if test $ALIVE -eq 0
+      then
         echo_c yellow "I'm alive since $(date)"
       fi
       ALIVE=1
@@ -170,7 +185,8 @@ auto_connect() {
   done
 }
 
-main() {
+main()
+{
   save_input
   auto_connect
 }

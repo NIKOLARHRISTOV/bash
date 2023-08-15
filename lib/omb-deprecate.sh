@@ -3,9 +3,9 @@
 function _omb_deprecate_warning {
   local level=$1 msg=$2
   local sep=$_omb_term_teal:
-  local src=$_omb_term_purple${BASH_SOURCE[level + 1]}
+  local src=$_omb_term_purple${BASH_SOURCE[level+1]}
   local line=$_omb_term_green${BASH_LINENO[level]}
-  local func=${FUNCNAME[level + 1]}
+  local func=${FUNCNAME[level+1]}
   if [[ $func && $func != source ]]; then
     func=" $_omb_term_teal($_omb_term_navy$func$_omb_term_teal)"
   else
@@ -16,8 +16,7 @@ function _omb_deprecate_warning {
 
 function _omb_deprecate_function__notify {
   local old=$1 new=$2
-  local v=__omb_deprecate_Function_$old
-  v=${v//[!a-zA-Z0-9_]/'_'}
+  local v=__omb_deprecate_Function_$old; v=${v//[!a-zA-Z0-9_]/'_'}
   [[ ${!v+set} ]] && return 0
   local esc_old=$_omb_term_bold_brown$old$_omb_term_reset
   local esc_new=$_omb_term_bold_navy$new$_omb_term_reset
@@ -92,12 +91,10 @@ if ((_omb_bash_version >= 40300)); then
   }
   function _omb_deprecate_declare__notify {
     local __index=$1 data=${_omb_deprecate_declare[__index]}
-    local __old=${data%%:*}
-    data=${data#*:}
-    local __new=${data%%:*}
-    data=${data#*:}
+    local __old=${data%%:*}; data=${data#*:}
+    local __new=${data%%:*}; data=${data#*:}
     local __msg=$data
-    local count=${_omb_deprecate_declare_counter[$__index, ${BASH_SOURCE[1]}, ${BASH_LINENO[0]}]:-0}
+    local count=${_omb_deprecate_declare_counter[$__index,${BASH_SOURCE[1]},${BASH_LINENO[0]}]:-0}
     if ((count == 0)); then
       local esc_old=$_omb_term_bold_brown$__old$_omb_term_reset
       local esc_new=$_omb_term_bold_navy$__new$_omb_term_reset
@@ -162,7 +159,7 @@ else
       fi
 
       case $__type in
-      sync)
+      (sync)
         local __value=${_omb_util_deprecate_value[__index]} __event=
         if [[ ! ${!__new+set} || ! ${!__old+set} ]]; then
           __value=${!__new-${!__old-}} __event=change
@@ -176,11 +173,9 @@ else
           _omb_util_deprecate_value[__index]=$__value
           printf -v "$__new" %s "$__value"
           printf -v "$__old" %s "$__value"
-        fi
-        ;;
-      track)
-        printf -v "$__old" %s "${!__new-}"
-        ;;
+        fi ;;
+      (track)
+        printf -v "$__old" %s "${!__new-}" ;;
       esac
     done
   }
@@ -214,7 +209,7 @@ if ((_omb_bash_version >= 40300)); then
     local __value=${_omb_deprecate_const_value[__index]}
     local __ref=_omb_deprecate_Const_$__old
     if [[ ${!__ref-} == "$__value" ]]; then
-      local count=${_omb_deprecate_const_counter[$__index, ${BASH_SOURCE[1]}, ${BASH_LINENO[0]}]:-0}
+      local count=${_omb_deprecate_const_counter[$__index,${BASH_SOURCE[1]},${BASH_LINENO[0]}]:-0}
       if ((count == 0)); then
         local esc_old=$_omb_term_bold_brown$__old$_omb_term_reset
         _omb_deprecate_warning 1 "The variable '$esc_old' has been deprecated.${__msg+ $__msg}" >&2
@@ -272,34 +267,34 @@ function is_alias {
   [[ -f $base_dir/aliases/$name/$name.aliases.sh ]]
 }
 
-# Library/utils.sh -- Logging functions
+# lib/utils.sh -- Logging functions
 _omb_deprecate_function 20000 type_exists _omb_util_binary_exists
 
-_omb_deprecate_const 20000 ncolors "$_omb_term_colors" "${_omb_deprecate_msg_please_use/'%s'/_omb_term_colors}"
-_omb_deprecate_const 20000 bold "$_omb_term_bold" "${_omb_deprecate_msg_please_use/'%s'/_omb_term_bold}"
+_omb_deprecate_const 20000 ncolors   "$_omb_term_colors"    "${_omb_deprecate_msg_please_use/'%s'/_omb_term_colors}"
+_omb_deprecate_const 20000 bold      "$_omb_term_bold"      "${_omb_deprecate_msg_please_use/'%s'/_omb_term_bold}"
 _omb_deprecate_const 20000 underline "$_omb_term_underline" "${_omb_deprecate_msg_please_use/'%s'/_omb_term_underline}"
-_omb_deprecate_const 20000 reset "$_omb_term_reset" "${_omb_deprecate_msg_please_use/'%s'/_omb_term_reset}"
-_omb_deprecate_const 20000 tan "$_omb_term_olive" "${_omb_deprecate_msg_please_use/'%s'/_omb_term_olive}"
+_omb_deprecate_const 20000 reset     "$_omb_term_reset"     "${_omb_deprecate_msg_please_use/'%s'/_omb_term_reset}"
+_omb_deprecate_const 20000 tan       "$_omb_term_olive"    "${_omb_deprecate_msg_please_use/'%s'/_omb_term_olive}"
 
 _omb_deprecate_red=${_omb_term_brown:+$'\1'$_omb_term_brown$'\2'}
 _omb_deprecate_green=${_omb_term_green:+$'\1'$_omb_term_green$'\2'}
 _omb_deprecate_yellow=${_omb_term_olive:+$'\1'$_omb_term_olive$'\2'}
 _omb_deprecate_blue=${_omb_term_navy:+$'\1'$_omb_term_navy$'\2'}
 _omb_deprecate_magenta=${_omb_term_purple:+$'\1'$_omb_term_purple$'\2'}
-_omb_deprecate_const 20000 red "$_omb_deprecate_red" "Please use '${_omb_term_bold_navy}_omb_term_brown$_omb_term_reset' or '${_omb_term_bold_navy}_omb_prompt_brown$_omb_term_reset'."
-_omb_deprecate_const 20000 green "$_omb_deprecate_green" "Please use '${_omb_term_bold_navy}_omb_term_green$_omb_term_reset' or '${_omb_term_bold_navy}_omb_prompt_green$_omb_term_reset'."
-_omb_deprecate_const 20000 yellow "$_omb_deprecate_yellow" "Please use '${_omb_term_bold_navy}_omb_term_olive$_omb_term_reset' or '${_omb_term_bold_navy}_omb_prompt_olive$_omb_term_reset'."
-_omb_deprecate_const 20000 blue "$_omb_deprecate_blue" "Please use '${_omb_term_bold_navy}_omb_term_navy$_omb_term_reset' or '${_omb_term_bold_navy}_omb_prompt_navy$_omb_term_reset'."
-_omb_deprecate_const 20000 purple "$_omb_deprecate_magenta" "Please use '${_omb_term_bold_navy}_omb_term_purple$_omb_term_reset' or '${_omb_term_bold_navy}_omb_prompt_purple$_omb_term_reset'."
+_omb_deprecate_const 20000 red       "$_omb_deprecate_red"     "Please use '${_omb_term_bold_navy}_omb_term_brown$_omb_term_reset' or '${_omb_term_bold_navy}_omb_prompt_brown$_omb_term_reset'."
+_omb_deprecate_const 20000 green     "$_omb_deprecate_green"   "Please use '${_omb_term_bold_navy}_omb_term_green$_omb_term_reset' or '${_omb_term_bold_navy}_omb_prompt_green$_omb_term_reset'."
+_omb_deprecate_const 20000 yellow    "$_omb_deprecate_yellow"  "Please use '${_omb_term_bold_navy}_omb_term_olive$_omb_term_reset' or '${_omb_term_bold_navy}_omb_prompt_olive$_omb_term_reset'."
+_omb_deprecate_const 20000 blue      "$_omb_deprecate_blue"    "Please use '${_omb_term_bold_navy}_omb_term_navy$_omb_term_reset' or '${_omb_term_bold_navy}_omb_prompt_navy$_omb_term_reset'."
+_omb_deprecate_const 20000 purple    "$_omb_deprecate_magenta" "Please use '${_omb_term_bold_navy}_omb_term_purple$_omb_term_reset' or '${_omb_term_bold_navy}_omb_prompt_purple$_omb_term_reset'."
 
-_omb_deprecate_function 20000 e_header _omb_log_header
-_omb_deprecate_function 20000 e_arrow _omb_log_arrow
-_omb_deprecate_function 20000 e_success _omb_log_success
-_omb_deprecate_function 20000 e_error _omb_log_error
-_omb_deprecate_function 20000 e_warning _omb_log_warning
+_omb_deprecate_function 20000 e_header    _omb_log_header
+_omb_deprecate_function 20000 e_arrow     _omb_log_arrow
+_omb_deprecate_function 20000 e_success   _omb_log_success
+_omb_deprecate_function 20000 e_error     _omb_log_error
+_omb_deprecate_function 20000 e_warning   _omb_log_warning
 _omb_deprecate_function 20000 e_underline _omb_log_underline
-_omb_deprecate_function 20000 e_bold _omb_log_bold
-_omb_deprecate_function 20000 e_note _omb_log_note
+_omb_deprecate_function 20000 e_bold      _omb_log_bold
+_omb_deprecate_function 20000 e_note      _omb_log_note
 
 # plugins/bashmarks/bashmarks.plugin.sh [ This anyway conflicts with
 #   variables defined by themes (axin, mairan, sexy, etc.) so do not
@@ -308,10 +303,10 @@ _omb_deprecate_function 20000 e_note _omb_log_note
 #_omb_deprecate_const GREEN "0;33m" "${_omb_deprecate_msg_please_use/'%s'/\${_omb_term_green:2}}"
 
 # themes/*
-_omb_deprecate_function 20000 prompt_command _omb_theme_PROMPT_COMMAND
-_omb_deprecate_function 20000 prompt _omb_theme_PROMPT_COMMAND
-_omb_deprecate_function 20000 prompt_setter _omb_theme_PROMPT_COMMAND
-_omb_deprecate_function 20000 pure_setter _omb_theme_PROMPT_COMMAND     # pure, gallifrey
-_omb_deprecate_function 20000 dulcie_setter _omb_theme_PROMPT_COMMAND   # dulcie
-_omb_deprecate_function 20000 _brainy_setter _omb_theme_PROMPT_COMMAND  # brainy
+_omb_deprecate_function 20000 prompt_command  _omb_theme_PROMPT_COMMAND
+_omb_deprecate_function 20000 prompt          _omb_theme_PROMPT_COMMAND
+_omb_deprecate_function 20000 prompt_setter   _omb_theme_PROMPT_COMMAND
+_omb_deprecate_function 20000 pure_setter     _omb_theme_PROMPT_COMMAND # pure, gallifrey
+_omb_deprecate_function 20000 dulcie_setter   _omb_theme_PROMPT_COMMAND # dulcie
+_omb_deprecate_function 20000 _brainy_setter  _omb_theme_PROMPT_COMMAND # brainy
 _omb_deprecate_function 20000 set_bash_prompt _omb_theme_PROMPT_COMMAND # agnoster

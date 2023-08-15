@@ -10,7 +10,7 @@ GIT_THEME_PROMPT_PREFIX=" ${_omb_prompt_green}|"
 GIT_THEME_PROMPT_SUFFIX="${_omb_prompt_green}|"
 
 # Nicely formatted terminal prompt
-function _omb_theme_PROMPT_COMMAND() {
+function _omb_theme_PROMPT_COMMAND(){
   PS1="\n${_omb_prompt_bold_gray}[${_omb_prompt_navy}\@${_omb_prompt_bold_gray}]-"
   PS1+="${_omb_prompt_bold_gray}[${_omb_prompt_green}\u${_omb_prompt_olive}@${_omb_prompt_green}\h${_omb_prompt_bold_gray}]-"
   PS1+="${_omb_prompt_bold_gray}[${_omb_prompt_purple}\w${_omb_prompt_bold_gray}]-"

@@ -29,21 +29,22 @@ function set_host_color() {
 # Set different username color for users and root
 function set_user_color() {
   case $(id -u) in
-  0)
-    printf "${_omb_prompt_brown}"
-    ;;
-  *)
-    printf "${_omb_prompt_teal}"
-    ;;
+    0)
+      printf "${_omb_prompt_brown}"
+      ;;
+    *)
+      printf "${_omb_prompt_teal}"
+      ;;
   esac
 }
 
 function scm_prompt {
   CHAR=$(scm_char)
-  if [ $CHAR = $SCM_NONE_CHAR ]; then
-    return
-  else
-    echo "[$(scm_char)$(scm_prompt_info)]"
+  if [ $CHAR = $SCM_NONE_CHAR ]
+    then
+      return
+    else
+      echo "[$(scm_char)$(scm_prompt_info)]"
   fi
 }
 

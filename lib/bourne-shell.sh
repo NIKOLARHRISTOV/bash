@@ -3,7 +3,7 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 
 # make less more friendly for non-text input files, see lesspipe(1)
-if [ -z "${LESSOPEN}" ]; then
+if [ -z "${LESSOPEN}" ];then
   if [ -f /etc/gentoo-release ]; then
     export LESSOPEN="|lesspipe %s"
   else
@@ -17,12 +17,12 @@ fi
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-  debian_chroot=$(cat /etc/debian_chroot)
+    debian_chroot=$(cat /etc/debian_chroot)
 fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
-xterm-color | *-256color) color_prompt=yes ;;
+    xterm-color|*-256color) color_prompt=yes;;
 esac
 
 # uncomment for a colored prompt, if the terminal has the capability; turned
@@ -50,10 +50,11 @@ unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
-xterm* | rxvt*)
-  PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-  ;;
-*) ;;
+  xterm*|rxvt*)
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    ;;
+  *)
+    ;;
 esac
 
 # enable color support of ls and also add handy aliases
@@ -62,7 +63,7 @@ if [ -x /usr/bin/dircolors ]; then
   #_omb_util_alias ls='dir --color=auto'
   #_omb_util_alias vdir='vdir --color=auto'
 
-  # Note: aliases "grep", "fgrep", and "egrep" are merged in Library/grep.sh
+  # Note: aliases "grep", "fgrep", and "egrep" are merged in lib/grep.sh
 fi
 
 function _omb_util_alias_select_ls {
@@ -77,7 +78,7 @@ _omb_util_alias_delayed ls
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-# ls aliases are moved to "Library/directories.sh"
+# ls aliases are moved to "lib/directories.sh"
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -91,11 +92,11 @@ fi
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
 if [ -f ~/.bash_aliases ]; then
-  . ~/.bash_aliases
+    . ~/.bash_aliases
 fi
 
 if [ -f ~/.bashrc.local ]; then
-  . ~/.bashrc.local
+    . ~/.bashrc.local
 fi
 
 # enable programmable completion features (you don't need to enable

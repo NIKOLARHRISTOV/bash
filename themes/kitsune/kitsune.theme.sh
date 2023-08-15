@@ -14,25 +14,26 @@ function _omb_theme_PROMPT_COMMAND() {
   local TITLEBAR
   case $TERM in
   xterm* | screen)
-    TITLEBAR=$'\1\e]0;'$USER@${HOSTNAME%%.*}:${PWD/#$HOME/~}$'\e\\\2'
-    ;;
+    TITLEBAR=$'\1\e]0;'$USER@${HOSTNAME%%.*}:${PWD/#$HOME/~}$'\e\\\2' ;;
   *)
-    TITLEBAR=
-    ;;
+    TITLEBAR= ;;
   esac
 
   local SC
   if ((status == 0)); then
-    SC="$_omb_prompt_teal-$_omb_prompt_bold_green(${_omb_prompt_green}^_^$_omb_prompt_bold_green)"
+    SC="$_omb_prompt_teal-$_omb_prompt_bold_green(${_omb_prompt_green}^_^$_omb_prompt_bold_green)";
   else
-    SC="$_omb_prompt_teal-$_omb_prompt_bold_green(${_omb_prompt_brown}T_T$_omb_prompt_bold_green)"
+    SC="$_omb_prompt_teal-$_omb_prompt_bold_green(${_omb_prompt_brown}T_T$_omb_prompt_bold_green)";
   fi
 
   local BC=$(battery_percentage)
   [[ $BC == no && $BC == -1 ]] && BC=
   BC=${BC:+${_omb_prompt_teal}-${_omb_prompt_green}($BC%)}
 
-  PS1=$TITLEBAR"\n${_omb_prompt_teal}┌─${_omb_prompt_bold_white}[\u@\h]${_omb_prompt_teal}─${_omb_prompt_bold_olive}(\w)$(scm_prompt_info)\n${_omb_prompt_teal}└─${_omb_prompt_bold_green}[\A]$SC$BC${_omb_prompt_teal}-${_omb_prompt_bold_teal}[${_omb_prompt_green}${_omb_prompt_bold_green}\$${_omb_prompt_bold_teal}]${_omb_prompt_green} "
+  local python_venv
+  _omb_prompt_get_python_venv
+
+  PS1=$TITLEBAR"\n${_omb_prompt_teal}┌─${_omb_prompt_bold_white}[\u@\h]${_omb_prompt_teal}─${_omb_prompt_bold_olive}(\w)$(scm_prompt_info)$python_venv\n${_omb_prompt_teal}└─${_omb_prompt_bold_green}[\A]$SC$BC${_omb_prompt_teal}-${_omb_prompt_bold_teal}[${_omb_prompt_green}${_omb_prompt_bold_green}\$${_omb_prompt_bold_teal}]${_omb_prompt_green} "
 }
 
 # scm theming
@@ -40,5 +41,9 @@ SCM_THEME_PROMPT_DIRTY=" ${_omb_prompt_brown}✗"
 SCM_THEME_PROMPT_CLEAN=" ${_omb_prompt_bold_green}✓"
 SCM_THEME_PROMPT_PREFIX="${_omb_prompt_bold_teal}("
 SCM_THEME_PROMPT_SUFFIX="${_omb_prompt_bold_teal})${_omb_prompt_reset_color}"
+
+OMB_PROMPT_SHOW_PYTHON_VENV=${OMB_PROMPT_SHOW_PYTHON_VENV:-false}
+OMB_PROMPT_VIRTUALENV_FORMAT="${_omb_prompt_bold_gray}(%s)${_omb_prompt_reset_color}"
+OMB_PROMPT_CONDAENV_FORMAT="${_omb_prompt_bold_gray}(%s)${_omb_prompt_reset_color}"
 
 _omb_util_add_prompt_command _omb_theme_PROMPT_COMMAND

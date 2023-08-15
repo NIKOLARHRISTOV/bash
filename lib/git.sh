@@ -1,7 +1,7 @@
 #! bash oh-my-bash.module
 # Outputs current branch info in prompt format
 
-_omb_module_require Library:omb-prompt-colors
+_omb_module_require lib:omb-prompt-colors
 
 function git_prompt_info() {
   local ref

@@ -1,7 +1,7 @@
 #! bash oh-my-bash.module
 #------------------------------------------------------------------------------
 # Note on copyright (2022-08-23): The aliases defined in this file seems to
-# originally come from a blog post [1].  See also the comments in Library/base.sh.
+# originally come from a blog post [1].  See also the comments in lib/base.sh.
 #
 # [1] Nathaniel Landau, "My Mac OSX Bash Profile",
 #     https://natelandau.com/my-mac-osx-bash_profile/, 2013-07-02.
@@ -24,11 +24,7 @@
 # Preferred 'cp' implementation.  Determines the use of the option `-v' on the
 # first call Ref. https://github.com/ohmybash/oh-my-bash/issues/351
 function _omb_util_alias_select_cp {
-  if (
-    tmp=$(_omb_util_mktemp)
-    trap 'rm -f "$tmp"{,.2}' EXIT
-    command cp -v "$tmp" "$tmp.2" &>/dev/null
-  ); then
+  if (tmp=$(_omb_util_mktemp); trap 'rm -f "$tmp"{,.2}' EXIT; command cp -v "$tmp" "$tmp.2" &>/dev/null); then
     _omb_command='cp -iv'
   else
     _omb_command='cp -i'
@@ -38,11 +34,7 @@ _omb_util_alias_delayed cp force
 
 # Preferred 'mv' implementation
 function _omb_util_alias_select_mv {
-  if (
-    tmp=$(_omb_util_mktemp)
-    trap 'rm -f "$tmp.2"' EXIT
-    command mv -v "$tmp" "$tmp.2" &>/dev/null
-  ); then
+  if (tmp=$(_omb_util_mktemp); trap 'rm -f "$tmp.2"' EXIT; command mv -v "$tmp" "$tmp.2" &>/dev/null); then
     _omb_command='mv -iv'
   else
     _omb_command='mv -i'
@@ -70,13 +62,13 @@ function _omb_util_alias_select_nano {
 }
 _omb_util_alias_delayed nano force
 
-alias ll='ls -lAFh'                              # Preferred 'ls' implementation
-alias less='less -FSRXc'                         # Preferred 'less' implementation
-alias wget='wget -c'                             # Preferred 'wget' implementation (resume download)
-alias c='clear'                                  # c:            Clear terminal display
-alias path='echo -e ${PATH//:/\\n}'              # path:         Echo all executable Paths
-alias show_options='shopt'                       # Show_options: display bash options settings
-alias fix_stty='stty sane'                       # fix_stty:     Restore terminal settings when screwed up
-alias fix_term='echo -e "\033c"'                 # fix_term:     Reset the conosle.  Similar to the reset command
+alias ll='ls -lAFh'                         # Preferred 'ls' implementation
+alias less='less -FSRXc'                    # Preferred 'less' implementation
+alias wget='wget -c'                        # Preferred 'wget' implementation (resume download)
+alias c='clear'                             # c:            Clear terminal display
+alias path='echo -e ${PATH//:/\\n}'         # path:         Echo all executable Paths
+alias show_options='shopt'                  # Show_options: display bash options settings
+alias fix_stty='stty sane'                  # fix_stty:     Restore terminal settings when screwed up
+alias fix_term='echo -e "\033c"'            # fix_term:     Reset the conosle.  Similar to the reset command
 alias cic='bind "set completion-ignore-case on"' # cic:          Make tab-completion case-insensitive
-alias src='source ~/.bashrc'                     # src:          Reload .bashrc file
+alias src='source ~/.bashrc'                # src:          Reload .bashrc file
