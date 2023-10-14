@@ -12,10 +12,10 @@
 # 07:45:05 user@host ~ →
 #
 # Example inside clean git repo:
-# 07:45:05 user@host ~/.oh-my-bash ±|master|→
+# 07:45:05 user@host ~/Bash ±|master|→
 #
 # Example inside dirty git repo:
-# 07:45:05 user@host ~/.oh-my-bash ±|master ✗|→
+# 07:45:05 user@host ~/Bash ±|master ✗|→
 #
 # Example with virtual environment:
 # 07:45:05 (venv) user@host ~ →
@@ -32,24 +32,25 @@ OMB_PROMPT_VIRTUALENV_FORMAT='(%s) '
 OMB_PROMPT_SHOW_PYTHON_VENV=${OMB_PROMPT_SHOW_PYTHON_VENV:=true}
 
 function _omb_theme_PROMPT_COMMAND() {
-    # This needs to be first to save last command return code
-    local RC="$?"
+	# This needs to be first to save last command return code
+	local RC="$?"
 
-    local hostname="${_omb_prompt_bold_gray}\u"
-    local python_venv; _omb_prompt_get_python_venv
-    python_venv=$_omb_prompt_white$python_venv
+	local hostname="${_omb_prompt_bold_gray}\u"
+	local python_venv
+	_omb_prompt_get_python_venv
+	python_venv=$_omb_prompt_white$python_venv
 
-    # Set return status color
-    if [[ ${RC} == 0 ]]; then
-        ret_status="${_omb_prompt_bold_green}"
-    else
-        ret_status="${_omb_prompt_bold_brown}"
-    fi
+	# Set return status color
+	if [[ ${RC} == 0 ]]; then
+		ret_status="${_omb_prompt_bold_green}"
+	else
+		ret_status="${_omb_prompt_bold_brown}"
+	fi
 
-    # Append new history lines to history file
-    history -a
+	# Append new history lines to history file
+	history -a
 
-    PS1="$python_venv${hostname} ${_omb_prompt_bold_teal}\w $(scm_prompt_char_info)${ret_status}→ ${_omb_prompt_normal}"
+	PS1="$python_venv${hostname} ${_omb_prompt_bold_teal}\w $(scm_prompt_char_info)${ret_status}→ ${_omb_prompt_normal}"
 }
 
 _omb_util_add_prompt_command _omb_theme_PROMPT_COMMAND

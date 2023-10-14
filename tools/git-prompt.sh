@@ -97,90 +97,87 @@
 
 # check whether printf supports -v
 __git_printf_supports_v=
-printf -v __git_printf_supports_v -- '%s' yes >/dev/null 2>&1
+printf -v __git_printf_supports_v -- '%s' yes > /dev/null 2>&1
 
 # stores the divergence from upstream in $p
 # used by GIT_PS1_SHOWUPSTREAM
-__git_ps1_show_upstream ()
-{
+__git_ps1_show_upstream() {
 	local key value
 	local svn_remote svn_url_pattern count n
 	local upstream=git legacy="" verbose="" name=""
 
 	svn_remote=()
 	# get some config options from git-config
-	local output="$(git config -z --get-regexp '^(svn-remote\..*\.url|bash\.showupstream)$' 2>/dev/null | tr '\0\n' '\n ')"
+	local output="$(git config -z --get-regexp '^(svn-remote\..*\.url|bash\.showupstream)$' 2> /dev/null | tr '\0\n' '\n ')"
 	while read -r key value; do
 		case "$key" in
-		bash.showupstream)
-			GIT_PS1_SHOWUPSTREAM="$value"
-			if [[ -z "${GIT_PS1_SHOWUPSTREAM}" ]]; then
-				p=""
-				return
-			fi
-			;;
-		svn-remote.*.url)
-			svn_remote[$((${#svn_remote[@]} + 1))]="$value"
-			svn_url_pattern="$svn_url_pattern\\|$value"
-			upstream=svn+git # default upstream is SVN if available, else git
-			;;
+			bash.showupstream)
+				GIT_PS1_SHOWUPSTREAM="$value"
+				if [[ -z "${GIT_PS1_SHOWUPSTREAM}" ]]; then
+					p=""
+					return
+				fi
+				;;
+			svn-remote.*.url)
+				svn_remote[$((${#svn_remote[@]} + 1))]="$value"
+				svn_url_pattern="$svn_url_pattern\\|$value"
+				upstream=svn+git # default upstream is SVN if available, else git
+				;;
 		esac
 	done <<< "$output"
 
 	# parse configuration values
 	for option in ${GIT_PS1_SHOWUPSTREAM}; do
 		case "$option" in
-		git|svn) upstream="$option" ;;
-		verbose) verbose=1 ;;
-		legacy)  legacy=1  ;;
-		name)    name=1 ;;
+			git | svn) upstream="$option" ;;
+			verbose) verbose=1 ;;
+			legacy) legacy=1 ;;
+			name) name=1 ;;
 		esac
 	done
 
 	# Find our upstream
 	case "$upstream" in
-	git)    upstream="@{upstream}" ;;
-	svn*)
-		# get the upstream from the "git-svn-id: ..." in a commit message
-		# (git-svn uses essentially the same procedure internally)
-		local -a svn_upstream
-		svn_upstream=($(git log --first-parent -1 \
-					--grep="^git-svn-id: \(${svn_url_pattern#??}\)" 2>/dev/null))
-		if [[ 0 -ne ${#svn_upstream[@]} ]]; then
-			svn_upstream=${svn_upstream[${#svn_upstream[@]} - 2]}
-			svn_upstream=${svn_upstream%@*}
-			local n_stop="${#svn_remote[@]}"
-			for ((n=1; n <= n_stop; n++)); do
-				svn_upstream=${svn_upstream#${svn_remote[$n]}}
-			done
+		git) upstream="@{upstream}" ;;
+		svn*)
+			# get the upstream from the "git-svn-id: ..." in a commit message
+			# (git-svn uses essentially the same procedure internally)
+			local -a svn_upstream
+			svn_upstream=($(git log --first-parent -1 \
+				--grep="^git-svn-id: \(${svn_url_pattern#??}\)" 2> /dev/null))
+			if [[ 0 -ne ${#svn_upstream[@]} ]]; then
+				svn_upstream=${svn_upstream[${#svn_upstream[@]} - 2]}
+				svn_upstream=${svn_upstream%@*}
+				local n_stop="${#svn_remote[@]}"
+				for ((n = 1; n <= n_stop; n++)); do
+					svn_upstream=${svn_upstream#${svn_remote[$n]}}
+				done
 
-			if [[ -z "$svn_upstream" ]]; then
-				# default branch name for checkouts with no layout:
-				upstream=${GIT_SVN_ID:-git-svn}
-			else
-				upstream=${svn_upstream#/}
+				if [[ -z "$svn_upstream" ]]; then
+					# default branch name for checkouts with no layout:
+					upstream=${GIT_SVN_ID:-git-svn}
+				else
+					upstream=${svn_upstream#/}
+				fi
+			elif [[ "svn+git" = "$upstream" ]]; then
+				upstream="@{upstream}"
 			fi
-		elif [[ "svn+git" = "$upstream" ]]; then
-			upstream="@{upstream}"
-		fi
-		;;
+			;;
 	esac
 
 	# Find how many commits we are ahead/behind our upstream
 	if [[ -z "$legacy" ]]; then
 		count="$(git rev-list --count --left-right \
-				"$upstream"...HEAD 2>/dev/null)"
+			"$upstream"...HEAD 2> /dev/null)"
 	else
 		# produce equivalent output to --count for older versions of git
 		local commits
-		if commits="$(git rev-list --left-right "$upstream"...HEAD 2>/dev/null)"
-		then
+		if commits="$(git rev-list --left-right "$upstream"...HEAD 2> /dev/null)"; then
 			local commit behind=0 ahead=0
-			for commit in $commits
-			do
+			for commit in $commits; do
 				case "$commit" in
-				"<"*) ((behind++)) ;;
-				*)    ((ahead++))  ;;
+					"<"*) ((behind++)) ;;
+					*) ((ahead++)) ;;
 				esac
 			done
 			count="$behind	$ahead"
@@ -192,33 +189,33 @@ __git_ps1_show_upstream ()
 	# calculate the result
 	if [[ -z "$verbose" ]]; then
 		case "$count" in
-		"") # no upstream
-			p="" ;;
-		"0	0") # equal to upstream
-			p="=" ;;
-		"0	"*) # ahead of upstream
-			p=">" ;;
-		*"	0") # behind upstream
-			p="<" ;;
-		*)	    # diverged from upstream
-			p="<>" ;;
+			"") # no upstream
+				p="" ;;
+			"0	0") # equal to upstream
+				p="=" ;;
+			"0	"*) # ahead of upstream
+				p=">" ;;
+			*"	0") # behind upstream
+				p="<" ;;
+			*) # diverged from upstream
+				p="<>" ;;
 		esac
 	else
 		case "$count" in
-		"") # no upstream
-			p="" ;;
-		"0	0") # equal to upstream
-			p=" u=" ;;
-		"0	"*) # ahead of upstream
-			p=" u+${count#0	}" ;;
-		*"	0") # behind upstream
-			p=" u-${count%	0}" ;;
-		*)	    # diverged from upstream
-			p=" u+${count#*	}-${count%	*}" ;;
+			"") # no upstream
+				p="" ;;
+			"0	0") # equal to upstream
+				p=" u=" ;;
+			"0	"*) # ahead of upstream
+				p=" u+${count#0	}" ;;
+			*"	0") # behind upstream
+				p=" u-${count%	0}" ;;
+			*) # diverged from upstream
+				p=" u+${count#*	}-${count%	*}" ;;
 		esac
 		if [[ -n "$count" && -n "$name" ]]; then
 			__git_ps1_upstream_name=$(git rev-parse \
-				--abbrev-ref "$upstream" 2>/dev/null)
+				--abbrev-ref "$upstream" 2> /dev/null)
 			if [ $pcmode = yes ] && [ $ps1_expanded = yes ]; then
 				p="$p \${__git_ps1_upstream_name}"
 			else
@@ -235,8 +232,7 @@ __git_ps1_show_upstream ()
 # Helper function that is meant to be called from __git_ps1.  It
 # injects color codes into the appropriate gitstring variables used
 # to build a gitstring.
-__git_ps1_colorize_gitstring ()
-{
+__git_ps1_colorize_gitstring() {
 	if [[ -n ${ZSH_VERSION-} ]]; then
 		local c_red='%F{red}'
 		local c_green='%F{green}'
@@ -278,11 +274,10 @@ __git_ps1_colorize_gitstring ()
 	r="$c_clear$r"
 }
 
-__git_eread ()
-{
+__git_eread() {
 	local f="$1"
 	shift
-	test -r "$f" && read "$@" <"$f"
+	test -r "$f" && read "$@" < "$f"
 }
 
 # __git_ps1 accepts 0 or 1 arguments (i.e., format string)
@@ -296,8 +291,7 @@ __git_eread ()
 # The optional third parameter will be used as printf format string to further
 # customize the output of the git-status string.
 # In this mode you can request colored hints using GIT_PS1_SHOWCOLORHINTS=true
-__git_ps1 ()
-{
+__git_ps1() {
 	# preserve exit status
 	local exit=$?
 	local pcmode=no
@@ -307,7 +301,8 @@ __git_ps1 ()
 	local printf_format=' (%s)'
 
 	case "$#" in
-		2|3)	pcmode=yes
+		2 | 3)
+			pcmode=yes
 			ps1pc_start="$1"
 			ps1pc_end="$2"
 			printf_format="${3:-$printf_format}"
@@ -315,11 +310,13 @@ __git_ps1 ()
 			# simply return early if the prompt should not
 			# be decorated
 			PS1="$ps1pc_start$ps1pc_end"
-		;;
-		0|1)	printf_format="${1:-$printf_format}"
-		;;
-		*)	return $exit
-		;;
+			;;
+		0 | 1)
+			printf_format="${1:-$printf_format}"
+			;;
+		*)
+			return $exit
+			;;
 	esac
 
 	# ps1_expanded:  This variable is set to 'yes' if the shell
@@ -362,7 +359,7 @@ __git_ps1 ()
 	local repo_info rev_parse_exit_code
 	repo_info="$(git rev-parse --git-dir --is-inside-git-dir \
 		--is-bare-repository --is-inside-work-tree \
-		--short HEAD 2>/dev/null)"
+		--short HEAD 2> /dev/null)"
 	rev_parse_exit_code="$?"
 
 	if [ -z "$repo_info" ]; then
@@ -381,11 +378,10 @@ __git_ps1 ()
 	local inside_gitdir="${repo_info##*$'\n'}"
 	local g="${repo_info%$'\n'*}"
 
-	if [ "true" = "$inside_worktree" ] &&
-	   [ -n "${GIT_PS1_HIDE_IF_PWD_IGNORED-}" ] &&
-	   [ "$(git config --bool bash.hideIfPwdIgnored)" != "false" ] &&
-	   git check-ignore -q .
-	then
+	if [ "true" = "$inside_worktree" ] \
+		&& [ -n "${GIT_PS1_HIDE_IF_PWD_IGNORED-}" ] \
+		&& [ "$(git config --bool bash.hideIfPwdIgnored)" != "false" ] \
+		&& git check-ignore -q .; then
 		return $exit
 	fi
 
@@ -428,7 +424,7 @@ __git_ps1 ()
 			:
 		elif [ -h "$g/HEAD" ]; then
 			# symlink symbolic ref
-			b="$(git symbolic-ref HEAD 2>/dev/null)"
+			b="$(git symbolic-ref HEAD 2> /dev/null)"
 		else
 			local head=""
 			if ! __git_eread "$g/HEAD" head; then
@@ -439,20 +435,25 @@ __git_ps1 ()
 			if [ "$head" = "$b" ]; then
 				detached=yes
 				b="$(
-				case "${GIT_PS1_DESCRIBE_STYLE-}" in
-				(contains)
-					git describe --contains HEAD ;;
-				(branch)
-					git describe --contains --all HEAD ;;
-				(tag)
-					git describe --tags HEAD ;;
-				(describe)
-					git describe HEAD ;;
-				(* | default)
-					git describe --tags --exact-match HEAD ;;
-				esac 2>/dev/null)" ||
-
-				b="$short_sha..."
+					case "${GIT_PS1_DESCRIBE_STYLE-}" in
+						contains)
+							git describe --contains HEAD
+							;;
+						branch)
+							git describe --contains --all HEAD
+							;;
+						tag)
+							git describe --tags HEAD
+							;;
+						describe)
+							git describe HEAD
+							;;
+						* | default)
+							git describe --tags --exact-match HEAD
+							;;
+					esac 2> /dev/null
+				)" \
+					|| b="$short_sha..."
 				b="($b)"
 			fi
 		fi
@@ -476,25 +477,22 @@ __git_ps1 ()
 			b="GIT_DIR!"
 		fi
 	elif [ "true" = "$inside_worktree" ]; then
-		if [ -n "${GIT_PS1_SHOWDIRTYSTATE-}" ] &&
-		   [ "$(git config --bool bash.showDirtyState)" != "false" ]
-		then
+		if [ -n "${GIT_PS1_SHOWDIRTYSTATE-}" ] \
+			&& [ "$(git config --bool bash.showDirtyState)" != "false" ]; then
 			git diff --no-ext-diff --quiet || w="*"
 			git diff --no-ext-diff --cached --quiet || i="+"
 			if [ -z "$short_sha" ] && [ -z "$i" ]; then
 				i="#"
 			fi
 		fi
-		if [ -n "${GIT_PS1_SHOWSTASHSTATE-}" ] &&
-		   git rev-parse --verify --quiet refs/stash >/dev/null
-		then
+		if [ -n "${GIT_PS1_SHOWSTASHSTATE-}" ] \
+			&& git rev-parse --verify --quiet refs/stash > /dev/null; then
 			s="$"
 		fi
 
-		if [ -n "${GIT_PS1_SHOWUNTRACKEDFILES-}" ] &&
-		   [ "$(git config --bool bash.showUntrackedFiles)" != "false" ] &&
-		   git ls-files --others --exclude-standard --directory --no-empty-directory --error-unmatch -- ':/*' >/dev/null 2>/dev/null
-		then
+		if [ -n "${GIT_PS1_SHOWUNTRACKEDFILES-}" ] \
+			&& [ "$(git config --bool bash.showUntrackedFiles)" != "false" ] \
+			&& git ls-files --others --exclude-standard --directory --no-empty-directory --error-unmatch -- ':/*' > /dev/null 2> /dev/null; then
 			u="%${ZSH_VERSION+%}"
 		fi
 

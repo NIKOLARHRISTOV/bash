@@ -17,18 +17,20 @@ function _omb_theme_PROMPT_COMMAND() {
 
 	local TITLEBAR
 	case $TERM in
-	xterm* | screen)
-		TITLEBAR=$'\1\e]0;'$USER@${HOSTNAME%%.*}:${PWD/#$HOME/~}$'\e\\\2' ;;
-	*)
-		TITLEBAR= ;;
+		xterm* | screen)
+			TITLEBAR=$'\1\e]0;'$USER@${HOSTNAME%%.*}:${PWD/#$HOME/~}$'\e\\\2'
+			;;
+		*)
+			TITLEBAR=
+			;;
 	esac
 
-  local HORA=$(date +%H)
+	local HORA=$(date +%H)
 	local MERIDIANO
-	if (( 10#$HORA > 12 )); then
-		MERIDIANO="pm";
+	if ((10#$HORA > 12)); then
+		MERIDIANO="pm"
 	else
-		MERIDIANO="am";
+		MERIDIANO="am"
 	fi
 
 	PS1=$TITLEBAR"\n${_omb_prompt_gray}\T${MERIDIANO} ${_omb_prompt_green}\u ${_omb_prompt_olive}\${PWD} $(scm_prompt_info)\n${_omb_prompt_gray}\$ ${_omb_prompt_white}"

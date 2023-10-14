@@ -5,5 +5,5 @@
 
 # Try to load sdk only if the command is not available
 if ! _omb_util_command_exists sdk && [[ -s $SDKMAN_DIR/bin/sdkman-init.sh ]]; then
-  source "$SDKMAN_DIR/bin/sdkman-init.sh"
+	source "$SDKMAN_DIR/bin/sdkman-init.sh"
 fi
