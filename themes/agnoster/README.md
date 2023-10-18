@@ -4,7 +4,7 @@ In order for this theme to render correctly, you will need a
 [Powerline-patched font](https://gist.github.com/1595572). I recommend:
 https://github.com/powerline/fonts.git
 
-```
+```sh
 git clone https://github.com/powerline/fonts.git fonts
 cd fonts
 sh install.sh

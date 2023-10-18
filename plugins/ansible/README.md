@@ -8,7 +8,7 @@ The `ansible plugin` adds several aliases for useful
 
 To use it, add `ansible` to the plugins array of your bashrc file:
 
-```
+```sh
 plugins=(... ansible)
 ```
 
