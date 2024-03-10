@@ -300,14 +300,13 @@ function _omb_install_main {
 
 	printf '%s\n' "${BLUE}Cloning Oh My Bash...${NORMAL}"
 	type -P git &> /dev/null || {
-		echo "Error: git is not installed"
+		echo "Cannot git."
 		return 1
 	}
 	# The Windows (MSYS) Git is not compatible with normal use on cygwin
 	if [[ $OSTYPE == cygwin ]]; then
 		if command git --version | command grep msysgit > /dev/null; then
-			echo "Error: Windows/MSYS Git is not supported on Cygwin"
-			echo "Error: Make sure the Cygwin git package is installed and is first on the path"
+			echo "Connot Cygwin."
 			return 1
 		fi
 	fi
