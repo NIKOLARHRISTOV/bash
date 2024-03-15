@@ -163,9 +163,9 @@ RIGHT_SUBSEG=''
 
 function text_effect {
 	case "$1" in
-		reset) echo 0 ;;
-		bold) echo 1 ;;
-		underline) echo 4 ;;
+	reset) echo 0 ;;
+	bold) echo 1 ;;
+	underline) echo 4 ;;
 	esac
 }
 
@@ -174,29 +174,29 @@ function text_effect {
 # under the "256 (8-bit) Colors" section, and follow the example for orange below
 function fg_color {
 	case "$1" in
-		black) echo 30 ;;
-		red) echo 31 ;;
-		green) echo 32 ;;
-		yellow) echo 33 ;;
-		blue) echo 34 ;;
-		magenta) echo 35 ;;
-		cyan) echo 36 ;;
-		white) echo 37 ;;
-		orange) echo 38\;5\;166 ;;
+	black) echo 30 ;;
+	red) echo 31 ;;
+	green) echo 32 ;;
+	yellow) echo 33 ;;
+	blue) echo 34 ;;
+	magenta) echo 35 ;;
+	cyan) echo 36 ;;
+	white) echo 37 ;;
+	orange) echo 38\;5\;166 ;;
 	esac
 }
 
 function bg_color {
 	case "$1" in
-		black) echo 40 ;;
-		red) echo 41 ;;
-		green) echo 42 ;;
-		yellow) echo 43 ;;
-		blue) echo 44 ;;
-		magenta) echo 45 ;;
-		cyan) echo 46 ;;
-		white) echo 47 ;;
-		orange) echo 48\;5\;166 ;;
+	black) echo 40 ;;
+	red) echo 41 ;;
+	green) echo 42 ;;
+	yellow) echo 43 ;;
+	blue) echo 44 ;;
+	magenta) echo 45 ;;
+	cyan) echo 46 ;;
+	white) echo 47 ;;
+	orange) echo 48\;5\;166 ;;
 	esac
 }
 
@@ -293,7 +293,7 @@ function prompt_virtualenv {
 
 		# The last word of the output of `python --version`
 		# corresponds to the version number.
-		local VENV_VERSION=$(awk '{print $NF}' <<< "$VERSION_OUTPUT")
+		local VENV_VERSION=$(awk '{print $NF}' <<<"$VERSION_OUTPUT")
 
 		prompt_segment cyan white "[v] $(basename "$VENV_VERSION")"
 	fi
@@ -306,14 +306,14 @@ function prompt_pyenv {
 		# When pyenv shell is set, the environment variable $PYENV_VERSION is set with the value we want
 		if [[ ! ${PYENV_VERSION-} ]]; then
 			# If not set, fall back to pyenv local/global to get the version
-			local PYENV_VERSION=$(pyenv local 2> /dev/null || pyenv global 2> /dev/null)
+			local PYENV_VERSION=$(pyenv local 2>/dev/null || pyenv global 2>/dev/null)
 		fi
 		# If it is not the system's python, then display additional info
 		if [[ "$PYENV_VERSION" != "system" ]]; then
 			# It's a pyenv virtualenv, get the version number
 			if [[ -d $PYENV_VIRTUAL_ENV ]]; then
 				local VERSION_OUTPUT=$("$PYENV_VIRTUAL_ENV"/bin/python --version 2>&1)
-				local PYENV_VENV_VERSION=$(awk '{print $NF}' <<< "$VERSION_OUTPUT")
+				local PYENV_VENV_VERSION=$(awk '{print $NF}' <<<"$VERSION_OUTPUT")
 				prompt_segment cyan white "[$PYENV_VERSION] $(basename "$PYENV_VENV_VERSION")"
 			else
 				prompt_segment cyan white "$PYENV_VERSION"
@@ -352,25 +352,25 @@ function prompt_histdt {
 }
 
 function git_status_dirty {
-	dirty=$(command git status -s 2> /dev/null | tail -n 1)
+	dirty=$(command git status -s 2>/dev/null | tail -n 1)
 	[[ -n $dirty ]] && echo " ●"
 }
 
 function git_stash_dirty {
-	stash=$(command git stash list 2> /dev/null | tail -n 1)
+	stash=$(command git stash list 2>/dev/null | tail -n 1)
 	[[ -n $stash ]] && echo " ⚑"
 }
 
 # Git: branch/detached head, dirty status
 function prompt_git {
 	local ref dirty
-	if command git rev-parse --is-inside-work-tree &> /dev/null; then
+	if command git rev-parse --is-inside-work-tree &>/dev/null; then
 		ZSH_THEME_GIT_PROMPT_DIRTY='±'
 		dirty=$(git_status_dirty)
 		stash=$(git_stash_dirty)
-		ref=$(command git symbolic-ref HEAD 2> /dev/null) \
-			|| ref="➦ $(command git describe --exact-match --tags HEAD 2> /dev/null)" \
-			|| ref="➦ $(command git show-ref --head -s --abbrev | head -n1 2> /dev/null)"
+		ref=$(command git symbolic-ref HEAD 2>/dev/null) ||
+			ref="➦ $(command git describe --exact-match --tags HEAD 2>/dev/null)" ||
+			ref="➦ $(command git show-ref --head -s --abbrev | head -n1 2>/dev/null)"
 		if [[ -n $dirty ]]; then
 			prompt_segment yellow black
 		else
@@ -383,8 +383,8 @@ function prompt_git {
 # Mercurial: clean, modified and uncomitted files
 function prompt_hg {
 	local rev st branch
-	if hg id &> /dev/null; then
-		if hg prompt &> /dev/null; then
+	if hg id &>/dev/null; then
+		if hg prompt &>/dev/null; then
 			if [[ $(hg prompt "{status|unknown}") == '?' ]]; then
 				# if files are not added
 				prompt_segment red white
@@ -400,8 +400,8 @@ function prompt_hg {
 			PR="$PR$(hg prompt "☿ {rev}@{branch}") $st"
 		else
 			st=""
-			rev=$(hg id -n 2> /dev/null | sed 's/[^-0-9]//g')
-			branch=$(hg id -b 2> /dev/null)
+			rev=$(hg id -n 2>/dev/null | sed 's/[^-0-9]//g')
+			branch=$(hg id -b 2>/dev/null)
 			if hg st | grep -q "^\?"; then
 				prompt_segment red white
 				st='±'

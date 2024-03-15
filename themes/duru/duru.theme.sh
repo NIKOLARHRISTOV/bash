@@ -13,7 +13,7 @@ function venv {
 }
 
 function last_two_dirs {
-	pwd | rev | awk -F / '{print $1,$2}' | rev | sed s_\ _/_ | sed "s|$(sed 's,\/,,' <<< "$HOME")|~|g"
+	pwd | rev | awk -F / '{print $1,$2}' | rev | sed s_\ _/_ | sed "s|$(sed 's,\/,,' <<<"$HOME")|~|g"
 }
 
 function _omb_theme_PROMPT_COMMAND {

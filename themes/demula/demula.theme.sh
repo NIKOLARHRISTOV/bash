@@ -47,12 +47,12 @@ D_VIMSHELL_COLOR="${_omb_prompt_teal}"
 
 # ------------------------------------------------------------------ FUNCTIONS
 case $TERM in
-	xterm*)
-		TITLEBAR="\033]0;\w\007"
-		;;
-	*)
-		TITLEBAR=""
-		;;
+xterm*)
+	TITLEBAR="\033]0;\w\007"
+	;;
+*)
+	TITLEBAR=""
+	;;
 esac
 
 function is_vim_shell {

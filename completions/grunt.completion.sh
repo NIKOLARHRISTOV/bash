@@ -36,7 +36,7 @@ function _grunt_completions() {
 	# The current gruntfile, if it exists.
 	local gruntfile="$(_grunt_gruntfile)"
 	# The current grunt version, available tasks, options, etc.
-	local gruntinfo="$(grunt --version --verbose 2> /dev/null)"
+	local gruntinfo="$(grunt --version --verbose 2>/dev/null)"
 	# Options and tasks.
 	local opts="$(echo "$gruntinfo" | awk '/Available options: / {$1=$2=""; print $0}')"
 	local compls="$(echo "$gruntinfo" | awk '/Available tasks: / {$1=$2=""; print $0}')"

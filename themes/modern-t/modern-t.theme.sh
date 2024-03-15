@@ -9,12 +9,12 @@ SCM_SVN_CHAR="${_omb_prompt_bold_teal}⑆${_omb_prompt_normal}"
 SCM_HG_CHAR="${_omb_prompt_bold_brown}☿${_omb_prompt_normal}"
 
 case $TERM in
-	xterm*)
-		TITLEBAR="\[\033]0;\w\007\]"
-		;;
-	*)
-		TITLEBAR=""
-		;;
+xterm*)
+	TITLEBAR="\[\033]0;\w\007\]"
+	;;
+*)
+	TITLEBAR=""
+	;;
 esac
 
 PS3=">> "
@@ -42,8 +42,8 @@ function _omb_theme_PROMPT_COMMAND {
 	fi
 
 	local todo_count=
-	_omb_util_binary_exists t \
-		&& todo_count=[${_omb_prompt_teal}$(command t | wc -l | sed -e's/ *//')${_omb_prompt_reset_color}]
+	_omb_util_binary_exists t &&
+		todo_count=[${_omb_prompt_teal}$(command t | wc -l | sed -e's/ *//')${_omb_prompt_reset_color}]
 
 	PS1="${TITLEBAR}${border_color}┌─$todo_count${_omb_prompt_normal}$(modern_scm_prompt)[${_omb_prompt_teal}\W${_omb_prompt_normal}]$(is_vim_shell)"
 	PS1+="\n${border_color}└─▪${_omb_prompt_normal} "

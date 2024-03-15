@@ -96,27 +96,27 @@ function _omb_util_defun_print {
 
 if ((_omb_bash_version >= 40000)); then
 	function _omb_util_command_exists {
-		type -t -- "$@" &> /dev/null # bash-4.0
+		type -t -- "$@" &>/dev/null # bash-4.0
 	}
 	function _omb_util_binary_exists {
-		type -P -- "$@" &> /dev/null # bash-4.0
+		type -P -- "$@" &>/dev/null # bash-4.0
 	}
 else
 	function _omb_util_command_exists {
 		while (($#)); do
-			type -t -- "$1" &> /dev/null || return 1
+			type -t -- "$1" &>/dev/null || return 1
 			shift
 		done
 	}
 	function _omb_util_binary_exists {
 		while (($#)); do
-			type -P -- "$1" &> /dev/null || return 1
+			type -P -- "$1" &>/dev/null || return 1
 			shift
 		done
 	}
 fi
 function _omb_util_function_exists {
-	declare -F "$@" &> /dev/null # bash-3.2
+	declare -F "$@" &>/dev/null # bash-3.2
 }
 
 #
@@ -147,10 +147,10 @@ function _omb_term_color_initialize {
 	fi
 
 	if _omb_util_binary_exists tput; then
-		_omb_term_colors=$(tput colors 2> /dev/null || tput Co 2> /dev/null)
-		_omb_term_bold=$(tput bold 2> /dev/null || tput md 2> /dev/null)
-		_omb_term_underline=$(tput smul 2> /dev/null || tput ul 2> /dev/null)
-		_omb_term_reset=$(tput sgr0 2> /dev/null || tput me 2> /dev/null)
+		_omb_term_colors=$(tput colors 2>/dev/null || tput Co 2>/dev/null)
+		_omb_term_bold=$(tput bold 2>/dev/null || tput md 2>/dev/null)
+		_omb_term_underline=$(tput smul 2>/dev/null || tput ul 2>/dev/null)
+		_omb_term_reset=$(tput sgr0 2>/dev/null || tput me 2>/dev/null)
 	else
 		_omb_term_colors=
 		_omb_term_bold=$'\e[1m'
@@ -164,7 +164,7 @@ function _omb_term_color_initialize {
 	if ((_omb_term_colors >= 8)); then
 		local index
 		for ((index = 0; index < 8; index++)); do
-			local fg=$(tput setaf "$index" 2> /dev/null || tput AF "$index" 2> /dev/null)
+			local fg=$(tput setaf "$index" 2>/dev/null || tput AF "$index" 2>/dev/null)
 			[[ $fg ]] || fg=$'\e[3'$index'm'
 			printf -v "_omb_term_${normal_colors[index]}" %s "$fg"
 			printf -v "_omb_term_background_${normal_colors[index]}" '\e[4%sm' "$index"
@@ -181,7 +181,7 @@ function _omb_term_color_initialize {
 	if ((_omb_term_colors >= 16)); then
 		local index
 		for ((index = 0; index < 8; index++)); do
-			local fg=$(tput setaf $((index + 8)) 2> /dev/null || tput AF $((index + 8)) 2> /dev/null)
+			local fg=$(tput setaf $((index + 8)) 2>/dev/null || tput AF $((index + 8)) 2>/dev/null)
 			[[ $fg ]] || fg=$'\e[9'$index'm'
 			local refbg=_omb_term_background_${normal_colors[index]}
 			local bg=${!refbg}$'\e[10'$index'm'
@@ -280,7 +280,7 @@ function pushover {
 		-F "device=${DEVICE}" \
 		-F "title=${TITLE}" \
 		-F "message=${MESSAGE}" \
-		"${PUSHOVERURL}" > /dev/null 2>&1
+		"${PUSHOVERURL}" >/dev/null 2>&1
 }
 
 ## @fn _omb_util_get_shopt optnames...
@@ -292,7 +292,7 @@ else
 		__shopt=
 		local opt
 		for opt; do
-			if shopt -q "$opt" &> /dev/null; then
+			if shopt -q "$opt" &>/dev/null; then
 				__shopt=${__shopt:+$__shopt:}$opt
 			fi
 		done
@@ -401,13 +401,13 @@ function _omb_util_glob_expand {
 
 function _omb_util_alias {
 	case ${OMB_DEFAULT_ALIASES:-enable} in
-		disable) return 0 ;;
-		check) alias -- "${1%%=*}" &> /dev/null && return 0 ;;
-		enable) ;;
-		*)
-			_omb_log_error "invalid value: OMB_DEFAULT_ALIASES='${OMB_DEFAULT_ALIASES-}' (expect: enable|disable|check)" >&2
-			return 2
-			;;
+	disable) return 0 ;;
+	check) alias -- "${1%%=*}" &>/dev/null && return 0 ;;
+	enable) ;;
+	*)
+		_omb_log_error "invalid value: OMB_DEFAULT_ALIASES='${OMB_DEFAULT_ALIASES-}' (expect: enable|disable|check)" >&2
+		return 2
+		;;
 	esac
 	alias -- "$1"
 }
@@ -441,6 +441,6 @@ function _omb_util_mktemp {
 	if _omb_util_command_exists mktemp; then
 		mktemp -t "$template"
 	else
-		m4 -D template="${TMPDIR:-/tmp}/$template" <<< 'mkstemp(template)'
+		m4 -D template="${TMPDIR:-/tmp}/$template" <<<'mkstemp(template)'
 	fi
 }

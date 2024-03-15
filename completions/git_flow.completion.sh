@@ -54,21 +54,21 @@ _git_flow() {
 	fi
 
 	case "$subcommand" in
-		feature)
-			__git_flow_feature
-			return
-			;;
-		release)
-			__git_flow_release
-			return
-			;;
-		hotfix)
-			__git_flow_hotfix
-			return
-			;;
-		*)
-			COMPREPLY=()
-			;;
+	feature)
+		__git_flow_feature
+		return
+		;;
+	release)
+		__git_flow_release
+		return
+		;;
+	hotfix)
+		__git_flow_hotfix
+		return
+		;;
+	*)
+		COMPREPLY=()
+		;;
 	esac
 }
 
@@ -81,38 +81,38 @@ __git_flow_feature() {
 	fi
 
 	case "$subcommand" in
-		pull)
-			__gitcomp "$(__git_remotes)"
-			return
-			;;
-		checkout | finish | diff | rebase)
-			__gitcomp "$(__git_flow_list_features)"
-			return
-			;;
-		publish)
-			__gitcomp "$(comm -23 <(__git_flow_list_features) <(__git_flow_list_remote_features))"
-			return
-			;;
-		track)
-			__gitcomp "$(__git_flow_list_remote_features)"
-			return
-			;;
-		*)
-			COMPREPLY=()
-			;;
+	pull)
+		__gitcomp "$(__git_remotes)"
+		return
+		;;
+	checkout | finish | diff | rebase)
+		__gitcomp "$(__git_flow_list_features)"
+		return
+		;;
+	publish)
+		__gitcomp "$(comm -23 <(__git_flow_list_features) <(__git_flow_list_remote_features))"
+		return
+		;;
+	track)
+		__gitcomp "$(__git_flow_list_remote_features)"
+		return
+		;;
+	*)
+		COMPREPLY=()
+		;;
 	esac
 }
 
 __git_flow_list_features() {
-	git flow feature list 2> /dev/null | tr -d ' |*'
+	git flow feature list 2>/dev/null | tr -d ' |*'
 }
 
 __git_flow_list_remote_features() {
-	git branch -r 2> /dev/null | grep "origin/$(__git_flow_feature_prefix)" | awk '{ sub(/^origin\/$(__git_flow_feature_prefix)/, "", $1); print }'
+	git branch -r 2>/dev/null | grep "origin/$(__git_flow_feature_prefix)" | awk '{ sub(/^origin\/$(__git_flow_feature_prefix)/, "", $1); print }'
 }
 
 __git_flow_feature_prefix() {
-	git config gitflow.prefix.feature 2> /dev/null || echo "feature/"
+	git config gitflow.prefix.feature 2>/dev/null || echo "feature/"
 }
 
 __git_flow_release() {
@@ -124,19 +124,19 @@ __git_flow_release() {
 	fi
 
 	case "$subcommand" in
-		finish)
-			__gitcomp "$(__git_flow_list_releases)"
-			return
-			;;
-		*)
-			COMPREPLY=()
-			;;
+	finish)
+		__gitcomp "$(__git_flow_list_releases)"
+		return
+		;;
+	*)
+		COMPREPLY=()
+		;;
 	esac
 
 }
 
 __git_flow_list_releases() {
-	git flow release list 2> /dev/null
+	git flow release list 2>/dev/null
 }
 
 __git_flow_hotfix() {
@@ -148,18 +148,18 @@ __git_flow_hotfix() {
 	fi
 
 	case "$subcommand" in
-		finish)
-			__gitcomp "$(__git_flow_list_hotfixes)"
-			return
-			;;
-		*)
-			COMPREPLY=()
-			;;
+	finish)
+		__gitcomp "$(__git_flow_list_hotfixes)"
+		return
+		;;
+	*)
+		COMPREPLY=()
+		;;
 	esac
 }
 
 __git_flow_list_hotfixes() {
-	git flow hotfix list 2> /dev/null
+	git flow hotfix list 2>/dev/null
 }
 
 # temporarily wrap __git_find_on_cmdline() for backwards compatibility

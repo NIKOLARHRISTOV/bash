@@ -62,33 +62,33 @@ _git_flow() {
 	fi
 
 	case "$subcommand" in
-		init)
-			__git_flow_init
-			return
-			;;
-		feature)
-			__git_flow_feature
-			return
-			;;
-		release)
-			__git_flow_release
-			return
-			;;
-		hotfix)
-			__git_flow_hotfix
-			return
-			;;
-		support)
-			__git_flow_support
-			return
-			;;
-		config)
-			__git_flow_config
-			return
-			;;
-		*)
-			COMPREPLY=()
-			;;
+	init)
+		__git_flow_init
+		return
+		;;
+	feature)
+		__git_flow_feature
+		return
+		;;
+	release)
+		__git_flow_release
+		return
+		;;
+	hotfix)
+		__git_flow_hotfix
+		return
+		;;
+	support)
+		__git_flow_support
+		return
+		;;
+	config)
+		__git_flow_config
+		return
+		;;
+	*)
+		COMPREPLY=()
+		;;
 	esac
 }
 
@@ -100,14 +100,14 @@ __git_flow_init() {
 	fi
 
 	case "$cur" in
-		--*)
-			__gitcomp "
+	--*)
+		__gitcomp "
 				--nodefaults --defaults
 				--noforce --force
 				$__git_flow_config_file_options
 				"
-			return
-			;;
+		return
+		;;
 	esac
 }
 
@@ -121,31 +121,31 @@ __git_flow_feature() {
 	fi
 
 	case "$subcommand" in
-		pull)
-			__gitcomp_nl "$(__git_remotes)"
-			return
-			;;
-		checkout)
-			__gitcomp_nl "$(__git_flow_list_local_branches 'feature')"
-			return
-			;;
-		delete)
-			case "$cur" in
-				--*)
-					__gitcomp "
+	pull)
+		__gitcomp_nl "$(__git_remotes)"
+		return
+		;;
+	checkout)
+		__gitcomp_nl "$(__git_flow_list_local_branches 'feature')"
+		return
+		;;
+	delete)
+		case "$cur" in
+		--*)
+			__gitcomp "
 					--noforce --force
 					--noremote --remote
 					"
-					return
-					;;
-			esac
-			__gitcomp_nl "$(__git_flow_list_local_branches 'feature')"
 			return
 			;;
-		finish)
-			case "$cur" in
-				--*)
-					__gitcomp "
+		esac
+		__gitcomp_nl "$(__git_flow_list_local_branches 'feature')"
+		return
+		;;
+	finish)
+		case "$cur" in
+		--*)
+			__gitcomp "
 					--nofetch --fetch
 					--norebase --rebase
 					--nopreserve-merges --preserve-merges
@@ -156,40 +156,40 @@ __git_flow_feature() {
 					--nosquash --squash
 					--no-ff
 				"
-					return
-					;;
-			esac
-			__gitcomp_nl "$(__git_flow_list_local_branches 'feature')"
 			return
 			;;
-		diff)
-			__gitcomp_nl "$(__git_flow_list_local_branches 'feature')"
-			return
-			;;
-		rebase)
-			case "$cur" in
-				--*)
-					__gitcomp "
+		esac
+		__gitcomp_nl "$(__git_flow_list_local_branches 'feature')"
+		return
+		;;
+	diff)
+		__gitcomp_nl "$(__git_flow_list_local_branches 'feature')"
+		return
+		;;
+	rebase)
+		case "$cur" in
+		--*)
+			__gitcomp "
 					--nointeractive --interactive
 					--nopreserve-merges --preserve-merges
 				"
-					return
-					;;
-			esac
-			__gitcomp_nl "$(__git_flow_list_local_branches 'feature')"
 			return
 			;;
-		publish)
-			__gitcomp_nl "$(__git_flow_list_branches 'feature')"
-			return
-			;;
-		track)
-			__gitcomp_nl "$(__git_flow_list_branches 'feature')"
-			return
-			;;
-		*)
-			COMPREPLY=()
-			;;
+		esac
+		__gitcomp_nl "$(__git_flow_list_local_branches 'feature')"
+		return
+		;;
+	publish)
+		__gitcomp_nl "$(__git_flow_list_branches 'feature')"
+		return
+		;;
+	track)
+		__gitcomp_nl "$(__git_flow_list_branches 'feature')"
+		return
+		;;
+	*)
+		COMPREPLY=()
+		;;
 	esac
 }
 
@@ -202,10 +202,10 @@ __git_flow_release() {
 	fi
 
 	case "$subcommand" in
-		finish)
-			case "$cur" in
-				--*)
-					__gitcomp "
+	finish)
+		case "$cur" in
+		--*)
+			__gitcomp "
 					--nofetch --fetch
 					--sign
 					--signingkey
@@ -220,60 +220,60 @@ __git_flow_release() {
 					--nonobackmerge --nobackmerge
 					--nosquash --squash
 				"
-					return
-					;;
-			esac
-			__gitcomp_nl "$(__git_flow_list_local_branches 'release')"
 			return
 			;;
-		rebase)
-			case "$cur" in
-				--*)
-					__gitcomp "
+		esac
+		__gitcomp_nl "$(__git_flow_list_local_branches 'release')"
+		return
+		;;
+	rebase)
+		case "$cur" in
+		--*)
+			__gitcomp "
 					--nointeractive --interactive
 					--nopreserve-merges --preserve-merges
 				"
-					return
-					;;
-			esac
-			__gitcomp_nl "$(__git_flow_list_local_branches 'release')"
 			return
 			;;
-		delete)
-			case "$cur" in
-				--*)
-					__gitcomp "
+		esac
+		__gitcomp_nl "$(__git_flow_list_local_branches 'release')"
+		return
+		;;
+	delete)
+		case "$cur" in
+		--*)
+			__gitcomp "
 					--noforce --force
 					--noremote --remote
 					"
-					return
-					;;
-			esac
-			__gitcomp_nl "$(__git_flow_list_local_branches 'release')"
 			return
 			;;
-		publish)
-			__gitcomp_nl "$(__git_flow_list_branches 'release')"
-			return
-			;;
-		track)
-			__gitcomp_nl "$(__git_flow_list_branches 'release')"
-			return
-			;;
-		start)
-			case "$cur" in
-				--*)
-					__gitcomp "
+		esac
+		__gitcomp_nl "$(__git_flow_list_local_branches 'release')"
+		return
+		;;
+	publish)
+		__gitcomp_nl "$(__git_flow_list_branches 'release')"
+		return
+		;;
+	track)
+		__gitcomp_nl "$(__git_flow_list_branches 'release')"
+		return
+		;;
+	start)
+		case "$cur" in
+		--*)
+			__gitcomp "
 					--nofetch --fetch
 				"
-					return
-					;;
-			esac
 			return
 			;;
-		*)
-			COMPREPLY=()
-			;;
+		esac
+		return
+		;;
+	*)
+		COMPREPLY=()
+		;;
 	esac
 
 }
@@ -287,10 +287,10 @@ __git_flow_hotfix() {
 	fi
 
 	case "$subcommand" in
-		finish)
-			case "$cur" in
-				--*)
-					__gitcomp "
+	finish)
+		case "$cur" in
+		--*)
+			__gitcomp "
 					--nofetch --fetch
 					--sign
 					--signingkey
@@ -304,60 +304,60 @@ __git_flow_hotfix() {
 					--notag --tag
 					--nonobackmerge --nobackmerge
 				"
-					return
-					;;
-			esac
-			__gitcomp_nl "$(__git_flow_list_local_branches 'hotfix')"
 			return
 			;;
-		rebase)
-			case "$cur" in
-				--*)
-					__gitcomp "
+		esac
+		__gitcomp_nl "$(__git_flow_list_local_branches 'hotfix')"
+		return
+		;;
+	rebase)
+		case "$cur" in
+		--*)
+			__gitcomp "
 					--nointeractive --interactive
 					--nopreserve-merges --preserve-merges
 				"
-					return
-					;;
-			esac
-			__gitcomp_nl "$(__git_flow_list_local_branches 'hotfix')"
 			return
 			;;
-		delete)
-			case "$cur" in
-				--*)
-					__gitcomp "
+		esac
+		__gitcomp_nl "$(__git_flow_list_local_branches 'hotfix')"
+		return
+		;;
+	delete)
+		case "$cur" in
+		--*)
+			__gitcomp "
 					--noforce --force
 					--noremote --remote
 					"
-					return
-					;;
-			esac
-			__gitcomp_nl "$(__git_flow_list_local_branches 'hotfix')"
 			return
 			;;
-		publish)
-			__gitcomp_nl "$(__git_flow_list_branches 'hotfix')"
-			return
-			;;
-		track)
-			__gitcomp_nl "$(__git_flow_list_branches 'hotfix')"
-			return
-			;;
-		start)
-			case "$cur" in
-				--*)
-					__gitcomp "
+		esac
+		__gitcomp_nl "$(__git_flow_list_local_branches 'hotfix')"
+		return
+		;;
+	publish)
+		__gitcomp_nl "$(__git_flow_list_branches 'hotfix')"
+		return
+		;;
+	track)
+		__gitcomp_nl "$(__git_flow_list_branches 'hotfix')"
+		return
+		;;
+	start)
+		case "$cur" in
+		--*)
+			__gitcomp "
 					--nofetch --fetch
 				"
-					return
-					;;
-			esac
 			return
 			;;
-		*)
-			COMPREPLY=()
-			;;
+		esac
+		return
+		;;
+	*)
+		COMPREPLY=()
+		;;
 	esac
 }
 
@@ -370,33 +370,33 @@ __git_flow_support() {
 	fi
 
 	case "$subcommand" in
-		start)
-			case "$cur" in
-				--*)
-					__gitcomp "
+	start)
+		case "$cur" in
+		--*)
+			__gitcomp "
 					--nofetch --fetch
 				"
-					return
-					;;
-			esac
 			return
 			;;
-		rebase)
-			case "$cur" in
-				--*)
-					__gitcomp "
+		esac
+		return
+		;;
+	rebase)
+		case "$cur" in
+		--*)
+			__gitcomp "
 					--nointeractive --interactive
 					--nopreserve-merges --preserve-merges
 				"
-					return
-					;;
-			esac
-			__gitcomp_nl "$(__git_flow_list_local_branches 'support')"
 			return
 			;;
-		*)
-			COMPREPLY=()
-			;;
+		esac
+		__gitcomp_nl "$(__git_flow_list_local_branches 'support')"
+		return
+		;;
+	*)
+		COMPREPLY=()
+		;;
 	esac
 }
 
@@ -409,54 +409,54 @@ __git_flow_config() {
 	fi
 
 	case "$subcommand" in
-		set)
-			case "$cur" in
-				--*)
-					__gitcomp "
+	set)
+		case "$cur" in
+		--*)
+			__gitcomp "
 						$__git_flow_config_file_options
 					"
-					return
-					;;
-			esac
-			__gitcomp "
+			return
+			;;
+		esac
+		__gitcomp "
 			master develop
 			feature hotfix release support
 			versiontagprefix
 			"
-			return
-			;;
-		base)
-			case "$cur" in
-				--*)
-					__gitcomp "
+		return
+		;;
+	base)
+		case "$cur" in
+		--*)
+			__gitcomp "
 						set get
 					"
-					return
-					;;
-			esac
-			__gitcomp_nl "$(__git_flow_list_local_branches)"
 			return
 			;;
-		*)
-			COMPREPLY=()
-			;;
+		esac
+		__gitcomp_nl "$(__git_flow_list_local_branches)"
+		return
+		;;
+	*)
+		COMPREPLY=()
+		;;
 	esac
 }
 
 __git_flow_prefix() {
 	case "$1" in
-		feature | release | hotfix | support)
-			git config "gitflow.prefix.$1" 2> /dev/null || echo "$1/"
-			return
-			;;
+	feature | release | hotfix | support)
+		git config "gitflow.prefix.$1" 2>/dev/null || echo "$1/"
+		return
+		;;
 	esac
 }
 
 __git_flow_list_local_branches() {
 	if [ -n "$1" ]; then
 		local prefix="$(__git_flow_prefix $1)"
-		git for-each-ref --shell --format="ref=%(refname:short)" refs/heads/$prefix \
-			| while read -r entry; do
+		git for-each-ref --shell --format="ref=%(refname:short)" refs/heads/$prefix |
+			while read -r entry; do
 				eval "$entry"
 				ref="${ref#$prefix}"
 				echo "$ref"
@@ -469,9 +469,9 @@ __git_flow_list_local_branches() {
 
 __git_flow_list_remote_branches() {
 	local prefix="$(__git_flow_prefix $1)"
-	local origin="$(git config gitflow.origin 2> /dev/null || echo "origin")"
-	git for-each-ref --shell --format='%(refname:short)' refs/remotes/$origin/$prefix \
-		| while read -r entry; do
+	local origin="$(git config gitflow.origin 2>/dev/null || echo "origin")"
+	git for-each-ref --shell --format='%(refname:short)' refs/remotes/$origin/$prefix |
+		while read -r entry; do
 			eval "$entry"
 			ref="${ref##$prefix}"
 			echo "$ref"
@@ -479,11 +479,11 @@ __git_flow_list_remote_branches() {
 }
 
 __git_flow_list_branches() {
-	local origin="$(git config gitflow.origin 2> /dev/null || echo "origin")"
+	local origin="$(git config gitflow.origin 2>/dev/null || echo "origin")"
 	if [ -n "$1" ]; then
 		local prefix="$(__git_flow_prefix $1)"
-		git for-each-ref --shell --format="ref=%(refname:short)" refs/heads/$prefix refs/remotes/$origin/$prefix \
-			| while read -r entry; do
+		git for-each-ref --shell --format="ref=%(refname:short)" refs/heads/$prefix refs/remotes/$origin/$prefix |
+			while read -r entry; do
 				eval "$entry"
 				ref="${ref##$prefix}"
 				echo "$ref"

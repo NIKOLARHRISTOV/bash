@@ -12,12 +12,12 @@ SCM_HG_CHAR="${_omb_prompt_bold_brown}☿${_omb_prompt_normal}"
 export MYSQL_PS1="(\u@\h) [\d]> "
 
 case $TERM in
-	xterm*)
-		TITLEBAR="\[\033]0;\w\007\]"
-		;;
-	*)
-		TITLEBAR=""
-		;;
+xterm*)
+	TITLEBAR="\[\033]0;\w\007\]"
+	;;
+*)
+	TITLEBAR=""
+	;;
 esac
 
 PS3=">> "
@@ -77,14 +77,14 @@ function _omb_theme_PROMPT_COMMAND {
 
 	# nice prompt
 	case "$(id -u)" in
-		0)
-			PS1="${TITLEBAR}┌─$(my_ve)$(chroot)[$my_ps_root][$my_ps_host_root]$(modern_scm_prompt)$(__my_rvm_ruby_version)[${_omb_prompt_teal}\w${_omb_prompt_normal}]$(is_vim_shell)
+	0)
+		PS1="${TITLEBAR}┌─$(my_ve)$(chroot)[$my_ps_root][$my_ps_host_root]$(modern_scm_prompt)$(__my_rvm_ruby_version)[${_omb_prompt_teal}\w${_omb_prompt_normal}]$(is_vim_shell)
 └─▪ "
-			;;
-		*)
-			PS1="${TITLEBAR}┌─$(my_ve)$(chroot)[$my_ps_user][$my_ps_host]$(modern_scm_prompt)$(__my_rvm_ruby_version)[${_omb_prompt_teal}\w${_omb_prompt_normal}]$(is_vim_shell)
+		;;
+	*)
+		PS1="${TITLEBAR}┌─$(my_ve)$(chroot)[$my_ps_user][$my_ps_host]$(modern_scm_prompt)$(__my_rvm_ruby_version)[${_omb_prompt_teal}\w${_omb_prompt_normal}]$(is_vim_shell)
 └─▪ "
-			;;
+		;;
 	esac
 }
 

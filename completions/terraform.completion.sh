@@ -21,5 +21,5 @@ _terraform() {
 	done
 
 	return 0
-} \
-	&& complete -F _terraform terraform
+} &&
+	complete -F _terraform terraform

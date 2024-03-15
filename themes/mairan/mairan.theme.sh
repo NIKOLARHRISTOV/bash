@@ -1,8 +1,8 @@
 #! bash oh-my-bash.module
 # Mairan Bash Prompt, inspired by "Zork"
 
-if tput setaf 1 &> /dev/null; then
-	if [[ $(tput colors) -ge 256 ]] 2> /dev/null; then
+if tput setaf 1 &>/dev/null; then
+	if [[ $(tput colors) -ge 256 ]] 2>/dev/null; then
 		MAGENTA=$(tput setaf 9)
 		ORANGE=$(tput setaf 172)
 		GREEN=$(tput setaf 190)
@@ -45,12 +45,12 @@ SCM_HG_CHAR="${_omb_prompt_bold_brown}☿${_omb_prompt_normal}"
 export MYSQL_PS1="(\u@\h) [\d]> "
 
 case $TERM in
-	xterm*)
-		TITLEBAR="\[\033]0;\w\007\]"
-		;;
-	*)
-		TITLEBAR=""
-		;;
+xterm*)
+	TITLEBAR="\[\033]0;\w\007\]"
+	;;
+*)
+	TITLEBAR=""
+	;;
 esac
 
 PS3=">> "
@@ -110,14 +110,14 @@ function _omb_theme_PROMPT_COMMAND {
 
 	# nice prompt
 	case "$(id -u)" in
-		0)
-			PS1="\n${TITLEBAR}${BRACKET_COLOR}┌─${_omb_prompt_normal}$(my_ve)$(chroot)[$my_ps_root][$my_ps_host_root]$(modern_scm_prompt)$(__my_rvm_ruby_version)[${_omb_prompt_green}\w${_omb_prompt_normal}]$(is_vim_shell)${BRACKET_COLOR}
+	0)
+		PS1="\n${TITLEBAR}${BRACKET_COLOR}┌─${_omb_prompt_normal}$(my_ve)$(chroot)[$my_ps_root][$my_ps_host_root]$(modern_scm_prompt)$(__my_rvm_ruby_version)[${_omb_prompt_green}\w${_omb_prompt_normal}]$(is_vim_shell)${BRACKET_COLOR}
 └─▪ ${prompt_symbol} ${_omb_prompt_normal}"
-			;;
-		*)
-			PS1="\n${TITLEBAR}${BRACKET_COLOR}┌─${_omb_prompt_normal}$(my_ve)$(chroot)[$my_ps_user][$my_ps_host]$(modern_scm_prompt)${_omb_prompt_normal}$(__my_rvm_ruby_version)[${_omb_prompt_green}\w${_omb_prompt_normal}]$(is_vim_shell)${BRACKET_COLOR}
+		;;
+	*)
+		PS1="\n${TITLEBAR}${BRACKET_COLOR}┌─${_omb_prompt_normal}$(my_ve)$(chroot)[$my_ps_user][$my_ps_host]$(modern_scm_prompt)${_omb_prompt_normal}$(__my_rvm_ruby_version)[${_omb_prompt_green}\w${_omb_prompt_normal}]$(is_vim_shell)${BRACKET_COLOR}
 └─▪ ${prompt_symbol} ${_omb_prompt_normal}"
-			;;
+		;;
 	esac
 }
 

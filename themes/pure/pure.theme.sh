@@ -33,12 +33,12 @@ function _omb_theme_PROMPT_COMMAND {
 
 	# make it work
 	case $(id -u) in
-		0)
-			PS1="$ps_root@$ps_host$(scm_prompt):$ps_path$ps_root_mark"
-			;;
-		*)
-			PS1="$ps_user@$ps_host$(scm_prompt):$ps_path$ps_user_mark"
-			;;
+	0)
+		PS1="$ps_root@$ps_host$(scm_prompt):$ps_path$ps_root_mark"
+		;;
+	*)
+		PS1="$ps_user@$ps_host$(scm_prompt):$ps_path$ps_user_mark"
+		;;
 	esac
 }
 

@@ -26,12 +26,12 @@ function _omb_theme_PROMPT_COMMAND {
 	local NO_COLOUR="\[\033[0m\]"
 
 	case $TERM in
-		xterm* | rxvt*)
-			TITLEBAR='\[\033]0;\u@\h:\w\007\]'
-			;;
-		*)
-			TITLEBAR=""
-			;;
+	xterm* | rxvt*)
+		TITLEBAR='\[\033]0;\u@\h:\w\007\]'
+		;;
+	*)
+		TITLEBAR=""
+		;;
 	esac
 
 	PS1="$TITLEBAR$YELLOW-$LIGHT_BLUE-(\

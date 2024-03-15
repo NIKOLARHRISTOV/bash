@@ -12,7 +12,7 @@ function current_branch() {
 }
 # The list of remotes
 function current_repository() {
-	if ! $_omb_git_git_cmd rev-parse --is-inside-work-tree &> /dev/null; then
+	if ! $_omb_git_git_cmd rev-parse --is-inside-work-tree &>/dev/null; then
 		return
 	fi
 	echo $($_omb_git_git_cmd remote -v | cut -d':' -f 2)
@@ -25,7 +25,7 @@ function _git_log_prettily() {
 }
 # Warn if the current branch is a WIP
 function work_in_progress() {
-	if $(git log -n 1 2> /dev/null | grep -q -c "\-\-wip\-\-"); then
+	if $(git log -n 1 2>/dev/null | grep -q -c "\-\-wip\-\-"); then
 		echo "WIP!!"
 	fi
 }

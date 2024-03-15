@@ -11,71 +11,71 @@ function _omb_theme__construct_sgr {
 		local next=$1
 		shift
 		case $next in
-			reset) reset=0 ;;
-			bold) out=${out:+$out;}1 ;;
-			faint) out=${out:+$out;}2 ;;
-			italic) out=${out:+$out;}3 ;;
-			underline) out=${out:+$out;}4 ;;
-			negative) out=${out:+$out;}7 ;;
-			crossed) out=${out:+$out;}8 ;;
-			color)
-				local color=$1
+		reset) reset=0 ;;
+		bold) out=${out:+$out;}1 ;;
+		faint) out=${out:+$out;}2 ;;
+		italic) out=${out:+$out;}3 ;;
+		underline) out=${out:+$out;}4 ;;
+		negative) out=${out:+$out;}7 ;;
+		crossed) out=${out:+$out;}8 ;;
+		color)
+			local color=$1
+			shift
+
+			local side=fg mode=normal
+			case $1 in
+			fg | bg)
+				side=$1
 				shift
-
-				local side=fg mode=normal
-				case $1 in
-					fg | bg)
-						side=$1
-						shift
-						;;
-				esac
-				case $1 in
-					normal | bright)
-						mode=$1
-						shift
-						;;
-				esac
-
-				local prefix=3
-				case $side:$mode in
-					fg:normal) prefix=3 ;;
-					bg:normal) prefix=4 ;;
-					fg:bright) prefix=9 ;;
-					bg:bright) prefix=10 ;;
-				esac
-
-				case $color in
-					black) color=0 ;;
-					red) color=1 ;;
-					green) color=2 ;;
-					yellow) color=3 ;;
-					blue) color=4 ;;
-					magenta) color=5 ;;
-					cyan) color=6 ;;
-					white) color=7 ;;
-					rgb)
-						local r=$1 g=$2 b=$3
-						shift 3
-						if ((r == g && g == b)); then
-							# gray range above 232
-							color=$((232 + r / 11))
-						else
-							color="8;5;$(((r * 36 + b * 6 + g) / 51 + 16))"
-						fi
-						;;
-					*)
-						printf '%s\n' "_omb_theme_color: unknown color '$color'" >&2
-						continue
-						;;
-				esac
-				out=${out:+$out;}$prefix$color
 				;;
-			'')
-				out="${out:+$out;}$*"
+			esac
+			case $1 in
+			normal | bright)
+				mode=$1
+				shift
+				;;
+			esac
+
+			local prefix=3
+			case $side:$mode in
+			fg:normal) prefix=3 ;;
+			bg:normal) prefix=4 ;;
+			fg:bright) prefix=9 ;;
+			bg:bright) prefix=10 ;;
+			esac
+
+			case $color in
+			black) color=0 ;;
+			red) color=1 ;;
+			green) color=2 ;;
+			yellow) color=3 ;;
+			blue) color=4 ;;
+			magenta) color=5 ;;
+			cyan) color=6 ;;
+			white) color=7 ;;
+			rgb)
+				local r=$1 g=$2 b=$3
+				shift 3
+				if ((r == g && g == b)); then
+					# gray range above 232
+					color=$((232 + r / 11))
+				else
+					color="8;5;$(((r * 36 + b * 6 + g) / 51 + 16))"
+				fi
 				;;
 			*)
-				printf '%s\n' "_omb_theme_color: unknown token '$next'" >&2
+				printf '%s\n' "_omb_theme_color: unknown color '$color'" >&2
+				continue
 				;;
+			esac
+			out=${out:+$out;}$prefix$color
+			;;
+		'')
+			out="${out:+$out;}$*"
+			;;
+		*)
+			printf '%s\n' "_omb_theme_color: unknown token '$next'" >&2
+			;;
 		esac
 	done
 

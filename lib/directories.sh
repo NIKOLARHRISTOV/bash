@@ -14,13 +14,13 @@ function _omb_directories_cd {
 		fi
 		set -- "${DIRSTACK[index]}"
 	fi
-	builtin pushd . > /dev/null \
-		&& OLDPWD=$oldpwd builtin cd "$@" \
-		&& oldpwd=$OLDPWD \
-		&& builtin pushd . > /dev/null \
-		&& for ((index = ${#DIRSTACK[@]} - 1; index >= 1; index--)); do
+	builtin pushd . >/dev/null &&
+		OLDPWD=$oldpwd builtin cd "$@" &&
+		oldpwd=$OLDPWD &&
+		builtin pushd . >/dev/null &&
+		for ((index = ${#DIRSTACK[@]} - 1; index >= 1; index--)); do
 			if [[ ${DIRSTACK[0]/#~/$HOME} == "${DIRSTACK[index]}" ]]; then
-				builtin popd "+$index" > /dev/null || return 1
+				builtin popd "+$index" >/dev/null || return 1
 			fi
 		done
 	OLDPWD=$oldpwd

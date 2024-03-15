@@ -16,7 +16,7 @@ ALIVE=0
 HISTFILE="$HOME/.autossh.history"
 
 # Use colors, but only if connected to a terminal, and that terminal supports them.
-if type -P tput > /dev/null 2>&1; then
+if type -P tput >/dev/null 2>&1; then
 	ncolors=$(tput colors)
 fi
 if [ -t 1 ] && [ -n "$ncolors" ] && [ "$ncolors" -ge 8 ]; then
@@ -68,7 +68,7 @@ dot_progress() {
 
 stop_progress() {
 	kill $1
-	wait $1 2> /dev/null
+	wait $1 2>/dev/null
 	echo -en "\n"
 }
 
@@ -98,11 +98,11 @@ echo_b() {
 # Echo in colour
 echo_c() {
 	case "$1" in
-		red | r | -red | -r | --red | --r) echo "${RED}$2${NORMAL}" ;;
-		green | g | -green | -g | --green | --g) echo "${GREEN}$2${NORMAL}" ;;
-		blue | b | -blue | -b | --blue | --b) echo "${BLUE}$2${NORMAL}" ;;
-		yellow | y | -yellow | -y | --yellow | --y) echo "${YELLOW}$2${NORMAL}" ;;
-		*) echo "$(BOLD)$2$(RESET)" ;;
+	red | r | -red | -r | --red | --r) echo "${RED}$2${NORMAL}" ;;
+	green | g | -green | -g | --green | --g) echo "${GREEN}$2${NORMAL}" ;;
+	blue | b | -blue | -b | --blue | --b) echo "${BLUE}$2${NORMAL}" ;;
+	yellow | y | -yellow | -y | --yellow | --y) echo "${YELLOW}$2${NORMAL}" ;;
+	*) echo "$(BOLD)$2$(RESET)" ;;
 	esac
 }
 
@@ -118,26 +118,26 @@ save_input() {
 	if [[ ! -n "$remote_user" && ! -n "$1" ]]; then
 		while get_input "SSH Username > " remote_user; do
 			case ${remote_user%% *} in
-				*)
-					if [ -n "$remote_user" ]; then
-						break
-					else
-						continue
-					fi
-					;;
+			*)
+				if [ -n "$remote_user" ]; then
+					break
+				else
+					continue
+				fi
+				;;
 			esac
 		done
 	fi
 	if [[ ! -n "$remote_ip" && ! -n "$1" ]]; then
 		while get_input "SSH Alias/IP-address > " remote_ip; do
 			case ${remote_ip%% *} in
-				*)
-					if [ -n "$remote_ip" ]; then
-						break
-					else
-						continue
-					fi
-					;;
+			*)
+				if [ -n "$remote_ip" ]; then
+					break
+				else
+					continue
+				fi
+				;;
 			esac
 		done
 	fi

@@ -24,10 +24,10 @@ function _osh_plugin_tmux_autoattach_detach {
 }
 
 case "$OSH_PLUGIN_TMUX_AUTOATTACH_BEHAVIOR" in
-	"exit")
-		_osh_plugin_tmux_autoattach_exit
-		;;
-	"detach" | *)
-		_osh_plugin_tmux_autoattach_detach
-		;;
+"exit")
+	_osh_plugin_tmux_autoattach_exit
+	;;
+"detach" | *)
+	_osh_plugin_tmux_autoattach_detach
+	;;
 esac

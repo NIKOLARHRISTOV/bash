@@ -76,7 +76,7 @@ if _omb_util_command_exists nvm && [[ ${OMB_PLUGIN_NVM_AUTO_USE-} == true ]]; th
 
 		elif [[ -s $nvm_path/.nvmrc && -r $nvm_path/.nvmrc ]]; then
 			local nvm_version
-			nvm_version=$(< "$nvm_path"/.nvmrc)
+			nvm_version=$(<"$nvm_path"/.nvmrc)
 
 			# Add the `v` suffix if it does not exists in the .nvmrc file
 			if [[ $nvm_version != v* ]]; then
