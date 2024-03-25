@@ -7,7 +7,7 @@ if [ -z "${BASH_VERSION-}" ]; then
 	printf "Error: Install Bash and try running this installation script with Bash.\n"
 	if command -v bash >/dev/null 2>&1; then
 		# shellcheck disable=SC2016
-		printf 'Example: \033[31;1mbash\033[0;34m -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"\n'
+		printf 'Example: \033[31;1mbash\033[0;34m -c "$(curl -fsSL HTTPS://Raw.GitHubUserContent.Com/ohmybash/oh-my-bash/master/tools/install.sh)"\n'
 	fi
 	# shellcheck disable=SC2317
 	return 1 >/dev/null 2>&1 || exit 1
