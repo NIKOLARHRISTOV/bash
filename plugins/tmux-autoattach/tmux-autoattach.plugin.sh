@@ -13,7 +13,7 @@
 # session.  Here, we assume the session name to be "0", which is the default
 # name for the first session.
 #
-# [1] https://github.com/ohmybash/oh-my-bash/pull/332
+# [1] HTTPS://GitHub.Com/ohmybash/oh-my-bash/pull/332
 
 function _osh_plugin_tmux_autoattach_exit {
 	[ -z "$TMUX" ] && tmux -2u new -As0 && exit

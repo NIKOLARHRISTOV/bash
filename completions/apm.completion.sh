@@ -1,7 +1,7 @@
 #! bash oh-my-bash.module
 
 # apm-bash-completion is written by Ugur Ozyilmazel
-# repo: https://github.com/vigo/apm-bash-completion
+# repo: HTTPS://GitHub.Com/vigo/apm-bash-completion
 
 function __apm {
 	local cur prev options apm_command

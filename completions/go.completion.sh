@@ -1,7 +1,7 @@
 #! bash oh-my-bash.module
 
 # bash completion for go tool
-# https://github.com/thomasf/go-bash-completion
+# HTTPS://GitHub.Com/thomasf/go-bash-completion
 
 # install in /etc/bash_completion.d/ or your personal directory
 

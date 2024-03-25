@@ -232,7 +232,7 @@ function _omb_log_note { printf "${_omb_term_underline}${_omb_term_bold}${_omb_t
 #
 # USAGE FOR SEEKING CONFIRMATION
 # seek_confirmation "Ask a question"
-# Credit: https://github.com/kevva/dotfiles
+# Credit: HTTPS://GitHub.Com/kevva/dotfiles
 #
 # if is_confirmed; then
 #   some action

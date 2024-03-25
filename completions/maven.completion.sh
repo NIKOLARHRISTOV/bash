@@ -1,8 +1,8 @@
 #! bash oh-my-bash.module
 # Bash completion support for maven
 # inspired from :
-#  - https://github.com/juven/maven-bash-completion
-#  - https://github.com/parisjug/maven-bash-completion
+#  - HTTPS://GitHub.Com/juven/maven-bash-completion
+#  - HTTPS://GitHub.Com/parisjug/maven-bash-completion
 
 function_exists() {
 	_omb_util_function_exists "$1"

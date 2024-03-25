@@ -1,4 +1,4 @@
-# This is a direct copy of https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/docker/docker.plugin.zsh
+# This is a direct copy of HTTPS://GitHub.Com/ohmyzsh/ohmyzsh/blob/master/plugins/docker/docker.plugin.zsh
 alias dbl='docker build'
 alias dcin='docker container inspect'
 alias dcls='docker container ls'

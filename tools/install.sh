@@ -26,7 +26,7 @@ fi
 function _omb_install_print_version {
 	local OMB_VERSINFO
 	OMB_VERSINFO=(1 0 0 0 master noarch)
-	printf '%s\n' 'Install script for Oh-My-Bash (https://github.com/ohmybash/oh-my-bash)'
+	printf '%s\n' 'Install script for Oh-My-Bash (HTTPS://GitHub.Com/ohmybash/oh-my-bash)'
 	printf 'oh-my-bash, version %s.%s.%s(%s)-%s (%s)\n' "${OMB_VERSINFO[@]}"
 }
 
@@ -187,7 +187,7 @@ export OSH='${OSH//\'/\'\\\'\'}'
 	set +e
 	_omb_install_banner
 	printf '%s\n' "${GREEN}Please look over the ~/.bashrc file to select a theme, plugins, completions, aliases, and options${NORMAL}"
-	printf '%s\n' "${BLUE}${BOLD}To keep up on the latest news and updates, follow us on GitHub: https://github.com/ohmybash/oh-my-bash${NORMAL}"
+	printf '%s\n' "${BLUE}${BOLD}To keep up on the latest news and updates, follow us on GitHub: HTTPS://GitHub.Com/ohmybash/oh-my-bash${NORMAL}"
 
 	if [[ :$install_opts: == *:dry-run:* ]]; then
 		printf '%s\n' "$GREEN$BOLD[dryrun]$NORMAL Sample bashrc is created at '$BOLD$HOME/.bashrc-ombtemp$NORMAL'."
@@ -214,7 +214,7 @@ function _omb_install_system_bashrc {
 	_omb_install_banner
 	printf '%s\n' "${GREEN}To enable Oh My Bash, please copy '${BOLD}$OSH/bashrc${NORMAL}${GREEN}' to '${BOLD}~/.bashrc${NORMAL}${GREEN}'.${NORMAL}"
 	printf '%s\n' "${GREEN}Please look over the ~/.bashrc file to select a theme, plugins, completions, aliases, and options${NORMAL}"
-	printf '%s\n' "${BLUE}${BOLD}To keep up on the latest news and updates, follow us on GitHub: https://github.com/ohmybash/oh-my-bash${NORMAL}"
+	printf '%s\n' "${BLUE}${BOLD}To keep up on the latest news and updates, follow us on GitHub: HTTPS://GitHub.Com/ohmybash/oh-my-bash${NORMAL}"
 }
 
 function _omb_install_main {
@@ -277,7 +277,7 @@ function _omb_install_main {
 	fi
 
 	if [[ ! $OSH_REPOSITORY ]]; then
-		OSH_REPOSITORY=https://github.com/ohmybash/oh-my-bash.git
+		OSH_REPOSITORY=HTTPS://GitHub.Com/ohmybash/oh-my-bash.git
 	fi
 
 	# Only enable exit-on-error after the non-critical colorization stuff,

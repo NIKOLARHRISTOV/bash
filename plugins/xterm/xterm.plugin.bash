@@ -1,6 +1,6 @@
 #! bash oh-my-bash.module
 # Description: automatically set your xterm title with host and location info'
-# Source: https://github.com/Bash-it/bash-it/blob/bf2034d13d/plugins/available/xterm.plugin.bash
+# Source: HTTPS://GitHub.Com/Bash-it/bash-it/blob/bf2034d13d/plugins/available/xterm.plugin.bash
 #
 # @var[opt] PROMPT_CHAR ... This variable is shared with powerline
 # @var[opt] OMB_PLUGIN_XTERM_SHORT_TERM_LINE

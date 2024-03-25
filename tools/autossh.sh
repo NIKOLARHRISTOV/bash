@@ -8,7 +8,7 @@
 # shellcheck disable=SC2034,SC2182,SC2162,SC2236,SC2120,SC2009,SC2119,SC2086,SC2059,SC2006
 # ------------------------------------------------------------------------------
 VERSION="1.0.0"
-GITHUB="https://github.com/nntoan/autossh"
+GITHUB="HTTPS://GitHub.Com/nntoan/autossh"
 AUTHOR="Toan Nguyen"
 SCRIPT=${0##*/}
 IFS=$'\n'

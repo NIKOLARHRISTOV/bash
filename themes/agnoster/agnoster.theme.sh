@@ -4,8 +4,8 @@
 #
 # Copyright (c) 2012-2014 Isaac Wolkerstorfer (@agnoster) and contributors.
 # Copyright (c) 2014 Kenny Root (@kruton).
-# Copyright (c) 2017-2021 Erik Selberg and contributors (https://github.com/speedenator/agnoster-bash/contributors).
-# Copyright (c) 2019-present Toan Nguyen and contributors (https://github.com/ohmybash/oh-my-bash/graphs/contributors).
+# Copyright (c) 2017-2021 Erik Selberg and contributors (HTTPS://GitHub.Com/speedenator/agnoster-bash/contributors).
+# Copyright (c) 2019-present Toan Nguyen and contributors (HTTPS://GitHub.Com/ohmybash/oh-my-bash/graphs/contributors).
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -35,14 +35,14 @@
 #   latest version of the Zsh theme is found in [2].
 #
 #   [1] https://gist.github.com/agnoster/3712874
-#   [2] https://github.com/agnoster/agnoster-zsh-theme
+#   [2] HTTPS://GitHub.Com/agnoster/agnoster-zsh-theme
 #
 #   The original theme does not seem to specify the license, so strictly
 #   speaking, we are not explicitly allowed to modify and redistribute the
 #   agnoster theme.  The MIT license is proposed [3], but no action has appeard
 #   to that.
 #
-#   [3] https://github.com/agnoster/agnoster-zsh-theme/pull/152
+#   [3] HTTPS://GitHub.Com/agnoster/agnoster-zsh-theme/pull/152
 #
 # * Copyright 2014 Kenny Root (@kruton)
 #
@@ -55,7 +55,7 @@
 #
 #   Then @speedenator has updated the theme by @kruton [5].
 #
-#   [5] https://github.com/speedenator/agnoster-bash
+#   [5] HTTPS://GitHub.Com/speedenator/agnoster-bash
 #
 #   At this time, the MIT license is specified.  However, @speedenator seem to
 #   claim the copyright for the work from 2012, which is actually the copyright
@@ -66,7 +66,7 @@
 #
 #   The theme is imported into OMB by PR #54 [6].
 #
-#   [6] https://github.com/ohmybash/oh-my-bash/pull/54.
+#   [6] HTTPS://GitHub.Com/ohmybash/oh-my-bash/pull/54.
 #
 #------------------------------------------------------------------------------
 # vim: ft=bash ts=2 sw=2 sts=2
@@ -85,13 +85,13 @@
 #
 # In order for this theme to render correctly, you will need a
 # [Powerline-patched font](https://gist.github.com/1595572).
-# I recommend: https://github.com/powerline/fonts.git
-# > git clone https://github.com/powerline/fonts.git fonts
+# I recommend: HTTPS://GitHub.Com/powerline/fonts.git
+# > git clone HTTPS://GitHub.Com/powerline/fonts.git fonts
 # > cd fonts
 # > install.sh
 
 # In addition, I recommend the
-# [Solarized theme](https://github.com/altercation/solarized/) and, if you're
+# [Solarized theme](HTTPS://GitHub.Com/altercation/solarized/) and, if you're
 # using it on Mac OS X, [iTerm 2](http://www.iterm2.com/) over Terminal.app -
 # it has significantly better color fidelity.
 
@@ -100,7 +100,7 @@
 # I recommend the following:
 # $ cd home
 # $ mkdir -p .bash/themes/agnoster-bash
-# $ git clone https://github.com/speedenator/agnoster-bash.git .bash/themes/agnoster-bash
+# $ git clone HTTPS://GitHub.Com/speedenator/agnoster-bash.git .bash/themes/agnoster-bash
 
 # then add the following to your .bashrc:
 

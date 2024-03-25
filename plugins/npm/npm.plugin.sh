@@ -10,7 +10,7 @@ alias npmg="npm i -g "
 alias npmS="npm i -S "
 
 # Install and save to dev-dependencies in your package.json
-# npmd is used by https://github.com/dominictarr/npmd
+# npmd is used by HTTPS://GitHub.Com/dominictarr/npmd
 alias npmD="npm i -D "
 
 # Execute command from node_modules folder based on current directory

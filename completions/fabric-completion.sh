@@ -25,10 +25,10 @@
 #
 # Thanks to:
 # - Adam Vandenberg,
-#   https://github.com/adamv/dotfiles/blob/master/completion_scripts/fab_completion.bash
+#   HTTPS://GitHub.Com/adamv/dotfiles/blob/master/completion_scripts/fab_completion.bash
 #
 # - Enrico Batista da Luz,
-#   https://github.com/ricobl/dotfiles/blob/master/bin/fab_bash_completion
+#   HTTPS://GitHub.Com/ricobl/dotfiles/blob/master/bin/fab_bash_completion
 #
 
 # Use cache files for fab tasks or not.

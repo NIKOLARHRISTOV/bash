@@ -1,7 +1,7 @@
 #! bash oh-my-bash.module
 
 # This theme attempts to replicate the default "robbyrussell" theme from ohmyzsh:
-#  https://github.com/ohmyzsh/ohmyzsh/blob/master/themes/robbyrussell.zsh-theme
+#  HTTPS://GitHub.Com/ohmyzsh/ohmyzsh/blob/master/themes/robbyrussell.zsh-theme
 
 function _omb_theme_PROMPT_COMMAND() {
 	if [[ "$?" == 0 ]]; then

@@ -2,7 +2,7 @@
 # Bash completion script for homesick
 #
 # The homebrew bash completion script was used as inspiration.
-# Originally from https://github.com/liborw/homesick-completion
+# Originally from HTTPS://GitHub.Com/liborw/homesick-completion
 
 _homesick_complete() {
 	local cur="${COMP_WORDS[COMP_CWORD]}"

@@ -1,5 +1,5 @@
 #! bash oh-my-bash.module
-# link: https://github.com/ginatrapani/todo.txt-cli/blob/master/todo_completion
+# link: HTTPS://GitHub.Com/ginatrapani/todo.txt-cli/blob/master/todo_completion
 
 _todo() {
 	local cur prev opts

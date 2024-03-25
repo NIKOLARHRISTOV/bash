@@ -4,7 +4,7 @@
 #
 # Copyright (c) 2012 Tyler Kellen, contributors
 # Licensed under the MIT license.
-# https://github.com/gruntjs/grunt/blob/master/LICENSE-MIT
+# HTTPS://GitHub.Com/gruntjs/grunt/blob/master/LICENSE-MIT
 # Usage:
 #
 # To enable bash <tab> completion for gulp, add the following line (minus the

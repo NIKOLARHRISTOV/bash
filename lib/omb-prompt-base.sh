@@ -167,7 +167,7 @@ function scm_prompt_info_common {
 }
 
 # This is added to address bash shell interpolation vulnerability described
-# here: https://github.com/njhartwell/pw3nage
+# here: HTTPS://GitHub.Com/njhartwell/pw3nage
 function git_clean_branch {
   local unsafe_ref=$(command git symbolic-ref -q HEAD 2> /dev/null)
   local stripped_ref=${unsafe_ref##refs/heads/}
