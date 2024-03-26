@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 # Theme inspired by:
-#  - ys theme - HTTPS://GitHub.Com/ohmyzsh/ohmyzsh/blob/master/themes/ys.zsh-theme
-#  - rana theme - HTTPS://GitHub.Com/ohmybash/oh-my-bash/blob/master/themes/rana/rana.theme.sh
+#  - ys theme - https://github.com/ohmyzsh/ohmyzsh/blob/master/themes/ys.zsh-theme
+#  - rana theme - https://github.com/ohmybash/oh-my-bash/blob/master/themes/rana/rana.theme.sh
 #
 # by Ziqiang Pei<ziqiangpei@foxmail.com>
 

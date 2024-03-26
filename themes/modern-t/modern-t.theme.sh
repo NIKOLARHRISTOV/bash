@@ -54,5 +54,5 @@ PS2="└─▪ "
 _omb_util_add_prompt_command _omb_theme_PROMPT_COMMAND
 
 if [[ -t 2 ]] && ! _omb_util_binary_exists t; then
-	printf '%s\n' "${_omb_term_bold_navy}oh-my-bash (theme:modern-t)${_omb_term_normal}: command \"t\" not found. The theme \"Modern T\" depends on a todo-list manager \"t\" (${_omb_term_underline}HTTPS://GitHub.Com/sjl/t${_omb_term_normal})." >&2
+	printf '%s\n' "${_omb_term_bold_navy}oh-my-bash (theme:modern-t)${_omb_term_normal}: command \"t\" not found. The theme \"Modern T\" depends on a todo-list manager \"t\" (${_omb_term_underline}https://github.com/sjl/t${_omb_term_normal})." >&2
 fi

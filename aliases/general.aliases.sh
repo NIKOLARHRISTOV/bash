@@ -22,7 +22,7 @@
 #   -----------------------------
 
 # Preferred 'cp' implementation.  Determines the use of the option `-v' on the
-# first call Ref. HTTPS://GitHub.Com/ohmybash/oh-my-bash/issues/351
+# first call Ref. https://github.com/ohmybash/oh-my-bash/issues/351
 function _omb_util_alias_select_cp {
 	if (
 		tmp=$(_omb_util_mktemp)

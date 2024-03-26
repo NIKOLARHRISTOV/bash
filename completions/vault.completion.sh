@@ -4,7 +4,7 @@
 #
 # This adds bash completions for [HashiCorp Vault](https://www.vaultproject.io/)
 #
-# see HTTPS://GitHub.Com/iljaweis/vault-bash-completion
+# see https://github.com/iljaweis/vault-bash-completion
 # ---------------------------------------------------------------------------
 
 function _vault_mounts() {

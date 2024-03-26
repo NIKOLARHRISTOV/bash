@@ -26,9 +26,9 @@ function _omb_upgrade {
 	printf '%s\n' "${BLUE}Updating Oh My Bash${NORMAL}"
 
 	# Note: The git option "-C PATH" is only supported from git-1.8.5
-	# (HTTPS://GitHub.Com/git/git/commit/44e1e4d6 2013-09).  On the other hand,
+	# (https://github.com/git/git/commit/44e1e4d6 2013-09).  On the other hand,
 	# the synonym "--git-dir=PATH/.git --work-tree=PATH" is supported from
-	# git-1.5.3 (HTTPS://GitHub.Com/git/git/commit/892c41b9 2007-06).
+	# git-1.5.3 (https://github.com/git/git/commit/892c41b9 2007-06).
 	if ! command git --git-dir="$OSH/.git" --work-tree="$OSH" pull --rebase --stat origin master; then
 		# In case it enters the rebasing mode
 		printf '%s\n' "oh-my-bash: running 'git rebase --abort'..."
@@ -50,7 +50,7 @@ function _omb_upgrade {
 		'\____/_/ /_/  /_/ /_/ /_/\__, /  /_.___/\__,_/____/_/ /_/ ' \
 		'                        /____/                            '
 	printf "${BLUE}%s\n" "Hooray! Oh My Bash has been updated and/or is at the current version."
-	printf "${BLUE}${BOLD}%s${NORMAL}\n" "To keep up on the latest news and updates, follow us on GitHub: HTTPS://GitHub.Com/ohmybash/oh-my-bash"
+	printf "${BLUE}${BOLD}%s${NORMAL}\n" "To keep up on the latest news and updates, follow us on GitHub: https://github.com/ohmybash/oh-my-bash"
 	if [[ $- == *i* ]]; then
 		declare -f _omb_util_unload &>/dev/null && _omb_util_unload
 		# shellcheck disable=SC1090

@@ -5,7 +5,7 @@
 #
 # Copyright (c) 2012 Tyler Kellen, contributors
 # Licensed under the MIT license.
-# HTTPS://GitHub.Com/gruntjs/grunt/blob/master/LICENSE-MIT
+# https://github.com/gruntjs/grunt/blob/master/LICENSE-MIT
 
 # Usage:
 #

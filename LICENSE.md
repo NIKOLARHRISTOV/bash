@@ -1,7 +1,7 @@
 Copyright (c) 2009-2017 Robby Russell and contributors
-(HTTPS://GitHub.Com/ohmyzsh/ohmyzsh/contributors) Copyright 2017-2020 Toan
+(https://github.com/ohmyzsh/ohmyzsh/contributors) Copyright 2017-2020 Toan
 Nguyen and contributors
-(HTTPS://GitHub.Com/ohmybash/oh-my-bash/graphs/contributors)
+(https://github.com/ohmybash/oh-my-bash/graphs/contributors)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in

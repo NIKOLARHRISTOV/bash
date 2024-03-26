@@ -1,7 +1,7 @@
 #! bash oh-my-bash.module
 #
 # bash completion support for Drush:
-#   HTTPS://GitHub.Com/drush-ops/drush
+#   https://github.com/drush-ops/drush
 #
 # Originally from:
 #   http://github.com/drush-ops/drush/blob/master/drush.complete.sh

@@ -3,10 +3,10 @@
 # Copyright (c) 2015, Toan Nguyen, https://nntoan.github.io
 # All rights reserved.
 #
-# This plugin is derived from the project HTTPS://GitHub.Com/huing/bashmarks.
+# This plugin is derived from the project https://github.com/huing/bashmarks.
 # This version is based on the following commit in the upstream project:
 #
-#   HTTPS://GitHub.Com/huyng/bashmarks/commit/264952f2225691b5f99a498e4834e2c69bf4f5f5
+#   https://github.com/huyng/bashmarks/commit/264952f2225691b5f99a498e4834e2c69bf4f5f5
 #
 # This plugin is licensed under the BSD-3 License.
 #------------------------------------------------------------------------------

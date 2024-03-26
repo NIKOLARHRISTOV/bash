@@ -114,7 +114,7 @@ if _omb_util_function_exists _git; then
 					# (other than -u) in the command, that argument will be taken as
 					# revision. For example:
 					# $ hub compare -u upstream
-					# > HTTPS://GitHub.Com/USER/REPO/compare/upstream
+					# > https://github.com/USER/REPO/compare/upstream
 					if __hub_github_repos '\p' | grep -Eqx "^$i(/[^/]+)?"; then
 						arg_repo=$i
 					else

@@ -22,7 +22,7 @@
 #
 # This is open source!  Please feel free to contribute.
 #
-# HTTPS://GitHub.Com/tests-always-included/mo
+# https://github.com/tests-always-included/mo
 
 # Public: Template parser function.  Writes templates to stdout.
 #
@@ -334,7 +334,7 @@ function _moIndirectArray {
 	# IFS must be set to a string containing space or unset in order for
 	# the array slicing to work regardless of the current IFS setting on
 	# bash 3.  This is detailed further at
-	# HTTPS://GitHub.Com/fidian/gg-core/pull/7
+	# https://github.com/fidian/gg-core/pull/7
 	eval "$(printf "IFS= %s=(\"\${@:2}\") IFS=%q" "$1" "$IFS")"
 }
 

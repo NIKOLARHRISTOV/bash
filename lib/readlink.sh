@@ -2,7 +2,7 @@
 
 ## This module provides the following function which can be used as "readlink
 ## -f" that can be used in any systems.  The implementation is taken from
-## "ble/util/readlink" from ble.sh <HTTPS://GitHub.Com/akinomyoga/ble.sh>.
+## "ble/util/readlink" from ble.sh <https://github.com/akinomyoga/ble.sh>.
 ##
 ## @fn _omb_util_readlink filename
 ##   print the real path of the filename which is possibly a symbolic link.

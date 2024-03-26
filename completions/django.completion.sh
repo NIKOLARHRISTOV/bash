@@ -1,5 +1,5 @@
 #! bash oh-my-bash.module
-# Upstream: HTTPS://GitHub.Com/django/django/blob/90c59b4e12e6ff41407694a460f5f30c4688dbfd/extras/django_bash_completion
+# Upstream: https://github.com/django/django/blob/90c59b4e12e6ff41407694a460f5f30c4688dbfd/extras/django_bash_completion
 #
 # #########################################################################
 # This bash script adds tab-completion feature to django-admin and manage.py.
