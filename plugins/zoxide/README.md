@@ -3,7 +3,7 @@
 Initializes [zoxide](https://github.com/ajeetdsouza/zoxide), a smarter cd
 command for your terminal.
 
-![Tutorial](https://Raw.GitHubUserContent.Com/ajeetdsouza/zoxide/97dc08347d9dbf5b5a4516b79e0ac27366b962ce/contrib/tutorial.webp)
+![Tutorial](https://raw.githubusercontent.com/ajeetdsouza/zoxide/97dc08347d9dbf5b5a4516b79e0ac27366b962ce/contrib/tutorial.webp)
 
 To use it, add `zoxide` to the plugins array in your `.bashrc` file:
 
