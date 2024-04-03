@@ -8,7 +8,7 @@ This plugin automatically source nvm[1]
 
 Lets install[2] the nvm without updaing shell config!
 
-```bash
+```sh
 export NVM_DIR="$HOME/.nvm" && (
 	git clone https://github.com/nvm-sh/nvm.git "$NVM_DIR"
 	cd "$NVM_DIR"
@@ -18,7 +18,7 @@ export NVM_DIR="$HOME/.nvm" && (
 
 ### Include nvm as plugin
 
-```bash
+```sh
 plugins=(
 	git
 	nvm
@@ -27,7 +27,7 @@ plugins=(
 
 ## nvm completion configuration
 
-```bash
+```sh
 completions=(
 	git
 	composer
@@ -42,7 +42,7 @@ If set, the plugin will automatically load a node version when it finds a
 `.nvmrc` file[3] in the current working directory indicating which node version
 to load. This can be done by adding the following to your `.bashrc`:
 
-```bash
+```sh
 OMB_PLUGIN_NVM_AUTO_USE=true
 ```
 

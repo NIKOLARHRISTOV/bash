@@ -7,7 +7,7 @@ command for your terminal.
 
 To use it, add `zoxide` to the plugins array in your `.bashrc` file:
 
-```bash
+```sh
 plugins=(... zoxide)
 ```
 

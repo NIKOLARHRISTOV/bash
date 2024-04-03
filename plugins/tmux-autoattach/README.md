@@ -20,25 +20,25 @@ enabled.
 
 **SSH**
 
-```bash
+```sh
 [ "$SSH_TTY" ] && plugins+=(tmux-autoattach)
 ```
 
 **Wayland**
 
-```bash
+```sh
 [ "$DISPLAY_WAYLAND" ] && plugins+=(tmux-autoattach)
 ```
 
 **X11**
 
-```bash
+```sh
 [ "$DISPLAY" ] && plugins+=(tmux-autoattach)
 ```
 
 **Multiple**
 
-```bash
+```sh
 if [ "$DISPLAY" ] || [ "$SSH" ]; then
 	plugins+=(tmux-autoattach)
 fi

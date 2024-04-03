@@ -5,7 +5,7 @@ Easily prefix your current or previous commands with `sudo` by pressing
 
 To use it, add `sudo` to the plugins array in your bashrc file:
 
-```bash
+```sh
 plugins=(... sudo)
 ```
 

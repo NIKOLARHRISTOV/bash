@@ -52,7 +52,7 @@ make sure that`~/.bash_profile` contains the line `source ~/.bashrc` or
 `. ~/.bashrc`. If not, please add the following three lines in
 `~/.bash_profile`:
 
-```bash
+```sh
 if [[ -f ~/.bashrc ]]; then
 	source ~/.bashrc
 fi
@@ -89,7 +89,7 @@ For example, if you want the `tmux-autoattach` plugin to only run on SSH
 sessions, you could employ a trivial conditional that checks for the `$SSH_TTY`
 variable. Just make sure to remove the plugin from the larger plugin list.
 
-```bash
+```sh
 [ "$SSH_TTY" ] && plugins+=(tmux-autoattach)
 ```
 
@@ -196,7 +196,7 @@ up by each user. The template of `.bashrc` is available in
 `PREFIX/share/oh-my-bash/bashrc`. The users can copy the template file to
 `~/.bashrc` and edit it.
 
-```bash
+```sh
 cp /usr/local/share/oh-my-bash/bashrc ~/.bashrc
 ```
 
@@ -256,7 +256,7 @@ If you would like to modify an existing module (theme/plugin/aliases/completion)
 bundled with Oh My Bash, first copy the original module to `custom/` directory
 and modify it. It will be loaded instead of the original one.
 
-```bash
+```sh
 $ mkdir -p "$OSH_CUSTOM/themes"
 $ cp -r {"$OSH","$OSH_CUSTOM"}/themes/agnoster
 $ EDIT "$OSH_CUSTOM/themes/agnoster/agnoster.theme.sh"
@@ -277,14 +277,14 @@ directory so that it will be loaded instead of the original one.
 The python virtualenv/condaenv information in the prompt may be enabled by the
 following line in `~/.bashrc`.
 
-```bash
+```sh
 OMB_PROMPT_SHOW_PYTHON_VENV=true
 ```
 
 Some themes turn on it by default. If you would like to turn it off, you may
 disable it by the following line in `~/.bashrc`:
 
-```bash
+```sh
 OMB_PROMPT_SHOW_PYTHON_VENV=false
 ```
 
@@ -294,7 +294,7 @@ Some plugins of oh-my-bash internally use `sudo` when it is necessary. However,
 this might clutter with the `sudo` log. To disable the use of `sudo` by
 oh-my-bash, `OMB_USE_SUDO` can be set to `false` in `~/.bashrc`.
 
-```bash
+```sh
 OMB_USE_SUDO=false
 ```
 

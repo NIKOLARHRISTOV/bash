@@ -4,7 +4,7 @@ The plugin adds several aliases for common [brew](https://brew.sh) commands.
 
 To use it, add `brew` to the plugins array of your bashrc file:
 
-```bash
+```sh
 plugins=(... brew)
 ```
 

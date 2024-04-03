@@ -109,7 +109,7 @@ The command to use to call these package manager can be specified in the
 variable `OMB_ALIAS_PACKAGE_MANAGER_SUDO`. By default, `sudo` is used when the
 current use is not root and the command `sudo` is available.
 
-```bash
+```sh
 # Use sudo to run the package manager
 OMB_ALIAS_PACKAGE_MANAGER_SUDO=sudo
 

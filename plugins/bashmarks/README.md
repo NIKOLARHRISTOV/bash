@@ -9,7 +9,7 @@ licensed under the 3-Clause BSD license.
 
 Create a new bookmark using the _bm -a_ command:
 
-```bash
+```sh
 $ bm -a mydir
 ```
 
@@ -18,13 +18,13 @@ _mydir_.
 
 You can navigate to the location of a bookmark using the _bm -g_ command:
 
-```bash
+```sh
 $ bm -g mydir
 ```
 
 You can also supply just any bookmark name and the _-g_ option will be assumed:
 
-```bash
+```sh
 $ bm mydir
 ```
 
@@ -33,7 +33,7 @@ such as when using _bm -g_
 
 Easily list all bookmarks you have set up using the _bm -l_ command:
 
-```bash
+```sh
 $ bm -l
 ```
 

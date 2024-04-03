@@ -7,7 +7,7 @@ The `vagrant plugin` adds several useful aliases for
 
 To use them, add `vagrant` to the `plugins` array of your bashrc file:
 
-```bash
+```sh
 plugins=(... vagrant)
 ```
 

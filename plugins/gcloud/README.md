@@ -6,7 +6,7 @@ This plugin provides completion support for the
 
 To use it, add `gcloud` to the plugins array in your bashrc file.
 
-```bash
+```sh
 plugins=(... gcloud)
 ```
 
