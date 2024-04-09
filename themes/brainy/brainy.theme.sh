@@ -152,8 +152,8 @@ function ___brainy_prompt_clock {
 }
 
 function ___brainy_prompt_battery {
-	[ ! -e "$OSH/plugins/battery/battery.plugin.sh" ] ||
-		[ "${THEME_SHOW_BATTERY}" != "true" ] && return
+	[ ! -e "$OSH/plugins/battery/battery.plugin.sh" ] \
+		|| [ "${THEME_SHOW_BATTERY}" != "true" ] && return
 	info=$(battery_percentage)
 	color=$_omb_prompt_bold_green
 	if [ "$info" -lt 50 ]; then
@@ -203,14 +203,14 @@ function _brainy_completion {
 	actions="show hide"
 	segments="battery clock exitcode python ruby scm sudo todo"
 	case "${_action}" in
-	show)
-		COMPREPLY=($(compgen -W "${segments}" -- "${cur}"))
-		return 0
-		;;
-	hide)
-		COMPREPLY=($(compgen -W "${segments}" -- "${cur}"))
-		return 0
-		;;
+		show)
+			COMPREPLY=($(compgen -W "${segments}" -- "${cur}"))
+			return 0
+			;;
+		hide)
+			COMPREPLY=($(compgen -W "${segments}" -- "${cur}"))
+			return 0
+			;;
 	esac
 
 	COMPREPLY=($(compgen -W "${actions}" -- "${cur}"))
@@ -223,12 +223,12 @@ function brainy {
 	typeset segs=${*:-}
 	typeset func
 	case $action in
-	show)
-		func=__brainy_show
-		;;
-	hide)
-		func=__brainy_hide
-		;;
+		show)
+			func=__brainy_show
+			;;
+		hide)
+			func=__brainy_hide
+			;;
 	esac
 	for seg in ${segs}; do
 		seg=$(printf "%s" "${seg}" | tr '[:lower:]' '[:upper:]')

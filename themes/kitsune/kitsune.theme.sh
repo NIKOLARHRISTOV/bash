@@ -13,12 +13,12 @@ function _omb_theme_PROMPT_COMMAND() {
 	# added TITLEBAR for updating the tab and window titles with the pwd
 	local TITLEBAR
 	case $TERM in
-	xterm* | screen)
-		TITLEBAR=$'\1\e]0;'$USER@${HOSTNAME%%.*}:${PWD/#$HOME/~}$'\e\\\2'
-		;;
-	*)
-		TITLEBAR=
-		;;
+		xterm* | screen)
+			TITLEBAR=$'\1\e]0;'$USER@${HOSTNAME%%.*}:${PWD/#$HOME/~}$'\e\\\2'
+			;;
+		*)
+			TITLEBAR=
+			;;
 	esac
 
 	local SC

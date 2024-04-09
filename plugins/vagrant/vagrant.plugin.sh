@@ -29,19 +29,19 @@ function vagrant-up() {
 
 function vagrant-plugin-vm() {
 	case "$1" in
-	"virtualbox")
-		echo "Vagrant plugin install for provider : $1 Running...."
-		vagrant plugin install vagrant-vbguest
-		;;
-	"libvirt")
-		echo "Vagrant plugin install for provider : $1 Running...."
-		vagrant plugin install vagrant-libvirt
-		;;
-	*)
-		echo "Usage : vapvm <provider name>" >&2
-		echo "Example : vapvm virtualbox" >&2
-		return 2
-		;;
+		"virtualbox")
+			echo "Vagrant plugin install for provider : $1 Running...."
+			vagrant plugin install vagrant-vbguest
+			;;
+		"libvirt")
+			echo "Vagrant plugin install for provider : $1 Running...."
+			vagrant plugin install vagrant-libvirt
+			;;
+		*)
+			echo "Usage : vapvm <provider name>" >&2
+			echo "Example : vapvm virtualbox" >&2
+			return 2
+			;;
 	esac
 }
 

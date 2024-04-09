@@ -4,17 +4,17 @@ function _omb_upgrade {
 	# Use colors, but only if connected to a terminal, and that terminal
 	# supports them.
 	local ncolors=
-	if type -P tput &>/dev/null; then
+	if type -P tput &> /dev/null; then
 		ncolors=$(tput colors)
 	fi
 
 	local RED GREEN BLUE BOLD NORMAL
 	if [[ -t 1 && $ncolors && $ncolors -ge 8 ]]; then
-		RED=$(tput setaf 1 2>/dev/null || tput AF 1 2>/dev/null)
-		GREEN=$(tput setaf 2 2>/dev/null || tput AF 2 2>/dev/null)
-		BLUE=$(tput setaf 4 2>/dev/null || tput AF 4 2>/dev/null)
-		BOLD=$(tput bold 2>/dev/null || tput md 2>/dev/null)
-		NORMAL=$(tput sgr0 2>/dev/null || tput me 2>/dev/null)
+		RED=$(tput setaf 1 2> /dev/null || tput AF 1 2> /dev/null)
+		GREEN=$(tput setaf 2 2> /dev/null || tput AF 2 2> /dev/null)
+		BLUE=$(tput setaf 4 2> /dev/null || tput AF 4 2> /dev/null)
+		BOLD=$(tput bold 2> /dev/null || tput md 2> /dev/null)
+		NORMAL=$(tput sgr0 2> /dev/null || tput me 2> /dev/null)
 	else
 		RED=""
 		GREEN=""
@@ -52,7 +52,7 @@ function _omb_upgrade {
 	printf "${BLUE}%s\n" "Hooray! Oh My Bash has been updated and/or is at the current version."
 	printf "${BLUE}${BOLD}%s${NORMAL}\n" "To keep up on the latest news and updates, follow us on GitHub: https://github.com/ohmybash/oh-my-bash"
 	if [[ $- == *i* ]]; then
-		declare -f _omb_util_unload &>/dev/null && _omb_util_unload
+		declare -f _omb_util_unload &> /dev/null && _omb_util_unload
 		# shellcheck disable=SC1090
 		source ~/.bashrc
 	fi

@@ -22,7 +22,7 @@ fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
-xterm-color | *-256color) color_prompt=yes ;;
+	xterm-color | *-256color) color_prompt=yes ;;
 esac
 
 # uncomment for a colored prompt, if the terminal has the capability; turned
@@ -50,10 +50,10 @@ unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
-xterm* | rxvt*)
-	PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-	;;
-*) ;;
+	xterm* | rxvt*)
+		PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+		;;
+	*) ;;
 
 esac
 
@@ -67,9 +67,9 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 function _omb_util_alias_select_ls {
-	if command ls --color=auto ~ &>/dev/null; then
+	if command ls --color=auto ~ &> /dev/null; then
 		_omb_command='ls --color=auto'
-	elif command ls -G ~ &>/dev/null; then
+	elif command ls -G ~ &> /dev/null; then
 		_omb_command='ls -G'
 	fi
 }

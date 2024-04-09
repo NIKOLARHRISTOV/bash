@@ -43,8 +43,8 @@ complete -F _omb_completion_django -o default manage.py django-admin
 
 function _omb_completion_django_python {
 	if ((COMP_CWORD >= 2)); then
-		if command grep -qE "python([3-9]\.[0-9])?" <<<"${COMP_WORDS[0]##*/}"; then
-			if command grep -qE "manage\.py|django-admin" <<<"${COMP_WORDS[1]##*/}"; then
+		if command grep -qE "python([3-9]\.[0-9])?" <<< "${COMP_WORDS[0]##*/}"; then
+			if command grep -qE "manage\.py|django-admin" <<< "${COMP_WORDS[1]##*/}"; then
 				COMPREPLY=($(COMP_WORDS="${COMP_WORDS[*]:1}" \
 					COMP_CWORD=$((COMP_CWORD - 1)) \
 					DJANGO_AUTO_COMPLETE=1 "${COMP_WORDS[@]}"))

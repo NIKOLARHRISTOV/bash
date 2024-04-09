@@ -36,19 +36,19 @@ function __bundle_get_command {
 		local arg=${COMP_WORDS[$i]}
 
 		case $arg in
-		[^-]*)
-			bundle_command=$arg
-			return
-			;;
-		--version)
-			# command-killer
-			bundle_command=-
-			return
-			;;
-		--help)
-			bundle_command=help
-			return
-			;;
+			[^-]*)
+				bundle_command=$arg
+				return
+				;;
+			--version)
+				# command-killer
+				bundle_command=-
+				return
+				;;
+			--help)
+				bundle_command=help
+				return
+				;;
 		esac
 	done
 }

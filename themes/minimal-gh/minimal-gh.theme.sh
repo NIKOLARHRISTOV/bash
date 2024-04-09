@@ -17,12 +17,12 @@ function _omb_theme_PROMPT_COMMAND() {
 
 	local TITLEBAR
 	case $TERM in
-	xterm* | screen)
-		TITLEBAR=$'\1\e]0;'$USER@${HOSTNAME%%.*}:${PWD/#$HOME/~}$'\e\\\2'
-		;;
-	*)
-		TITLEBAR=
-		;;
+		xterm* | screen)
+			TITLEBAR=$'\1\e]0;'$USER@${HOSTNAME%%.*}:${PWD/#$HOME/~}$'\e\\\2'
+			;;
+		*)
+			TITLEBAR=
+			;;
 	esac
 
 	local HORA=$(date +%H)

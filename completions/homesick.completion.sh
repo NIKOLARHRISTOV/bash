@@ -33,25 +33,25 @@ _homesick_complete() {
 	done
 
 	case "$prev" in
-	# Commands that take a castle
-	cd | commit | destroy | diff | open | pull | push | rc | show_path | status | symlink | unlink)
-		COMPREPLY=($(compgen -W "${repos}" -- ${cur}))
-		return
-		;;
-	# Commands that take command
-	help)
-		COMPREPLY=($(compgen -W "${actions}" -- ${cur}))
-		return
-		;;
-	# Track command take file and repo
-	track)
-		if [[ "$num" -eq 2 ]]; then
-			COMPREPLY=($(compgen -X -f ${cur}))
-		elif [[ "$num" -ge 3 ]]; then
+		# Commands that take a castle
+		cd | commit | destroy | diff | open | pull | push | rc | show_path | status | symlink | unlink)
 			COMPREPLY=($(compgen -W "${repos}" -- ${cur}))
-		fi
-		return
-		;;
+			return
+			;;
+		# Commands that take command
+		help)
+			COMPREPLY=($(compgen -W "${actions}" -- ${cur}))
+			return
+			;;
+		# Track command take file and repo
+		track)
+			if [[ "$num" -eq 2 ]]; then
+				COMPREPLY=($(compgen -X -f ${cur}))
+			elif [[ "$num" -ge 3 ]]; then
+				COMPREPLY=($(compgen -W "${repos}" -- ${cur}))
+			fi
+			return
+			;;
 	esac
 }
 

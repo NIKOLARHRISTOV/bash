@@ -101,11 +101,11 @@ function __vboxmanage_default {
 	# echo "DEBUG: cur: $cur, prev: $prev"
 	# echo "DEBUG: default: |$p1|$p2|$p3|$p4|"
 	case ${cur} in
-	-*)
-		echo $opts
-		# COMPREPLY=($(compgen -W "${opts}" -- ${cur}))
-		return 0
-		;;
+		-*)
+			echo $opts
+			# COMPREPLY=($(compgen -W "${opts}" -- ${cur}))
+			return 0
+			;;
 	esac
 
 	for WORD in $opts; do
@@ -155,46 +155,46 @@ function _vboxmanage {
 
 	# In case current is complete command
 	case $cur in
-	startvm | list | controlvm)
-		COMPREPLY=($(compgen -W "$cur "))
-		return 0
-		;;
+		startvm | list | controlvm)
+			COMPREPLY=($(compgen -W "$cur "))
+			return 0
+			;;
 	esac
 
 	case $prev in
-	-v | --version)
-		return 0
-		;;
+		-v | --version)
+			return 0
+			;;
 
-	-l | --long)
-		opts=$(__vboxmanage_list "long")
-		COMPREPLY=($(compgen -W "${opts}" -- ${cur}))
-		return 0
-		;;
-	startvm | list)
-		opts=$(__vboxmanage_$prev)
-		COMPREPLY=($(compgen -W "${opts}" -- ${cur}))
-		return 0
-		;;
-	--type)
-		COMPREPLY=($(compgen -W "gui headless" -- ${cur}))
-		return 0
-		;;
-	gui | headless)
-		# Done. no more completion possible
-		return 0
-		;;
-	vboxmanage | -q | --nologo)
-		# echo "Got vboxmanage"
-		opts=$(__vboxmanage_default)
-		COMPREPLY=($(compgen -W "${opts}" -- ${cur}))
-		return 0
-		;;
-	controlvm)
-		opts=$(__vboxmanage_list_vms)
-		COMPREPLY=($(compgen -W "${opts}" -- ${cur}))
-		return 0
-		;;
+		-l | --long)
+			opts=$(__vboxmanage_list "long")
+			COMPREPLY=($(compgen -W "${opts}" -- ${cur}))
+			return 0
+			;;
+		startvm | list)
+			opts=$(__vboxmanage_$prev)
+			COMPREPLY=($(compgen -W "${opts}" -- ${cur}))
+			return 0
+			;;
+		--type)
+			COMPREPLY=($(compgen -W "gui headless" -- ${cur}))
+			return 0
+			;;
+		gui | headless)
+			# Done. no more completion possible
+			return 0
+			;;
+		vboxmanage | -q | --nologo)
+			# echo "Got vboxmanage"
+			opts=$(__vboxmanage_default)
+			COMPREPLY=($(compgen -W "${opts}" -- ${cur}))
+			return 0
+			;;
+		controlvm)
+			opts=$(__vboxmanage_list_vms)
+			COMPREPLY=($(compgen -W "${opts}" -- ${cur}))
+			return 0
+			;;
 	esac
 
 	for VM in $(__vboxmanage_list_vms); do
@@ -202,16 +202,16 @@ function _vboxmanage {
 			pprev=${COMP_WORDS[COMP_CWORD - 2]}
 			# echo "previous: $pprev"
 			case $pprev in
-			startvm)
-				opts="--type"
-				COMPREPLY=($(compgen -W "${opts}" -- ${cur}))
-				return 0
-				;;
-			controlvm)
-				opts=$(__vboxmanage_controlvm)
-				COMPREPLY=($(compgen -W "${opts}" -- ${cur}))
-				return 0
-				;;
+				startvm)
+					opts="--type"
+					COMPREPLY=($(compgen -W "${opts}" -- ${cur}))
+					return 0
+					;;
+				controlvm)
+					opts=$(__vboxmanage_controlvm)
+					COMPREPLY=($(compgen -W "${opts}" -- ${cur}))
+					return 0
+					;;
 			esac
 		fi
 	done

@@ -25,47 +25,47 @@ _todo() {
 		completions=$(eval TODOTXT_VERBOSE=0 $_todo_sh command listfile)
 	else
 		case "$prev" in
-		command)
-			completions=$COMMANDS
-			;;
-		help)
-			completions="$COMMANDS $(eval TODOTXT_VERBOSE=0 $_todo_sh command listaddons)"
-			;;
-		addto | listfile | lf)
-			completions=$(eval TODOTXT_VERBOSE=0 $_todo_sh command listfile)
-			;;
-		-*) completions="$COMMANDS $(eval TODOTXT_VERBOSE=0 $_todo_sh command listaddons) $OPTS" ;;
-		*)
-			case "$cur" in
-			+*)
-				completions=$(eval TODOTXT_VERBOSE=0 $_todo_sh command listproj)
-				COMPREPLY=($(compgen -W "$completions" -- $cur))
-				[ ${#COMPREPLY[@]} -gt 0 ] && return 0
-				completions=$(eval 'TODOTXT_VERBOSE=0 TODOTXT_SOURCEVAR=\$DONE_FILE' $_todo_sh command listproj)
+			command)
+				completions=$COMMANDS
 				;;
-			@*)
-				completions=$(eval TODOTXT_VERBOSE=0 $_todo_sh command listcon)
-				COMPREPLY=($(compgen -W "$completions" -- $cur))
-				[ ${#COMPREPLY[@]} -gt 0 ] && return 0
-				completions=$(eval 'TODOTXT_VERBOSE=0 TODOTXT_SOURCEVAR=\$DONE_FILE' $_todo_sh command listcon)
+			help)
+				completions="$COMMANDS $(eval TODOTXT_VERBOSE=0 $_todo_sh command listaddons)"
 				;;
+			addto | listfile | lf)
+				completions=$(eval TODOTXT_VERBOSE=0 $_todo_sh command listfile)
+				;;
+			-*) completions="$COMMANDS $(eval TODOTXT_VERBOSE=0 $_todo_sh command listaddons) $OPTS" ;;
 			*)
-				if [[ "$cur" =~ ^[0-9]+$ ]]; then
-					local todo=$(
-						eval TODOTXT_VERBOSE=0 $_todo_sh '-@ -+ -p -x command ls "^ *${cur} "' |
-							sed -e 's/^ *[0-9]\{1,\} //' -e 's/^\((.) \)\{0,1\}[0-9]\{2,4\}-[0-9]\{2\}-[0-9]\{2\} /\1/' \
-								-e 's/^\([xX] \)\([0-9]\{2,4\}-[0-9]\{2\}-[0-9]\{2\} \)\{1,2\}/\1/' \
-								-e 's/[[:space:]]*$//' \
-								-e '1q'
-					)
-					[ "$todo" ] && COMPREPLY[0]="$cur # $todo"
-					return 0
-				else
-					return 0
-				fi
+				case "$cur" in
+					+*)
+						completions=$(eval TODOTXT_VERBOSE=0 $_todo_sh command listproj)
+						COMPREPLY=($(compgen -W "$completions" -- $cur))
+						[ ${#COMPREPLY[@]} -gt 0 ] && return 0
+						completions=$(eval 'TODOTXT_VERBOSE=0 TODOTXT_SOURCEVAR=\$DONE_FILE' $_todo_sh command listproj)
+						;;
+					@*)
+						completions=$(eval TODOTXT_VERBOSE=0 $_todo_sh command listcon)
+						COMPREPLY=($(compgen -W "$completions" -- $cur))
+						[ ${#COMPREPLY[@]} -gt 0 ] && return 0
+						completions=$(eval 'TODOTXT_VERBOSE=0 TODOTXT_SOURCEVAR=\$DONE_FILE' $_todo_sh command listcon)
+						;;
+					*)
+						if [[ "$cur" =~ ^[0-9]+$ ]]; then
+							local todo=$(
+								eval TODOTXT_VERBOSE=0 $_todo_sh '-@ -+ -p -x command ls "^ *${cur} "' \
+									| sed -e 's/^ *[0-9]\{1,\} //' -e 's/^\((.) \)\{0,1\}[0-9]\{2,4\}-[0-9]\{2\}-[0-9]\{2\} /\1/' \
+										-e 's/^\([xX] \)\([0-9]\{2,4\}-[0-9]\{2\}-[0-9]\{2\} \)\{1,2\}/\1/' \
+										-e 's/[[:space:]]*$//' \
+										-e '1q'
+							)
+							[ "$todo" ] && COMPREPLY[0]="$cur # $todo"
+							return 0
+						else
+							return 0
+						fi
+						;;
+				esac
 				;;
-			esac
-			;;
 		esac
 	fi
 

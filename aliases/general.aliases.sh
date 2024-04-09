@@ -27,7 +27,7 @@ function _omb_util_alias_select_cp {
 	if (
 		tmp=$(_omb_util_mktemp)
 		trap 'rm -f "$tmp"{,.2}' EXIT
-		command cp -v "$tmp" "$tmp.2" &>/dev/null
+		command cp -v "$tmp" "$tmp.2" &> /dev/null
 	); then
 		_omb_command='cp -iv'
 	else
@@ -41,7 +41,7 @@ function _omb_util_alias_select_mv {
 	if (
 		tmp=$(_omb_util_mktemp)
 		trap 'rm -f "$tmp.2"' EXIT
-		command mv -v "$tmp" "$tmp.2" &>/dev/null
+		command mv -v "$tmp" "$tmp.2" &> /dev/null
 	); then
 		_omb_command='mv -iv'
 	else
@@ -52,7 +52,7 @@ _omb_util_alias_delayed mv force
 
 # Preferred 'mkdir' implementation
 function _omb_util_alias_select_mkdir {
-	if command mkdir -pv . &>/dev/null; then
+	if command mkdir -pv . &> /dev/null; then
 		_omb_command='mkdir -pv'
 	else
 		_omb_command='mkdir -p'
@@ -62,7 +62,7 @@ _omb_util_alias_delayed mkdir force
 
 # Preferred 'nano' implementation
 function _omb_util_alias_select_nano {
-	if LANG=C command nano --help 2>/dev/null | grep -q '^[[:space:]]*[-]W'; then
+	if LANG=C command nano --help 2> /dev/null | grep -q '^[[:space:]]*[-]W'; then
 		_omb_command='nano -W'
 	else
 		_omb_command='nano'

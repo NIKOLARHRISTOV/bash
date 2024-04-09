@@ -9,29 +9,29 @@ _sdkman_complete() {
 		COMPREPLY=($(compgen -W "install uninstall rm list ls use current outdated version default selfupdate broadcast offline help flush" -- ${COMP_WORDS[COMP_CWORD]}))
 	elif [ $COMP_CWORD -eq 2 ]; then
 		case "${COMP_WORDS[COMP_CWORD - 1]}" in
-		"install" | "uninstall" | "rm" | "list" | "ls" | "use" | "current" | "outdated")
-			CANDIDATES=$(echo "${SDKMAN_CANDIDATES_CSV}" | tr ',' ' ')
-			COMPREPLY=($(compgen -W "$CANDIDATES" -- ${COMP_WORDS[COMP_CWORD]}))
-			;;
-		"offline")
-			COMPREPLY=($(compgen -W "enable disable" -- ${COMP_WORDS[COMP_CWORD]}))
-			;;
-		"selfupdate")
-			COMPREPLY=($(compgen -W "force" -P "[" -S "]" -- ${COMP_WORDS[COMP_CWORD]}))
-			;;
-		"flush")
-			COMPREPLY=($(compgen -W "candidates broadcast archives temp" -- ${COMP_WORDS[COMP_CWORD]}))
-			;;
-		*) ;;
+			"install" | "uninstall" | "rm" | "list" | "ls" | "use" | "current" | "outdated")
+				CANDIDATES=$(echo "${SDKMAN_CANDIDATES_CSV}" | tr ',' ' ')
+				COMPREPLY=($(compgen -W "$CANDIDATES" -- ${COMP_WORDS[COMP_CWORD]}))
+				;;
+			"offline")
+				COMPREPLY=($(compgen -W "enable disable" -- ${COMP_WORDS[COMP_CWORD]}))
+				;;
+			"selfupdate")
+				COMPREPLY=($(compgen -W "force" -P "[" -S "]" -- ${COMP_WORDS[COMP_CWORD]}))
+				;;
+			"flush")
+				COMPREPLY=($(compgen -W "candidates broadcast archives temp" -- ${COMP_WORDS[COMP_CWORD]}))
+				;;
+			*) ;;
 
 		esac
 	elif [ $COMP_CWORD -eq 3 ]; then
 		case "${COMP_WORDS[COMP_CWORD - 2]}" in
-		"install" | "uninstall" | "rm" | "use" | "default")
-			_sdkman_candidate_versions ${COMP_WORDS[COMP_CWORD - 1]}
-			COMPREPLY=($(compgen -W "$CANDIDATE_VERSIONS" -- ${COMP_WORDS[COMP_CWORD]}))
-			;;
-		*) ;;
+			"install" | "uninstall" | "rm" | "use" | "default")
+				_sdkman_candidate_versions ${COMP_WORDS[COMP_CWORD - 1]}
+				COMPREPLY=($(compgen -W "$CANDIDATE_VERSIONS" -- ${COMP_WORDS[COMP_CWORD]}))
+				;;
+			*) ;;
 
 		esac
 	fi

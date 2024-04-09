@@ -23,14 +23,14 @@ function _gem {
 	local cur=${COMP_WORDS[COMP_CWORD]}
 	local prev=${COMP_WORDS[COMP_CWORD - 1]}
 	case $prev in
-	install)
-		_installcomp
-		return 0
-		;;
-	uninstall)
-		_uninstallcomp
-		return 0
-		;;
+		install)
+			_installcomp
+			return 0
+			;;
+		uninstall)
+			_uninstallcomp
+			return 0
+			;;
 	esac
 	local commands=(build cert check cleanup contents dependency environment fetch generate_index help install list lock outdated owner pristine push query rdoc search server sources specification stale uninstall unpack update which)
 	COMPREPLY=($(compgen -W "${commands[*]}" -- $cur))

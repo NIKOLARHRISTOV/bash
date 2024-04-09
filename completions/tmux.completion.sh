@@ -32,12 +32,12 @@ _tmux_filedir() {
 function _tmux_complete_client() {
 	local IFS=$'\n'
 	local cur="${1}"
-	COMPREPLY=(${COMPREPLY[@]:-} $(compgen -W "$(tmux -q list-clients 2>/dev/null | cut -f 1 -d ':')" -- "${cur}"))
+	COMPREPLY=(${COMPREPLY[@]:-} $(compgen -W "$(tmux -q list-clients 2> /dev/null | cut -f 1 -d ':')" -- "${cur}"))
 }
 function _tmux_complete_session() {
 	local IFS=$'\n'
 	local cur="${1}"
-	COMPREPLY=(${COMPREPLY[@]:-} $(compgen -W "$(tmux -q list-sessions 2>/dev/null | cut -f 1 -d ':')" -- "${cur}"))
+	COMPREPLY=(${COMPREPLY[@]:-} $(compgen -W "$(tmux -q list-sessions 2> /dev/null | cut -f 1 -d ':')" -- "${cur}"))
 }
 function _tmux_complete_window() {
 	local IFS=$'\n'
@@ -45,10 +45,10 @@ function _tmux_complete_window() {
 	local session_name="$(echo "${cur}" | sed 's/\\//g' | cut -d ':' -f 1)"
 	local sessions
 
-	sessions="$(tmux -q list-sessions 2>/dev/null | sed -re 's/([^:]+:).*$/\1/')"
+	sessions="$(tmux -q list-sessions 2> /dev/null | sed -re 's/([^:]+:).*$/\1/')"
 	if [[ -n "${session_name}" ]]; then
 		sessions="${sessions}
-        $(tmux -q list-windows -t "${session_name}" 2>/dev/null | sed -re 's/^([^:]+):.*$/'"${session_name}"':\1/')"
+        $(tmux -q list-windows -t "${session_name}" 2> /dev/null | sed -re 's/^([^:]+):.*$/'"${session_name}"':\1/')"
 	fi
 	cur="$(echo "${cur}" | sed -e 's/:/\\\\:/')"
 	sessions="$(echo "${sessions}" | sed -e 's/:/\\\\:/')"
@@ -103,82 +103,82 @@ function _tmux {
 			COMPREPLY=(${COMPREPLY[@]:-} $(compgen -W "$(tmux start-server \; list-commands | cut -d' ' -f1)" -- "${cur}"))
 		else
 			case ${cmd} in
-			attach-session | attach)
-				case "$prev" in
-				-t) _tmux_complete_session "${cur}" ;;
-				*) options="-t -d" ;;
-				esac
-				;;
-			detach-client | detach)
-				case "$prev" in
-				-t) _tmux_complete_client "${cur}" ;;
-				*) options="-t" ;;
-				esac
-				;;
-			lock-client | lockc)
-				case "$prev" in
-				-t) _tmux_complete_client "${cur}" ;;
-				*) options="-t" ;;
-				esac
-				;;
-			lock-session | locks)
-				case "$prev" in
-				-t) _tmux_complete_session "${cur}" ;;
-				*) options="-t -d" ;;
-				esac
-				;;
-			new-session | new)
-				case "$prev" in
-				-t) _tmux_complete_session "${cur}" ;;
-				-[n | d | s]) options="-d -n -s -t --" ;;
-				*)
-					if [[ ${COMP_WORDS[option_index]} == -- ]]; then
-						_command_offset ${option_index}
-					else
-						options="-d -n -s -t --"
-					fi
+				attach-session | attach)
+					case "$prev" in
+						-t) _tmux_complete_session "${cur}" ;;
+						*) options="-t -d" ;;
+					esac
 					;;
-				esac
-				;;
-			refresh-client | refresh)
-				case "$prev" in
-				-t) _tmux_complete_client "${cur}" ;;
-				*) options="-t" ;;
-				esac
-				;;
-			rename-session | rename)
-				case "$prev" in
-				-t) _tmux_complete_session "${cur}" ;;
-				*) options="-t" ;;
-				esac
-				;;
-			source-file | source) _tmux_filedir ;;
-			has-session | has | kill-session)
-				case "$prev" in
-				-t) _tmux_complete_session "${cur}" ;;
-				*) options="-t" ;;
-				esac
-				;;
-			suspend-client | suspendc)
-				case "$prev" in
-				-t) _tmux_complete_client "${cur}" ;;
-				*) options="-t" ;;
-				esac
-				;;
-			switch-client | switchc)
-				case "$prev" in
-				-c) _tmux_complete_client "${cur}" ;;
-				-t) _tmux_complete_session "${cur}" ;;
-				*) options="-l -n -p -c -t" ;;
-				esac
-				;;
+				detach-client | detach)
+					case "$prev" in
+						-t) _tmux_complete_client "${cur}" ;;
+						*) options="-t" ;;
+					esac
+					;;
+				lock-client | lockc)
+					case "$prev" in
+						-t) _tmux_complete_client "${cur}" ;;
+						*) options="-t" ;;
+					esac
+					;;
+				lock-session | locks)
+					case "$prev" in
+						-t) _tmux_complete_session "${cur}" ;;
+						*) options="-t -d" ;;
+					esac
+					;;
+				new-session | new)
+					case "$prev" in
+						-t) _tmux_complete_session "${cur}" ;;
+						-[n | d | s]) options="-d -n -s -t --" ;;
+						*)
+							if [[ ${COMP_WORDS[option_index]} == -- ]]; then
+								_command_offset ${option_index}
+							else
+								options="-d -n -s -t --"
+							fi
+							;;
+					esac
+					;;
+				refresh-client | refresh)
+					case "$prev" in
+						-t) _tmux_complete_client "${cur}" ;;
+						*) options="-t" ;;
+					esac
+					;;
+				rename-session | rename)
+					case "$prev" in
+						-t) _tmux_complete_session "${cur}" ;;
+						*) options="-t" ;;
+					esac
+					;;
+				source-file | source) _tmux_filedir ;;
+				has-session | has | kill-session)
+					case "$prev" in
+						-t) _tmux_complete_session "${cur}" ;;
+						*) options="-t" ;;
+					esac
+					;;
+				suspend-client | suspendc)
+					case "$prev" in
+						-t) _tmux_complete_client "${cur}" ;;
+						*) options="-t" ;;
+					esac
+					;;
+				switch-client | switchc)
+					case "$prev" in
+						-c) _tmux_complete_client "${cur}" ;;
+						-t) _tmux_complete_session "${cur}" ;;
+						*) options="-l -n -p -c -t" ;;
+					esac
+					;;
 
-			send-keys | send)
-				case "$option" in
-				-t) _tmux_complete_window "${cur}" ;;
-				*) options="-t" ;;
-				esac
-				;;
+				send-keys | send)
+					case "$option" in
+						-t) _tmux_complete_window "${cur}" ;;
+						*) options="-t" ;;
+					esac
+					;;
 			esac # case ${cmd}
 		fi    # command specified
 	fi     # not -f

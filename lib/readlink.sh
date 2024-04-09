@@ -37,23 +37,23 @@ function _omb_util_readlink__readlink {
 		link=$(readlink -- "$path")
 		[[ $link ]]
 	elif _omb_util_binary_exists ls; then
-		link=$(ls -ld -- "$path") &&
-			[[ $link == *" $path -> "?* ]] &&
-			link=${link#*" $path -> "}
+		link=$(ls -ld -- "$path") \
+			&& [[ $link == *" $path -> "?* ]] \
+			&& link=${link#*" $path -> "}
 	else
 		false
 	fi
-} 2>/dev/null
+} 2> /dev/null
 
 ## @fn  _omb_util_readlink__resolve_physical_directory
 ##   @var[in,out] path
 function _omb_util_readlink__resolve_physical_directory {
 	[[ $path == */?* ]] || return 0
 	local PWD=$PWD OLDPWD=$OLDPWD CDPATH=
-	builtin cd -L . &&
-		local pwd=$PWD &&
-		builtin cd -P "${path%/*}/" &&
-		path=${PWD%/}/${path##*/}
+	builtin cd -L . \
+		&& local pwd=$PWD \
+		&& builtin cd -P "${path%/*}/" \
+		&& path=${PWD%/}/${path##*/}
 	builtin cd -L "$pwd"
 	return 0
 }
@@ -81,18 +81,18 @@ function _omb_util_readlink__resolve {
 	_omb_util_readlink_type=
 
 	case $OSTYPE in
-	cygwin | msys | linux-gnu)
-		# These systems provide "readlink -f".
-		local readlink
-		readlink=$(type -P readlink)
-		case $readlink in
-		/bin/readlink | /usr/bin/readlink)
-			# shellcheck disable=SC2100
-			_omb_util_readlink_type=readlink-f
-			function _omb_util_readlink__resolve { readlink -f -- "$1"; }
+		cygwin | msys | linux-gnu)
+			# These systems provide "readlink -f".
+			local readlink
+			readlink=$(type -P readlink)
+			case $readlink in
+				/bin/readlink | /usr/bin/readlink)
+					# shellcheck disable=SC2100
+					_omb_util_readlink_type=readlink-f
+					function _omb_util_readlink__resolve { readlink -f -- "$1"; }
+					;;
+			esac
 			;;
-		esac
-		;;
 	esac
 
 	if [[ ! $_omb_util_readlink_type ]]; then
