@@ -7,10 +7,8 @@ command for your terminal.
 
 To use it, add `zoxide` to the plugins array in your `.bashrc` file:
 
-```sh
+```bash
 plugins=(... zoxide)
 ```
 
-**Note:** you have to
-[install zoxide](https://github.com/ajeetdsouza/zoxide#step-1-install-zoxide)
-first.
+**Note:** you have to [install zoxide](https://github.com/ajeetdsouza/zoxide#step-1-install-zoxide) first.

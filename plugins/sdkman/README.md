@@ -6,18 +6,17 @@ This plugin will automatically source [sdkman](https://sdkman.io/).
 
 ### Install sdkman
 
-Let's [install the sdkman](https://sdkman.io/install) without updating shell
-config!
+Let's [install the sdkman](https://sdkman.io/install) without updating shell config!
 
-```sh
+```bash
 $ curl -s "https://get.sdkman.io?rcupdate=false" | bash
 ```
 
 ### Include sdkman as plugin
 
-```sh
+```bash
 plugins=(
-	git
-	sdkman
+  git
+  sdkman
 )
 ```

@@ -1,11 +1,10 @@
 # sudo
 
-Easily prefix your current or previous commands with `sudo` by pressing
-<kbd>esc</kbd> twice.
+Easily prefix your current or previous commands with `sudo` by pressing <kbd>esc</kbd> twice.
 
 To use it, add `sudo` to the plugins array in your bashrc file:
 
-```sh
+```bash
 plugins=(... sudo)
 ```
 
@@ -19,8 +18,7 @@ Say you have typed a long command and forgot to add `sudo` in front:
 $ apt-get install build-essential
 ```
 
-By pressing the <kbd>esc</kbd> key twice, you will have the same command with
-`sudo` prefixed without typing:
+By pressing the <kbd>esc</kbd> key twice, you will have the same command with `sudo` prefixed without typing:
 
 ```console
 $ sudo apt-get install build-essential
@@ -36,8 +34,7 @@ $ rm some-system-file.txt
 $
 ```
 
-By pressing the <kbd>esc</kbd> key twice, you will have the same command with
-`sudo` prefixed without typing:
+By pressing the <kbd>esc</kbd> key twice, you will have the same command with `sudo` prefixed without typing:
 
 ```console
 $ rm some-system-file.txt
@@ -50,3 +47,4 @@ $
 ## Credits
 
 Inspired by ohmyzsh sudo plugin.
+

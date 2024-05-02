@@ -6,16 +6,16 @@
 # in glorious red / blue / yellow color scheme
 
 function _omb_theme_PROMPT_COMMAND {
-	# Save history
-	history -a
-	history -c
-	history -r
-	# displays user@server in purple
-	# PS1="$_omb_prompt_brown$(scm_char) $_omb_prompt_purple\u@\h$_omb_prompt_reset_color:$_omb_prompt_navy\w$_omb_prompt_olive$(scm_prompt_info)$(_omb_prompt_print_ruby_env) $_omb_prompt_gray\$$_omb_prompt_reset_color "
-	# no user@server
-	PS1="$_omb_prompt_brown$(scm_char) $_omb_prompt_navy\w$_omb_prompt_olive$(scm_prompt_info)$(_omb_prompt_print_ruby_env) $_omb_prompt_gray\$$_omb_prompt_reset_color "
-	PS2='> '
-	PS4='+ '
+  # Save history
+  history -a
+  history -c
+  history -r
+  # displays user@server in purple
+  # PS1="$_omb_prompt_brown$(scm_char) $_omb_prompt_purple\u@\h$_omb_prompt_reset_color:$_omb_prompt_navy\w$_omb_prompt_olive$(scm_prompt_info)$(_omb_prompt_print_ruby_env) $_omb_prompt_gray\$$_omb_prompt_reset_color "
+  # no user@server
+  PS1="$_omb_prompt_brown$(scm_char) $_omb_prompt_navy\w$_omb_prompt_olive$(scm_prompt_info)$(_omb_prompt_print_ruby_env) $_omb_prompt_gray\$$_omb_prompt_reset_color "
+  PS2='> '
+  PS4='+ '
 }
 
 _omb_util_add_prompt_command _omb_theme_PROMPT_COMMAND
