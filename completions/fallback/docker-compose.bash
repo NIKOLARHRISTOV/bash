@@ -29,13 +29,13 @@ __docker_compose_previous_extglob_setting=$(shopt -p extglob)
 shopt -s extglob
 
 function __docker_compose_q {
-	docker-compose 2>/dev/null "${top_level_options[@]}" "$@"
+	docker-compose 2> /dev/null "${top_level_options[@]}" "$@"
 }
 
 # Transforms a multiline list of strings into a single line string
 # with the words separated by "|".
 function __docker_compose_to_alternatives {
-	local parts=( $1 )
+	local parts=($1)
 	local IFS='|'
 	echo "${parts[*]}"
 }
@@ -43,7 +43,7 @@ function __docker_compose_to_alternatives {
 # Transforms a multiline list of options into an extglob pattern
 # suitable for use in case statements.
 function __docker_compose_to_extglob {
-	local extglob=$( __docker_compose_to_alternatives "$1" )
+	local extglob=$(__docker_compose_to_alternatives "$1")
 	echo "@($extglob)"
 }
 
@@ -51,8 +51,8 @@ function __docker_compose_to_extglob {
 # the commandline. The option may be a pattern, e.g. `--force|-f`.
 function __docker_compose_has_option {
 	local pattern="$1"
-	for (( i=2; i < $cword; ++i)); do
-		if [[ ${words[$i]} =~ ^($pattern)$ ]] ; then
+	for ((i = 2; i < $cword; ++i)); do
+		if [[ ${words[$i]} =~ ^($pattern)$ ]]; then
 			return 0
 		fi
 	done
@@ -63,25 +63,25 @@ function __docker_compose_has_option {
 # which matches the extglob passed in as an argument.
 # This function is needed for key-specific completions.
 function __docker_compose_map_key_of_current_option {
-        local glob="$1"
+	local glob="$1"
 
-        local key glob_pos
-        if [ "$cur" = "=" ] ; then        # key= case
-                key="$prev"
-                glob_pos=$((cword - 2))
-        elif [[ $cur == *=* ]] ; then     # key=value case (OSX)
-                key=${cur%=*}
-                glob_pos=$((cword - 1))
-        elif [ "$prev" = "=" ] ; then
-                key=${words[$cword - 2]}  # key=value case
-                glob_pos=$((cword - 3))
-        else
-                return
-        fi
+	local key glob_pos
+	if [ "$cur" = "=" ]; then # key= case
+		key="$prev"
+		glob_pos=$((cword - 2))
+	elif [[ $cur == *=* ]]; then # key=value case (OSX)
+		key=${cur%=*}
+		glob_pos=$((cword - 1))
+	elif [ "$prev" = "=" ]; then
+		key=${words[$cword - 2]} # key=value case
+		glob_pos=$((cword - 3))
+	else
+		return
+	fi
 
-        [ "${words[$glob_pos]}" = "=" ] && ((glob_pos--))  # --option=key=value syntax
+	[ "${words[$glob_pos]}" = "=" ] && ((glob_pos--)) # --option=key=value syntax
 
-        [[ ${words[$glob_pos]} == @($glob) ]] && echo "$key"
+	[[ ${words[$glob_pos]} == @($glob) ]] && echo "$key"
 }
 
 # suppress trailing whitespace
@@ -89,7 +89,6 @@ function __docker_compose_nospace {
 	# compopt is not available in ancient bash versions
 	_omb_util_command_exists compopt && compopt -o nospace
 }
-
 
 # Outputs a list of all defined services, regardless of their running state.
 # Arguments for `docker-compose ps` may be passed in order to filter the service list,
@@ -102,31 +101,30 @@ function __docker_compose_services {
 # Arguments for `docker-compose ps` may be passed in order to filter the service list,
 # see `__docker_compose_services`.
 function __docker_compose_complete_services {
-	COMPREPLY=( $(compgen -W "$(__docker_compose_services "$@")" -- "$cur") )
+	COMPREPLY=($(compgen -W "$(__docker_compose_services "$@")" -- "$cur"))
 }
 
 # The services for which at least one running container exists
 function __docker_compose_complete_running_services {
 	local names=$(__docker_compose_services --filter status=running)
-	COMPREPLY=( $(compgen -W "$names" -- "$cur") )
+	COMPREPLY=($(compgen -W "$names" -- "$cur"))
 }
-
 
 function _docker_compose_build {
 	case "$prev" in
 		--build-arg)
-			COMPREPLY=( $( compgen -e -- "$cur" ) )
+			COMPREPLY=($(compgen -e -- "$cur"))
 			__docker_compose_nospace
 			return
 			;;
-		--memory|-m)
+		--memory | -m)
 			return
 			;;
 	esac
 
 	case "$cur" in
 		-*)
-			COMPREPLY=( $( compgen -W "--build-arg --compress --force-rm --help --memory -m --no-cache --no-rm --pull --parallel -q --quiet" -- "$cur" ) )
+			COMPREPLY=($(compgen -W "--build-arg --compress --force-rm --help --memory -m --no-cache --no-rm --pull --parallel -q --quiet" -- "$cur"))
 			;;
 		*)
 			__docker_compose_complete_services --filter source=build
@@ -134,27 +132,25 @@ function _docker_compose_build {
 	esac
 }
 
-
 function _docker_compose_config {
 	case "$prev" in
 		--hash)
-			if [[ $cur == \\* ]] ; then
-				COMPREPLY=( '\*' )
+			if [[ $cur == \\* ]]; then
+				COMPREPLY=('\*')
 			else
-				COMPREPLY=( $(compgen -W "$(__docker_compose_services) \\\* " -- "$cur") )
+				COMPREPLY=($(compgen -W "$(__docker_compose_services) \\\* " -- "$cur"))
 			fi
 			return
 			;;
 	esac
 
-	COMPREPLY=( $( compgen -W "--hash --help --no-interpolate --profiles --quiet -q --resolve-image-digests --services --volumes" -- "$cur" ) )
+	COMPREPLY=($(compgen -W "--hash --help --no-interpolate --profiles --quiet -q --resolve-image-digests --services --volumes" -- "$cur"))
 }
-
 
 function _docker_compose_create {
 	case "$cur" in
 		-*)
-			COMPREPLY=( $( compgen -W "--build --force-recreate --help --no-build --no-recreate" -- "$cur" ) )
+			COMPREPLY=($(compgen -W "--build --force-recreate --help --no-build --no-recreate" -- "$cur"))
 			;;
 		*)
 			__docker_compose_complete_services
@@ -162,27 +158,26 @@ function _docker_compose_create {
 	esac
 }
 
-
 function _docker_compose_docker_compose {
 	case "$prev" in
-		--tlscacert|--tlscert|--tlskey)
+		--tlscacert | --tlscert | --tlskey)
 			_filedir
 			return
 			;;
-		--file|-f)
+		--file | -f)
 			_filedir "y?(a)ml"
 			return
 			;;
 		--ansi)
-			COMPREPLY=( $( compgen -W "never always auto" -- "$cur" ) )
+			COMPREPLY=($(compgen -W "never always auto" -- "$cur"))
 			return
 			;;
 		--log-level)
-			COMPREPLY=( $( compgen -W "debug info warning error critical" -- "$cur" ) )
+			COMPREPLY=($(compgen -W "debug info warning error critical" -- "$cur"))
 			return
 			;;
 		--profile)
-			COMPREPLY=( $( compgen -W "$(__docker_compose_q config --profiles)" -- "$cur" ) )
+			COMPREPLY=($(compgen -W "$(__docker_compose_q config --profiles)" -- "$cur"))
 			return
 			;;
 		--project-directory)
@@ -193,40 +188,38 @@ function _docker_compose_docker_compose {
 			_filedir
 			return
 			;;
-		$(__docker_compose_to_extglob "$daemon_options_with_args") )
+		$(__docker_compose_to_extglob "$daemon_options_with_args"))
 			return
 			;;
 	esac
 
 	case "$cur" in
 		-*)
-			COMPREPLY=( $( compgen -W "$daemon_boolean_options $daemon_options_with_args $top_level_options_with_args --help -h --no-ansi --verbose --version -v" -- "$cur" ) )
+			COMPREPLY=($(compgen -W "$daemon_boolean_options $daemon_options_with_args $top_level_options_with_args --help -h --no-ansi --verbose --version -v" -- "$cur"))
 			;;
 		*)
-			COMPREPLY=( $( compgen -W "${commands[*]}" -- "$cur" ) )
+			COMPREPLY=($(compgen -W "${commands[*]}" -- "$cur"))
 			;;
 	esac
 }
-
 
 function _docker_compose_down {
 	case "$prev" in
 		--rmi)
-			COMPREPLY=( $( compgen -W "all local" -- "$cur" ) )
+			COMPREPLY=($(compgen -W "all local" -- "$cur"))
 			return
 			;;
-		--timeout|-t)
+		--timeout | -t)
 			return
 			;;
 	esac
 
 	case "$cur" in
 		-*)
-			COMPREPLY=( $( compgen -W "--help --rmi --timeout -t --volumes -v --remove-orphans" -- "$cur" ) )
+			COMPREPLY=($(compgen -W "--help --rmi --timeout -t --volumes -v --remove-orphans" -- "$cur"))
 			;;
 	esac
 }
-
 
 function _docker_compose_events {
 	case "$prev" in
@@ -237,7 +230,7 @@ function _docker_compose_events {
 
 	case "$cur" in
 		-*)
-			COMPREPLY=( $( compgen -W "--help --json" -- "$cur" ) )
+			COMPREPLY=($(compgen -W "--help --json" -- "$cur"))
 			;;
 		*)
 			__docker_compose_complete_services
@@ -245,17 +238,16 @@ function _docker_compose_events {
 	esac
 }
 
-
 function _docker_compose_exec {
 	case "$prev" in
-		--index|--user|-u|--workdir|-w)
+		--index | --user | -u | --workdir | -w)
 			return
 			;;
 	esac
 
 	case "$cur" in
 		-*)
-			COMPREPLY=( $( compgen -W "-d --detach --help --index --privileged -T --user -u --workdir -w" -- "$cur" ) )
+			COMPREPLY=($(compgen -W "-d --detach --help --index --privileged -T --user -u --workdir -w" -- "$cur"))
 			;;
 		*)
 			__docker_compose_complete_running_services
@@ -263,15 +255,14 @@ function _docker_compose_exec {
 	esac
 }
 
-
 function _docker_compose_help {
-	COMPREPLY=( $( compgen -W "${commands[*]}" -- "$cur" ) )
+	COMPREPLY=($(compgen -W "${commands[*]}" -- "$cur"))
 }
 
 function _docker_compose_images {
 	case "$cur" in
 		-*)
-			COMPREPLY=( $( compgen -W "--help --quiet -q" -- "$cur" ) )
+			COMPREPLY=($(compgen -W "--help --quiet -q" -- "$cur"))
 			;;
 		*)
 			__docker_compose_complete_services
@@ -282,21 +273,20 @@ function _docker_compose_images {
 function _docker_compose_kill {
 	case "$prev" in
 		-s)
-			COMPREPLY=( $( compgen -W "SIGHUP SIGINT SIGKILL SIGUSR1 SIGUSR2" -- "$(echo $cur | tr '[:lower:]' '[:upper:]')" ) )
+			COMPREPLY=($(compgen -W "SIGHUP SIGINT SIGKILL SIGUSR1 SIGUSR2" -- "$(echo $cur | tr '[:lower:]' '[:upper:]')"))
 			return
 			;;
 	esac
 
 	case "$cur" in
 		-*)
-			COMPREPLY=( $( compgen -W "--help -s" -- "$cur" ) )
+			COMPREPLY=($(compgen -W "--help -s" -- "$cur"))
 			;;
 		*)
 			__docker_compose_complete_running_services
 			;;
 	esac
 }
-
 
 function _docker_compose_logs {
 	case "$prev" in
@@ -307,7 +297,7 @@ function _docker_compose_logs {
 
 	case "$cur" in
 		-*)
-			COMPREPLY=( $( compgen -W "--follow -f --help --no-color --no-log-prefix --tail --timestamps -t" -- "$cur" ) )
+			COMPREPLY=($(compgen -W "--follow -f --help --no-color --no-log-prefix --tail --timestamps -t" -- "$cur"))
 			;;
 		*)
 			__docker_compose_complete_services
@@ -315,11 +305,10 @@ function _docker_compose_logs {
 	esac
 }
 
-
 function _docker_compose_pause {
 	case "$cur" in
 		-*)
-			COMPREPLY=( $( compgen -W "--help" -- "$cur" ) )
+			COMPREPLY=($(compgen -W "--help" -- "$cur"))
 			;;
 		*)
 			__docker_compose_complete_running_services
@@ -327,21 +316,20 @@ function _docker_compose_pause {
 	esac
 }
 
-
 function _docker_compose_port {
 	case "$prev" in
 		--protocol)
-			COMPREPLY=( $( compgen -W "tcp udp" -- "$cur" ) )
-			return;
+			COMPREPLY=($(compgen -W "tcp udp" -- "$cur"))
+			return
 			;;
 		--index)
-			return;
+			return
 			;;
 	esac
 
 	case "$cur" in
 		-*)
-			COMPREPLY=( $( compgen -W "--help --index --protocol" -- "$cur" ) )
+			COMPREPLY=($(compgen -W "--help --index --protocol" -- "$cur"))
 			;;
 		*)
 			__docker_compose_complete_services
@@ -349,31 +337,30 @@ function _docker_compose_port {
 	esac
 }
 
-
 function _docker_compose_ps {
 	local key=$(__docker_compose_map_key_of_current_option '--filter')
 	case "$key" in
 		source)
-			COMPREPLY=( $( compgen -W "build image" -- "${cur##*=}" ) )
+			COMPREPLY=($(compgen -W "build image" -- "${cur##*=}"))
 			return
 			;;
 		status)
-			COMPREPLY=( $( compgen -W "paused restarting running stopped" -- "${cur##*=}" ) )
+			COMPREPLY=($(compgen -W "paused restarting running stopped" -- "${cur##*=}"))
 			return
 			;;
 	esac
 
 	case "$prev" in
 		--filter)
-			COMPREPLY=( $( compgen -W "source status" -S "=" -- "$cur" ) )
+			COMPREPLY=($(compgen -W "source status" -S "=" -- "$cur"))
 			__docker_compose_nospace
-			return;
+			return
 			;;
 	esac
 
 	case "$cur" in
 		-*)
-			COMPREPLY=( $( compgen -W "--all -a --filter --help --quiet -q --services" -- "$cur" ) )
+			COMPREPLY=($(compgen -W "--all -a --filter --help --quiet -q --services" -- "$cur"))
 			;;
 		*)
 			__docker_compose_complete_services
@@ -381,11 +368,10 @@ function _docker_compose_ps {
 	esac
 }
 
-
 function _docker_compose_pull {
 	case "$cur" in
 		-*)
-			COMPREPLY=( $( compgen -W "--help --ignore-pull-failures --include-deps --no-parallel --quiet -q" -- "$cur" ) )
+			COMPREPLY=($(compgen -W "--help --ignore-pull-failures --include-deps --no-parallel --quiet -q" -- "$cur"))
 			;;
 		*)
 			__docker_compose_complete_services --filter source=image
@@ -393,11 +379,10 @@ function _docker_compose_pull {
 	esac
 }
 
-
 function _docker_compose_push {
 	case "$cur" in
 		-*)
-			COMPREPLY=( $( compgen -W "--help --ignore-push-failures" -- "$cur" ) )
+			COMPREPLY=($(compgen -W "--help --ignore-push-failures" -- "$cur"))
 			;;
 		*)
 			__docker_compose_complete_services
@@ -405,17 +390,16 @@ function _docker_compose_push {
 	esac
 }
 
-
 function _docker_compose_restart {
 	case "$prev" in
-		--timeout|-t)
+		--timeout | -t)
 			return
 			;;
 	esac
 
 	case "$cur" in
 		-*)
-			COMPREPLY=( $( compgen -W "--help --timeout -t" -- "$cur" ) )
+			COMPREPLY=($(compgen -W "--help --timeout -t" -- "$cur"))
 			;;
 		*)
 			__docker_compose_complete_running_services
@@ -423,14 +407,13 @@ function _docker_compose_restart {
 	esac
 }
 
-
 function _docker_compose_rm {
 	case "$cur" in
 		-*)
-			COMPREPLY=( $( compgen -W "--force -f --help --stop -s -v" -- "$cur" ) )
+			COMPREPLY=($(compgen -W "--force -f --help --stop -s -v" -- "$cur"))
 			;;
 		*)
-			if __docker_compose_has_option "--stop|-s" ; then
+			if __docker_compose_has_option "--stop|-s"; then
 				__docker_compose_complete_services
 			else
 				__docker_compose_complete_services --filter status=stopped
@@ -439,22 +422,21 @@ function _docker_compose_rm {
 	esac
 }
 
-
 function _docker_compose_run {
 	case "$prev" in
 		-e)
-			COMPREPLY=( $( compgen -e -- "$cur" ) )
+			COMPREPLY=($(compgen -e -- "$cur"))
 			__docker_compose_nospace
 			return
 			;;
-		--entrypoint|--label|-l|--name|--user|-u|--volume|-v|--workdir|-w)
+		--entrypoint | --label | -l | --name | --user | -u | --volume | -v | --workdir | -w)
 			return
 			;;
 	esac
 
 	case "$cur" in
 		-*)
-			COMPREPLY=( $( compgen -W "--detach -d --entrypoint -e --help --label -l --name --no-deps --publish -p --rm --service-ports -T --use-aliases --user -u --volume -v --workdir -w" -- "$cur" ) )
+			COMPREPLY=($(compgen -W "--detach -d --entrypoint -e --help --label -l --name --no-deps --publish -p --rm --service-ports -T --use-aliases --user -u --volume -v --workdir -w" -- "$cur"))
 			;;
 		*)
 			__docker_compose_complete_services
@@ -462,34 +444,32 @@ function _docker_compose_run {
 	esac
 }
 
-
 function _docker_compose_scale {
 	case "$prev" in
 		=)
 			COMPREPLY=("$cur")
 			return
 			;;
-		--timeout|-t)
+		--timeout | -t)
 			return
 			;;
 	esac
 
 	case "$cur" in
 		-*)
-			COMPREPLY=( $( compgen -W "--help --timeout -t" -- "$cur" ) )
+			COMPREPLY=($(compgen -W "--help --timeout -t" -- "$cur"))
 			;;
 		*)
-			COMPREPLY=( $(compgen -S "=" -W "$(__docker_compose_services)" -- "$cur") )
+			COMPREPLY=($(compgen -S "=" -W "$(__docker_compose_services)" -- "$cur"))
 			__docker_compose_nospace
 			;;
 	esac
 }
 
-
 function _docker_compose_start {
 	case "$cur" in
 		-*)
-			COMPREPLY=( $( compgen -W "--help" -- "$cur" ) )
+			COMPREPLY=($(compgen -W "--help" -- "$cur"))
 			;;
 		*)
 			__docker_compose_complete_services --filter status=stopped
@@ -497,29 +477,27 @@ function _docker_compose_start {
 	esac
 }
 
-
 function _docker_compose_stop {
 	case "$prev" in
-		--timeout|-t)
+		--timeout | -t)
 			return
 			;;
 	esac
 
 	case "$cur" in
 		-*)
-			COMPREPLY=( $( compgen -W "--help --timeout -t" -- "$cur" ) )
+			COMPREPLY=($(compgen -W "--help --timeout -t" -- "$cur"))
 			;;
 		*)
 			__docker_compose_complete_running_services
 			;;
 	esac
 }
-
 
 function _docker_compose_top {
 	case "$cur" in
 		-*)
-			COMPREPLY=( $( compgen -W "--help" -- "$cur" ) )
+			COMPREPLY=($(compgen -W "--help" -- "$cur"))
 			;;
 		*)
 			__docker_compose_complete_running_services
@@ -527,18 +505,16 @@ function _docker_compose_top {
 	esac
 }
 
-
 function _docker_compose_unpause {
 	case "$cur" in
 		-*)
-			COMPREPLY=( $( compgen -W "--help" -- "$cur" ) )
+			COMPREPLY=($(compgen -W "--help" -- "$cur"))
 			;;
 		*)
 			__docker_compose_complete_services --filter status=paused
 			;;
 	esac
 }
-
 
 function _docker_compose_up {
 	case "$prev" in
@@ -551,18 +527,18 @@ function _docker_compose_up {
 			return
 			;;
 		--scale)
-			COMPREPLY=( $(compgen -S "=" -W "$(__docker_compose_services)" -- "$cur") )
+			COMPREPLY=($(compgen -S "=" -W "$(__docker_compose_services)" -- "$cur"))
 			__docker_compose_nospace
 			return
 			;;
-		--timeout|-t)
+		--timeout | -t)
 			return
 			;;
 	esac
 
 	case "$cur" in
 		-*)
-			COMPREPLY=( $( compgen -W "--abort-on-container-exit --always-recreate-deps --attach-dependencies --build -d --detach --exit-code-from --force-recreate --help --no-build --no-color --no-deps --no-log-prefix --no-recreate --no-start --renew-anon-volumes -V --remove-orphans --scale --timeout -t" -- "$cur" ) )
+			COMPREPLY=($(compgen -W "--abort-on-container-exit --always-recreate-deps --attach-dependencies --build -d --detach --exit-code-from --force-recreate --help --no-build --no-color --no-deps --no-log-prefix --no-recreate --no-start --renew-anon-volumes -V --remove-orphans --scale --timeout -t" -- "$cur"))
 			;;
 		*)
 			__docker_compose_complete_services
@@ -570,15 +546,13 @@ function _docker_compose_up {
 	esac
 }
 
-
 function _docker_compose_version {
 	case "$cur" in
 		-*)
-			COMPREPLY=( $( compgen -W "--short" -- "$cur" ) )
+			COMPREPLY=($(compgen -W "--short" -- "$cur"))
 			;;
 	esac
 }
-
 
 function _docker_compose {
 	local previous_extglob_setting=$(shopt -p extglob)
@@ -650,26 +624,26 @@ function _docker_compose {
 
 	while [ $counter -lt $cword ]; do
 		case "${words[$counter]}" in
-			$(__docker_compose_to_extglob "$daemon_boolean_options") )
+			$(__docker_compose_to_extglob "$daemon_boolean_options"))
 				local opt=${words[counter]}
 				top_level_options+=($opt)
 				;;
-			$(__docker_compose_to_extglob "$daemon_options_with_args") )
+			$(__docker_compose_to_extglob "$daemon_options_with_args"))
 				local opt=${words[counter]}
 				local arg=${words[++counter]}
 				top_level_options+=($opt $arg)
 				;;
-			$(__docker_compose_to_extglob "$top_level_options_with_args") )
-				(( counter++ ))
+			$(__docker_compose_to_extglob "$top_level_options_with_args"))
+				((counter++))
 				;;
-			-*)
-				;;
+			-*) ;;
+
 			*)
 				command="${words[$counter]}"
 				break
 				;;
 		esac
-		(( counter++ ))
+		((counter++))
 	done
 
 	local completions_func=_docker_compose_${command//-/_}

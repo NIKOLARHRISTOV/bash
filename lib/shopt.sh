@@ -24,9 +24,9 @@ shopt -s globstar 2> /dev/null
 # Case-sensitive globbing (used in pathname expansion) and matching
 # (used in case, [[]], word expansions and command completions)
 if [[ ${OMB_CASE_SENSITIVE:-${CASE_SENSITIVE:-}} == true ]]; then
-   shopt -u nocaseglob
+	shopt -u nocaseglob
 else
-   shopt -s nocaseglob
+	shopt -s nocaseglob
 fi
 
 ## SMARTER TAB-COMPLETION (Readline bindings) ##
@@ -46,8 +46,8 @@ else
 	# CASE_SENSITIVE must be off
 	if [[ ! ${OMB_HYPHEN_SENSITIVE-} && ${HYPHEN_INSENSITIVE} ]]; then
 		case $HYPHEN_INSENSITIVE in
-		(true)  OMB_HYPHEN_SENSITIVE=true ;;
-		(false) OMB_HYPHEN_SENSITIVE=false ;;
+			true) OMB_HYPHEN_SENSITIVE=true ;;
+			false) OMB_HYPHEN_SENSITIVE=false ;;
 		esac
 	fi
 	if [[ ${OMB_HYPHEN_SENSITIVE-} == false ]]; then
