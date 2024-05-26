@@ -11,10 +11,10 @@ export LS_COLORS='no=00:fi=00:di=01;34:ln=00;36:pi=40;33:so=01;35:do=01;35:bd=40
 
 function _omb_theme_PROMPT_COMMAND() {
 
-	if [ "$(whoami)" = root ]; then no_color=$_omb_prompt_brown; else no_color=$_omb_prompt_white; fi
+  if [ "$(whoami)" = root ]; then no_color=$_omb_prompt_brown; else no_color=$_omb_prompt_white; fi
 
-	PS1="${no_color}\u${_omb_prompt_reset_color}:${_omb_prompt_navy}\W/${_omb_prompt_reset_color} \[\$(scm_prompt_info)\]$ "
-	RPROMPT='[\t]'
+  PS1="${no_color}\u${_omb_prompt_reset_color}:${_omb_prompt_navy}\W/${_omb_prompt_reset_color} \[\$(scm_prompt_info)\]$ "
+  RPROMPT='[\t]'
 }
 
 _omb_util_add_prompt_command _omb_theme_PROMPT_COMMAND

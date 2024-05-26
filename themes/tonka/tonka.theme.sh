@@ -1,40 +1,40 @@
 #! bash oh-my-bash.module
 
 function __tonka_time {
-	THEME_CLOCK_FORMAT="%H%M"
-	clock_prompt
+  THEME_CLOCK_FORMAT="%H%M"
+  clock_prompt
 }
 
 function __tonka_date {
-	THEME_CLOCK_FORMAT="%a,%d %b %y"
-	clock_prompt
+  THEME_CLOCK_FORMAT="%a,%d %b %y"
+  clock_prompt
 }
 
 function __tonka_clock {
-	local LIGHT_BLUE="\[\033[1;34m\]"
-	if [[ "${THEME_SHOW_CLOCK}" = "true" ]]; then
-		echo "$(__tonka_time)${LIGHT_BLUE}:$(__tonka_date)${LIGHT_BLUE}:"
-	fi
+  local LIGHT_BLUE="\[\033[1;34m\]"
+  if [[ "${THEME_SHOW_CLOCK}" = "true" ]]; then
+    echo "$(__tonka_time)${LIGHT_BLUE}:$(__tonka_date)${LIGHT_BLUE}:"
+  fi
 }
 
 function _omb_theme_PROMPT_COMMAND {
 
-	#   Named "Tonka" because of the colour scheme
-	local WHITE="\[\033[1;37m\]"
-	local LIGHT_BLUE="\[\033[1;34m\]"
-	local YELLOW="\[\033[1;33m\]"
-	local NO_COLOUR="\[\033[0m\]"
+  #   Named "Tonka" because of the colour scheme
+  local WHITE="\[\033[1;37m\]"
+  local LIGHT_BLUE="\[\033[1;34m\]"
+  local YELLOW="\[\033[1;33m\]"
+  local NO_COLOUR="\[\033[0m\]"
 
-	case $TERM in
-		xterm* | rxvt*)
-			TITLEBAR='\[\033]0;\u@\h:\w\007\]'
-			;;
-		*)
-			TITLEBAR=""
-			;;
-	esac
+  case $TERM in
+  xterm* | rxvt*)
+    TITLEBAR='\[\033]0;\u@\h:\w\007\]'
+    ;;
+  *)
+    TITLEBAR=""
+    ;;
+  esac
 
-	PS1="$TITLEBAR$YELLOW-$LIGHT_BLUE-(\
+  PS1="$TITLEBAR$YELLOW-$LIGHT_BLUE-(\
 $YELLOW\u$LIGHT_BLUE@$YELLOW\h\
 $LIGHT_BLUE)-(\
 $YELLOW\$PWD\
@@ -44,7 +44,7 @@ $YELLOW-$LIGHT_BLUE-(\
 $(__tonka_clock)\
 $WHITE\$ $LIGHT_BLUE)-$YELLOW-$NO_COLOUR "
 
-	PS2="$LIGHT_BLUE-$YELLOW-$YELLOW-$NO_COLOUR "
+  PS2="$LIGHT_BLUE-$YELLOW-$YELLOW-$NO_COLOUR "
 
 }
 

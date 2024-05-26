@@ -8,8 +8,8 @@
 
 # Try to load nvm only if command not already available
 if ! _omb_util_command_exists nvm; then
-	# shellcheck source=/dev/null
-	[[ -s $NVM_DIR/nvm.sh ]] && source "$NVM_DIR/nvm.sh"
+  # shellcheck source=/dev/null
+  [[ -s $NVM_DIR/nvm.sh ]] && source "$NVM_DIR/nvm.sh"
 fi
 
 #------------------------------------------------------------------------------
@@ -44,55 +44,55 @@ fi
 # SOFTWARE.
 #
 if _omb_util_command_exists nvm && [[ ${OMB_PLUGIN_NVM_AUTO_USE-} == true ]]; then
-	function _omb_plugin_nvm_find_up {
-		local path=$PWD
-		while [[ $path && ! -e $path/$1 ]]; do
-			path=${path%/*}
-		done
-		echo "$path"
-	}
+  function _omb_plugin_nvm_find_up {
+    local path=$PWD
+    while [[ $path && ! -e $path/$1 ]]; do
+      path=${path%/*}
+    done
+    echo "$path"
+  }
 
-	function _omb_plugin_nvm_cd {
-		cd "$@" || return "$?"
-		local nvm_path=$(_omb_plugin_nvm_find_up .nvmrc)
+  function _omb_plugin_nvm_cd {
+    cd "$@" || return "$?"
+    local nvm_path=$(_omb_plugin_nvm_find_up .nvmrc)
 
-		# If there are no .nvmrc file, use the default nvm version
-		if [[ $nvm_path != *[^[:space:]]* ]]; then
+    # If there are no .nvmrc file, use the default nvm version
+    if [[ $nvm_path != *[^[:space:]]* ]]; then
 
-			local default_version
-			default_version=$(nvm version default)
+      local default_version
+      default_version=$(nvm version default)
 
-			# If there is no default version, set it to `node`
-			# This will use the latest version on your machine
-			if [[ $default_version == "N/A" ]]; then
-				nvm alias default node
-				default_version=$(nvm version default)
-			fi
+      # If there is no default version, set it to `node`
+      # This will use the latest version on your machine
+      if [[ $default_version == "N/A" ]]; then
+        nvm alias default node
+        default_version=$(nvm version default)
+      fi
 
-			# If the current version is not the default version, set it to use the default version
-			if [[ $(nvm current) != "$default_version" ]]; then
-				nvm use default
-			fi
+      # If the current version is not the default version, set it to use the default version
+      if [[ $(nvm current) != "$default_version" ]]; then
+        nvm use default
+      fi
 
-		elif [[ -s $nvm_path/.nvmrc && -r $nvm_path/.nvmrc ]]; then
-			local nvm_version
-			nvm_version=$(< "$nvm_path"/.nvmrc)
+    elif [[ -s $nvm_path/.nvmrc && -r $nvm_path/.nvmrc ]]; then
+      local nvm_version
+      nvm_version=$(<"$nvm_path"/.nvmrc)
 
-			local locally_resolved_nvm_version
-			# `nvm ls` will check all locally-available versions.  If there are
-			# multiple matching versions, take the latest one.  Remove the `->` and
-			# `*` characters and spaces.  `locally_resolved_nvm_version` will be
-			# `N/A` if no local versions are found.
-			locally_resolved_nvm_version=$(nvm ls --no-colors $(< "./.nvmrc") | sed -n '${s/->//g;s/[*[:space:]]//g;p;}')
+      local locally_resolved_nvm_version
+      # `nvm ls` will check all locally-available versions.  If there are
+      # multiple matching versions, take the latest one.  Remove the `->` and
+      # `*` characters and spaces.  `locally_resolved_nvm_version` will be
+      # `N/A` if no local versions are found.
+      locally_resolved_nvm_version=$(nvm ls --no-colors $(<"./.nvmrc") | sed -n '${s/->//g;s/[*[:space:]]//g;p;}')
 
-			# If it is not already installed, install it
-			if [[ $locally_resolved_nvm_version == N/A ]]; then
-				nvm install "$nvm_version"
-			elif [[ $(nvm current) != "$locally_resolved_nvm_version" ]]; then
-				nvm use "$nvm_version"
-			fi
-		fi
-	}
-	alias cd='_omb_plugin_nvm_cd'
+      # If it is not already installed, install it
+      if [[ $locally_resolved_nvm_version == N/A ]]; then
+        nvm install "$nvm_version"
+      elif [[ $(nvm current) != "$locally_resolved_nvm_version" ]]; then
+        nvm use "$nvm_version"
+      fi
+    fi
+  }
+  alias cd='_omb_plugin_nvm_cd'
 fi
 #------------------------------------------------------------------------------

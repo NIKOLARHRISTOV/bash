@@ -16,12 +16,12 @@ _omb_deprecate_declare 20000 STATUS_THEME_PROMPT_BAD OMB_THEME_PURITY_STATUS_BAD
 _omb_deprecate_declare 20000 STATUS_THEME_PROMPT_OK OMB_THEME_PURITY_STATUS_OK sync
 
 function _omb_theme_PROMPT_COMMAND {
-	if (($? == 0)); then
-		local ret_status=${STATUS_THEME_PROMPT_OK:-${OMB_THEME_PURITY_STATUS_OK-}}
-	else
-		local ret_status=${STATUS_THEME_PROMPT_BAD:-${OMB_THEME_PURITY_STATUS_BAD-}}
-	fi
-	PS1="\n${_omb_prompt_navy}\w $(scm_prompt_info)\n${ret_status} "
+  if (($? == 0)); then
+    local ret_status=${STATUS_THEME_PROMPT_OK:-${OMB_THEME_PURITY_STATUS_OK-}}
+  else
+    local ret_status=${STATUS_THEME_PROMPT_BAD:-${OMB_THEME_PURITY_STATUS_BAD-}}
+  fi
+  PS1="\n${_omb_prompt_navy}\w $(scm_prompt_info)\n${ret_status} "
 }
 
 _omb_util_add_prompt_command _omb_theme_PROMPT_COMMAND

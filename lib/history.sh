@@ -2,7 +2,7 @@
 
 ## Command history configuration
 if [ -z "$HISTFILE" ]; then
-	HISTFILE=$HOME/.bash_history
+  HISTFILE=$HOME/.bash_history
 fi
 
 # some moderate history controls taken from sensible.bash
@@ -51,10 +51,10 @@ bind '"\e[D": backward-char'
 
 # Show history
 case $HIST_STAMPS in
-	"[mm/dd/yyyy]") HISTTIMEFORMAT=$'\033[31m[%m/%d/%Y] \033[36m[%T]\033[0m ' ;;
-	"[dd.mm.yyyy]") HISTTIMEFORMAT=$'\033[31m[%d.%m.%Y] \033[36m[%T]\033[0m ' ;;
-	"[yyyy-mm-dd]") HISTTIMEFORMAT=$'\033[31m[%F] \033[36m[%T]\033[0m ' ;;
-	"mm/dd/yyyy") HISTTIMEFORMAT='%m/%d/%Y %T ' ;;
-	"dd.mm.yyyy") HISTTIMEFORMAT='%d.%m.%Y %T ' ;;
-	"yyyy-mm-dd" | *) HISTTIMEFORMAT='%F %T ' ;;
+"[mm/dd/yyyy]") HISTTIMEFORMAT=$'\033[31m[%m/%d/%Y] \033[36m[%T]\033[0m ' ;;
+"[dd.mm.yyyy]") HISTTIMEFORMAT=$'\033[31m[%d.%m.%Y] \033[36m[%T]\033[0m ' ;;
+"[yyyy-mm-dd]") HISTTIMEFORMAT=$'\033[31m[%F] \033[36m[%T]\033[0m ' ;;
+"mm/dd/yyyy") HISTTIMEFORMAT='%m/%d/%Y %T ' ;;
+"dd.mm.yyyy") HISTTIMEFORMAT='%d.%m.%Y %T ' ;;
+"yyyy-mm-dd" | *) HISTTIMEFORMAT='%F %T ' ;;
 esac
