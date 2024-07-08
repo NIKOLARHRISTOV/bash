@@ -31,12 +31,12 @@ D_VIMSHELL_COLOR="$_omb_prompt_teal"
 
 # ------------------------------------------------------------------ FUNCTIONS
 case $TERM in
-xterm*)
-  TITLEBAR='\[\e]0;\w\e\\\]'
-  ;;
-*)
-  TITLEBAR=""
-  ;;
+  xterm*)
+    TITLEBAR='\[\e]0;\w\e\\\]'
+    ;;
+  *)
+    TITLEBAR=""
+    ;;
 esac
 
 function is_vim_shell {
@@ -76,10 +76,9 @@ function prompt_git {
     # If HEAD isn’t a symbolic ref, get the short SHA for the latest commit
     # Otherwise, just give up.
     branchName=$(
-      _omb_prompt_git symbolic-ref --quiet --short HEAD 2>/dev/null ||
-        _omb_prompt_git rev-parse --short HEAD 2>/dev/null ||
-        echo '(unknown)'
-    )
+      _omb_prompt_git symbolic-ref --quiet --short HEAD 2> /dev/null ||
+        _omb_prompt_git rev-parse --short HEAD 2> /dev/null ||
+        echo '(unknown)');
 
     echo "${D_GIT_DEFAULT_COLOR}on ${D_GIT_BRANCH_COLOR}${branchName} "
   else
@@ -94,7 +93,7 @@ function limited_pwd {
   # Replace $HOME with ~ if possible
   local RELATIVE_PWD=${PWD/#$HOME/\~}
 
-  local offset=$((${#RELATIVE_PWD} - MAX_PWD_LENGTH))
+  local offset=$((${#RELATIVE_PWD}-MAX_PWD_LENGTH))
 
   if ((offset > 0)); then
     local truncated_symbol='...'

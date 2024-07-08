@@ -9,25 +9,25 @@ function __powerline_user_info_prompt {
 
   if [[ "${THEME_CHECK_SUDO}" = true ]]; then
     # check whether sudo is active for no-password executions
-    if sudo -n cat <<<c3bcc5c 2>&1 | grep -q c3bcc5c; then
+    if sudo -n cat <<< c3bcc5c 2>&1 | grep -q c3bcc5c; then
       color=${USER_INFO_THEME_PROMPT_COLOR_SUDO}
     fi
   fi
   case "${POWERLINE_PROMPT_USER_INFO_MODE}" in
-  "sudo")
-    if [[ "${color}" == "${USER_INFO_THEME_PROMPT_COLOR_SUDO}" ]]; then
-      user_info="!"
-    fi
-    ;;
-  *)
-    if [[ -n "${SSH_CLIENT}" ]]; then
-      user_info="${USER_INFO_SSH_CHAR}${USER}@${HOSTNAME}"
-    else
-      user_info="${USER}"
-    fi
-    ;;
+    "sudo")
+      if [[ "${color}" == "${USER_INFO_THEME_PROMPT_COLOR_SUDO}" ]]; then
+        user_info="!"
+      fi
+      ;;
+    *)
+      if [[ -n "${SSH_CLIENT}" ]]; then
+        user_info="${USER_INFO_SSH_CHAR}${USER}@${HOSTNAME}"
+      else
+        user_info="${USER}"
+      fi
+      ;;
   esac
-  [[ -n "${user_info}" ]] && echo "🐧 ${user_info} $(date +%X\ %D)|${color}|${secondary_color}"
+  [[ -n "${user_info}" ]] && echo "🐧 ${user_info} `date +%X\ %D`|${color}|${secondary_color}"
 }
 
 function __powerline_cwd_prompt {

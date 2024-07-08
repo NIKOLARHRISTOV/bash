@@ -6,6 +6,7 @@
 # Set NVM_DIR if it isn't already defined
 [[ -z "$NVM_DIR" ]] && export NVM_DIR="$HOME/.nvm"
 
+
 # Try to load nvm only if command not already available
 if ! _omb_util_command_exists nvm; then
   # shellcheck source=/dev/null
@@ -76,7 +77,7 @@ if _omb_util_command_exists nvm && [[ ${OMB_PLUGIN_NVM_AUTO_USE-} == true ]]; th
 
     elif [[ -s $nvm_path/.nvmrc && -r $nvm_path/.nvmrc ]]; then
       local nvm_version
-      nvm_version=$(<"$nvm_path"/.nvmrc)
+      nvm_version=$(< "$nvm_path"/.nvmrc)
 
       local locally_resolved_nvm_version
       # `nvm ls` will check all locally-available versions.  If there are

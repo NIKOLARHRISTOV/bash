@@ -7,9 +7,8 @@ function __powerline_last_status_prompt {
 }
 
 function __powerline_right_segment {
-  local OLD_IFS="${IFS}"
-  IFS="|"
-  local params=($1)
+  local OLD_IFS="${IFS}"; IFS="|"
+  local params=( $1 )
   IFS="${OLD_IFS}"
   local separator_char="${POWERLINE_RIGHT_SEPARATOR}"
   local padding=2
@@ -20,12 +19,12 @@ function __powerline_right_segment {
     separator_color="$(set_color ${params[1]} -)"
   else
     separator_color="$(set_color ${params[1]} ${LAST_SEGMENT_COLOR})"
-    ((padding += 1))
+    (( padding += 1 ))
   fi
   RIGHT_PROMPT+="${separator_color}${separator_char}${_omb_prompt_normal}$(set_color ${text_color} ${params[1]}) ${params[0]} ${_omb_prompt_normal}$(set_color - ${COLOR})${_omb_prompt_normal}"
-  RIGHT_PROMPT_LENGTH=$((${#params[0]} + RIGHT_PROMPT_LENGTH + padding))
+  RIGHT_PROMPT_LENGTH=$(( ${#params[0]} + RIGHT_PROMPT_LENGTH + padding ))
   LAST_SEGMENT_COLOR="${params[1]}"
-  ((SEGMENTS_AT_RIGHT += 1))
+  (( SEGMENTS_AT_RIGHT += 1 ))
 }
 
 function __powerline_prompt_command {
@@ -61,6 +60,6 @@ function __powerline_prompt_command {
 
   ## cleanup ##
   unset LAST_SEGMENT_COLOR \
-    LEFT_PROMPT RIGHT_PROMPT RIGHT_PROMPT_LENGTH \
-    SEGMENTS_AT_LEFT SEGMENTS_AT_RIGHT
+        LEFT_PROMPT RIGHT_PROMPT RIGHT_PROMPT_LENGTH \
+        SEGMENTS_AT_LEFT SEGMENTS_AT_RIGHT
 }

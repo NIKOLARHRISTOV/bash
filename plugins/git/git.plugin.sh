@@ -12,7 +12,7 @@ function current_branch() {
 }
 # The list of remotes
 function current_repository() {
-  if ! $_omb_git_git_cmd rev-parse --is-inside-work-tree &>/dev/null; then
+  if ! $_omb_git_git_cmd rev-parse --is-inside-work-tree &> /dev/null; then
     return
   fi
   echo $($_omb_git_git_cmd remote -v | cut -d':' -f 2)
@@ -186,7 +186,7 @@ alias glol='command git log --graph --pretty="%Cred%h%Creset -%C(auto)%d%Creset 
 alias glola='command git log --graph --pretty="%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset" --all'
 alias glols='command git log --graph --pretty="%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset" --stat'
 # Pretty log messages
-function _git_log_prettily() {
+function _git_log_prettily(){
   if [[ $1 ]]; then
     command git log --pretty="$1"
   fi
@@ -203,7 +203,7 @@ alias gmom='command git merge "origin/$(git_main_branch)"'
 alias gms='command git merge --squash'
 alias gmum='command git merge "upstream/$(git_main_branch)"'
 
-alias gmt='command git mergetool --no-prompt'                   # deprecate?
+alias gmt='command git mergetool --no-prompt' # deprecate?
 alias gmtvim='command git mergetool --no-prompt --tool=vimdiff' # deprecate?
 alias gmtl='command git mergetool --no-prompt'
 alias gmtlvim='command git mergetool --no-prompt --tool=vimdiff'

@@ -13,7 +13,7 @@
 function _omb_completion_reassemble_breaks {
   local exclude=$1
   local line=$COMP_LINE point=$COMP_POINT
-  local breaks=${COMP_WORDBREAKS//[\"\'$exclude]/}
+  local breaks=${COMP_WORDBREAKS//[\"\'$exclude]}
 
   COMPREPLY=()
   cur=("${COMP_WORDS[COMP_CWORD]}" '')
@@ -26,7 +26,7 @@ function _omb_completion_reassemble_breaks {
       return 1
     fi
 
-    word=${word::point-${#space}}
+    word=${word::point - ${#space}}
     if [[ $space || $rword == *["$breaks"] || $word == ["$breaks"]* ]]; then
       rprefix=
       rword=$word

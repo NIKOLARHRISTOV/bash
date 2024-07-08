@@ -16,9 +16,10 @@ alias lr='ls -lR'               # recursive ls
 alias lt='ls -ltr'              # sort by date
 alias lu='ls -lur'              # sort by access time
 
+
 #   lr:  Full Recursive Directory Listing
 #   ------------------------------------------
 alias lr='ls -R | grep ":$" | sed -e '\''s/:$//'\'' -e '\''s/[^-][^\/]*\//--/g'\'' -e '\''s/^/   /'\'' -e '\''s/-/|/'\'' | less'
 
-alias dud='du -d 1 -h' # Short and human-readable directory listing
-alias duf='du -sh *'   # Short and human-readable file listing
+alias dud='du -d 1 -h'                      # Short and human-readable directory listing
+alias duf='du -sh *'                        # Short and human-readable file listing

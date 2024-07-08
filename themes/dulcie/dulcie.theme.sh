@@ -12,7 +12,7 @@
 #
 # Configuration. Change these by adding them in your .bash_profile
 
-DULCIE_COLOR=${DULCIE_COLOR:=1}         # 0 = monochrome, 1 = colorful
+DULCIE_COLOR=${DULCIE_COLOR:=1} # 0 = monochrome, 1 = colorful
 DULCIE_MULTILINE=${DULCIE_MULTILINE:=1} # 0 = Single line, 1 = SCM in separate line
 
 function dulcie_color {

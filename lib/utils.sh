@@ -69,6 +69,7 @@
 # e_arrow "Nothing to install.  You've already got them all."
 # fi
 
+
 ################################################################################
 
 function _omb_util_setexit {
@@ -181,7 +182,7 @@ function _omb_term_color_initialize {
   if ((_omb_term_colors >= 16)); then
     local index
     for ((index = 0; index < 8; index++)); do
-      local fg=$(tput setaf $((index + 8)) 2>/dev/null || tput AF $((index + 8)) 2>/dev/null)
+      local fg=$(tput setaf $((index+8)) 2>/dev/null || tput AF $((index+8)) 2>/dev/null)
       [[ $fg ]] || fg=$'\e[9'$index'm'
       local refbg=_omb_term_background_${normal_colors[index]}
       local bg=${!refbg}$'\e[10'$index'm'
@@ -220,14 +221,14 @@ _omb_term_color_initialize
 #
 # Headers and Logging
 #
-function _omb_log_header { printf "\n${_omb_term_bold}${_omb_term_violet}==========  %s  ==========${_omb_term_reset}\n" "$@"; }
-function _omb_log_arrow { printf "➜ %s\n" "$@"; }
-function _omb_log_success { printf "${_omb_term_green}✔ %s${_omb_term_reset}\n" "$@"; }
-function _omb_log_error { printf "${_omb_term_brown}✖ %s${_omb_term_reset}\n" "$@"; }
-function _omb_log_warning { printf "${_omb_term_olive}➜ %s${_omb_term_reset}\n" "$@"; }
+function _omb_log_header    { printf "\n${_omb_term_bold}${_omb_term_violet}==========  %s  ==========${_omb_term_reset}\n" "$@"; }
+function _omb_log_arrow     { printf "➜ %s\n" "$@"; }
+function _omb_log_success   { printf "${_omb_term_green}✔ %s${_omb_term_reset}\n" "$@"; }
+function _omb_log_error     { printf "${_omb_term_brown}✖ %s${_omb_term_reset}\n" "$@"; }
+function _omb_log_warning   { printf "${_omb_term_olive}➜ %s${_omb_term_reset}\n" "$@"; }
 function _omb_log_underline { printf "${_omb_term_underline}${_omb_term_bold}%s${_omb_term_reset}\n" "$@"; }
-function _omb_log_bold { printf "${_omb_term_bold}%s${_omb_term_reset}\n" "$@"; }
-function _omb_log_note { printf "${_omb_term_underline}${_omb_term_bold}${_omb_term_navy}Note:${_omb_term_reset}  ${_omb_term_olive}%s${_omb_term_reset}\n" "$@"; }
+function _omb_log_bold      { printf "${_omb_term_bold}%s${_omb_term_reset}\n" "$@"; }
+function _omb_log_note      { printf "${_omb_term_underline}${_omb_term_bold}${_omb_term_navy}Note:${_omb_term_reset}  ${_omb_term_olive}%s${_omb_term_reset}\n" "$@"; }
 
 #
 # USAGE FOR SEEKING CONFIRMATION
@@ -275,12 +276,12 @@ function pushover {
   MESSAGE="${2}"
 
   curl \
-    -F "token=${API_KEY}" \
-    -F "user=${USER_KEY}" \
-    -F "device=${DEVICE}" \
-    -F "title=${TITLE}" \
-    -F "message=${MESSAGE}" \
-    "${PUSHOVERURL}" >/dev/null 2>&1
+  -F "token=${API_KEY}" \
+  -F "user=${USER_KEY}" \
+  -F "device=${DEVICE}" \
+  -F "title=${TITLE}" \
+  -F "message=${MESSAGE}" \
+  "${PUSHOVERURL}" > /dev/null 2>&1
 }
 
 ## @fn _omb_util_get_shopt optnames...
@@ -365,6 +366,13 @@ function _omb_util_add_prompt_command {
 }
 
 ## @fn _omb_util_split array str [sep]
+##   Split STR with SEP in a safe way and store the result in ARRAY.
+##   @param[out] array
+##     The name of an array variable to which the split result is stored.
+##   @param[in] str
+##     The string to split
+##   @param[in,opt]
+##     The set of separator characters.  The default is ' <tab><newline>'.
 function _omb_util_split {
   local __set=$- IFS=${3:-$' \t\n'}
   set -f
@@ -373,6 +381,13 @@ function _omb_util_split {
   return 0
 }
 
+## @fn _omb_util_glob_expand array glob
+##   Perform the pathname expansion of a glob pattern GLOB in a safe way and
+##   store the filenames in ARRAY.
+##   @param[out] array
+##     The name of an array variable to which the filenames are stored.
+##   @param[in] glob
+##     The glob pattern that is attempted to match filenames
 function _omb_util_glob_expand {
   local __set=$- __shopt __gignore=$GLOBIGNORE
   _omb_util_get_shopt failglob nullglob extglob
@@ -399,23 +414,14 @@ function _omb_util_glob_expand {
   return 0
 }
 
-function _omb_util_split {
-  local __set=$- IFS=${3:-$' \t\n'}
-  set -f
-  eval -- "$1=(\$2)"
-  [[ $__set == *f* ]] || set +f
-  return 0
-}
-
 function _omb_util_alias {
   case ${OMB_DEFAULT_ALIASES:-enable} in
-  disable) return 0 ;;
-  check) alias -- "${1%%=*}" &>/dev/null && return 0 ;;
-  enable) ;;
-  *)
+  (disable) return 0 ;;
+  (check) alias -- "${1%%=*}" &>/dev/null && return 0 ;;
+  (enable) ;;
+  (*)
     _omb_log_error "invalid value: OMB_DEFAULT_ALIASES='${OMB_DEFAULT_ALIASES-}' (expect: enable|disable|check)" >&2
     return 2
-    ;;
   esac
   alias -- "$1"
 }
@@ -449,6 +455,6 @@ function _omb_util_mktemp {
   if _omb_util_command_exists mktemp; then
     mktemp -t "$template"
   else
-    m4 -D template="${TMPDIR:-/tmp}/$template" <<<'mkstemp(template)'
+    m4 -D template="${TMPDIR:-/tmp}/$template" <<< 'mkstemp(template)'
   fi
 }

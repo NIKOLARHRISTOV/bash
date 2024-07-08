@@ -5,7 +5,8 @@
 # Originally from https://github.com/liborw/homesick-completion
 # https://github.com/liborw/homesick-completion/blob/904d121d1b8f81629f473915a10c9144fdd416dc/homesick_bash_completion.sh
 
-_omb_completion_homesick() {
+_omb_completion_homesick()
+{
   local cur=${COMP_WORDS[COMP_CWORD]}
   local options="--skip --force --pretend --quiet"
   local actions="cd clone commit destroy diff generate help list open pull push rc show_path status symlink track unlink version"
@@ -13,7 +14,7 @@ _omb_completion_homesick() {
 
   # Subcommand list
   if ((COMP_CWORD == 1)); then
-    COMPREPLY=($(compgen -W "${options} ${actions}" -- "$cur"))
+    COMPREPLY=( $(compgen -W "${options} ${actions}" -- "$cur") )
     return
   fi
 
@@ -35,21 +36,21 @@ _omb_completion_homesick() {
 
   case $prev in
   # Commands that take a castle
-  cd | commit | destroy | diff | open | pull | push | rc | show_path | status | symlink | unlink)
-    COMPREPLY=($(compgen -W "${repos}" -- "$cur"))
+  cd|commit|destroy|diff|open|pull|push|rc|show_path|status|symlink|unlink)
+    COMPREPLY=( $(compgen -W "${repos}" -- "$cur") )
     return
     ;;
   # Commands that take command
   help)
-    COMPREPLY=($(compgen -W "${actions}" -- "$cur"))
+    COMPREPLY=( $(compgen -W "${actions}" -- "$cur") )
     return
     ;;
   # Track command take file and repo
   track)
     if ((num == 2)); then
-      COMPREPLY=($(compgen -X -f "$cur"))
+      COMPREPLY=( $(compgen -X -f "$cur") )
     elif ((num >= 3)); then
-      COMPREPLY=($(compgen -W "${repos}" -- "$cur"))
+      COMPREPLY=( $(compgen -W "${repos}" -- "$cur") )
     fi
     return
     ;;

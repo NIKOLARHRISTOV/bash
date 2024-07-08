@@ -38,8 +38,8 @@ function _omb_plugin_gcloud_set_completions() {
 
       # Look for completion file in different paths
       local -a completion_filepath_candidates=(
-        "${OMB_PLUGIN_GCLOUD_HOME}/completion.bash.inc"   # default location
-        "/usr/share/google-cloud-sdk/completion.bash.inc" # apt-based location
+        "${OMB_PLUGIN_GCLOUD_HOME}/completion.bash.inc"    # default location
+        "/usr/share/google-cloud-sdk/completion.bash.inc"  # apt-based location
       )
       local comp_file
       for comp_file in "${completion_filepath_candidates[@]}"; do

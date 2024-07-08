@@ -146,7 +146,7 @@ OMB_PROMPT_SHOW_PYTHON_VENV=${OMB_PROMPT_SHOW_PYTHON_VENV:=true}
 DEBUG=0
 function debug {
   if [[ ${DEBUG} -ne 0 ]]; then
-    echo >&2 -e "$@"
+    >&2 echo -e "$@"
   fi
 }
 
@@ -163,9 +163,9 @@ RIGHT_SUBSEG=''
 
 function text_effect {
   case "$1" in
-  reset) echo 0 ;;
-  bold) echo 1 ;;
-  underline) echo 4 ;;
+  reset)      echo 0;;
+  bold)       echo 1;;
+  underline)  echo 4;;
   esac
 }
 
@@ -174,30 +174,30 @@ function text_effect {
 # under the "256 (8-bit) Colors" section, and follow the example for orange below
 function fg_color {
   case "$1" in
-  black) echo 30 ;;
-  red) echo 31 ;;
-  green) echo 32 ;;
-  yellow) echo 33 ;;
-  blue) echo 34 ;;
-  magenta) echo 35 ;;
-  cyan) echo 36 ;;
-  white) echo 37 ;;
-  orange) echo 38\;5\;166 ;;
+  black)      echo 30;;
+  red)        echo 31;;
+  green)      echo 32;;
+  yellow)     echo 33;;
+  blue)       echo 34;;
+  magenta)    echo 35;;
+  cyan)       echo 36;;
+  white)      echo 37;;
+  orange)     echo 38\;5\;166;;
   esac
 }
 
 function bg_color {
   case "$1" in
-  black) echo 40 ;;
-  red) echo 41 ;;
-  green) echo 42 ;;
-  yellow) echo 43 ;;
-  blue) echo 44 ;;
-  magenta) echo 45 ;;
-  cyan) echo 46 ;;
-  white) echo 47 ;;
-  orange) echo 48\;5\;166 ;;
-  esac
+  black)      echo 40;;
+  red)        echo 41;;
+  green)      echo 42;;
+  yellow)     echo 43;;
+  blue)       echo 44;;
+  magenta)    echo 45;;
+  cyan)       echo 46;;
+  white)      echo 47;;
+  orange)     echo 48\;5\;166;;
+  esac;
 }
 
 # TIL: declare is global not local, so best use a different name
@@ -293,7 +293,7 @@ function prompt_virtualenv {
 
     # The last word of the output of `python --version`
     # corresponds to the version number.
-    local VENV_VERSION=$(awk '{print $NF}' <<<"$VERSION_OUTPUT")
+    local VENV_VERSION=$(awk '{print $NF}' <<< "$VERSION_OUTPUT")
 
     prompt_segment cyan white "[v] $(basename "$VENV_VERSION")"
   fi
@@ -313,7 +313,7 @@ function prompt_pyenv {
       # It's a pyenv virtualenv, get the version number
       if [[ -d $PYENV_VIRTUAL_ENV ]]; then
         local VERSION_OUTPUT=$("$PYENV_VIRTUAL_ENV"/bin/python --version 2>&1)
-        local PYENV_VENV_VERSION=$(awk '{print $NF}' <<<"$VERSION_OUTPUT")
+        local PYENV_VENV_VERSION=$(awk '{print $NF}' <<< "$VERSION_OUTPUT")
         prompt_segment cyan white "[$PYENV_VERSION] $(basename "$PYENV_VENV_VERSION")"
       else
         prompt_segment cyan white "$PYENV_VERSION"
@@ -351,13 +351,14 @@ function prompt_histdt {
   prompt_segment black default "\! [\A]"
 }
 
+
 function git_status_dirty {
-  dirty=$(_omb_prompt_git status -s 2>/dev/null | tail -n 1)
+  dirty=$(_omb_prompt_git status -s 2> /dev/null | tail -n 1)
   [[ -n $dirty ]] && echo " ●"
 }
 
 function git_stash_dirty {
-  stash=$(_omb_prompt_git stash list 2>/dev/null | tail -n 1)
+  stash=$(_omb_prompt_git stash list 2> /dev/null | tail -n 1)
   [[ -n $stash ]] && echo " ⚑"
 }
 
@@ -368,9 +369,9 @@ function prompt_git {
     ZSH_THEME_GIT_PROMPT_DIRTY='±'
     dirty=$(git_status_dirty)
     stash=$(git_stash_dirty)
-    ref=$(_omb_prompt_git symbolic-ref HEAD 2>/dev/null) ||
-      ref="➦ $(_omb_prompt_git describe --exact-match --tags HEAD 2>/dev/null)" ||
-      ref="➦ $(_omb_prompt_git show-ref --head -s --abbrev | head -n1 2>/dev/null)"
+    ref=$(_omb_prompt_git symbolic-ref HEAD 2> /dev/null) ||
+      ref="➦ $(_omb_prompt_git describe --exact-match --tags HEAD 2> /dev/null)" ||
+      ref="➦ $(_omb_prompt_git show-ref --head -s --abbrev | head -n1 2> /dev/null)"
     if [[ -n $dirty ]]; then
       prompt_segment yellow black
     else
@@ -449,11 +450,11 @@ function rightprompt {
 function __command_rprompt {
   local times= n=$COLUMNS tz
   for tz in ZRH:Europe/Zurich PIT:US/Eastern \
-    MTV:US/Pacific TOK:Asia/Tokyo; do
+                              MTV:US/Pacific TOK:Asia/Tokyo; do
     [ $n -gt 40 ] || break
     times="$times ${tz%%:*}\e[30;1m:\e[0;36;1m"
     times="$times$(TZ=${tz#*:} date +%H:%M)\e[0m"
-    n=$(($n - 10))
+    n=$(( $n - 10 ))
   done
   [ -z "$times" ] || printf "%${n}s$times\\r" ''
 }
@@ -513,7 +514,7 @@ function prompt_right_segment {
   # if [[ $CURRENT_RBG != NONE && $1 != $CURRENT_RBG ]]; then
   #     $CURRENT_RBG=
   # fi
-  local -a intermediate2=($(fg_color $1) $(bg_color $CURRENT_RBG))
+  local -a intermediate2=($(fg_color $1) $(bg_color $CURRENT_RBG) )
   # PRIGHT="$PRIGHT---"
   debug "pre prompt " $(ansi_r intermediate2[@])
   PRIGHT="$PRIGHT$(ansi_r intermediate2[@])$RIGHT_SEPARATOR"

@@ -27,10 +27,10 @@ OMB_PROMPT_CONDAENV_USE_BASENAME=true
 OMB_PROMPT_SHOW_PYTHON_VENV=${OMB_PROMPT_SHOW_PYTHON_VENV:=false}
 
 function parse_git_dirty {
-  [[ $(_omb_prompt_git status 2>/dev/null | tail -n1 | cut -c 1-17) != "nothing to commit" ]] && echo "*"
+  [[ $(_omb_prompt_git status 2> /dev/null | tail -n1 | cut -c 1-17) != "nothing to commit" ]] && echo "*"
 }
 function parse_git_branch {
-  _omb_prompt_git branch --no-color 2>/dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(parse_git_dirty)/"
+  _omb_prompt_git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(parse_git_dirty)/"
 }
 
 function _omb_theme_PROMPT_COMMAND() {

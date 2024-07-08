@@ -51,18 +51,18 @@ if [[ ! ${BASHMARKS_SDIRS-} ]]; then
 fi
 
 # Deprecated interfaces (2023-10-12)
-_omb_deprecate_declare 20000 SDIRS BASHMARKS_SDIRS sync
-_omb_deprecate_function 20000 _echo_usage _bashmarks_usage
-_omb_deprecate_function 20000 _save_bookmark _bashmarks_save
-_omb_deprecate_function 20000 _delete_bookmark _bashmarks_delete
-_omb_deprecate_function 20000 _goto_bookmark _bashmarks_goto
-_omb_deprecate_function 20000 _list_bookmark _bashmarks_list
-_omb_deprecate_function 20000 _print_bookmark _bashmarks_print
-_omb_deprecate_function 20000 _l _bashmarks_list_names
-_omb_deprecate_function 20000 _bookmark_name_valid _bashmarks_is_valid_bookmark_name
-_omb_deprecate_function 20000 _comp _bashmarks_comp_cmd_bm
-_omb_deprecate_function 20000 _compzsh _bashmarks_compzsh_cmd_bm
-_omb_deprecate_function 20000 _purge_line _bashmarks_purge_line
+_omb_deprecate_declare  20000 SDIRS                 BASHMARKS_SDIRS sync
+_omb_deprecate_function 20000 _echo_usage           _bashmarks_usage
+_omb_deprecate_function 20000 _save_bookmark        _bashmarks_save
+_omb_deprecate_function 20000 _delete_bookmark      _bashmarks_delete
+_omb_deprecate_function 20000 _goto_bookmark        _bashmarks_goto
+_omb_deprecate_function 20000 _list_bookmark        _bashmarks_list
+_omb_deprecate_function 20000 _print_bookmark       _bashmarks_print
+_omb_deprecate_function 20000 _l                    _bashmarks_list_names
+_omb_deprecate_function 20000 _bookmark_name_valid  _bashmarks_is_valid_bookmark_name
+_omb_deprecate_function 20000 _comp                 _bashmarks_comp_cmd_bm
+_omb_deprecate_function 20000 _compzsh              _bashmarks_compzsh_cmd_bm
+_omb_deprecate_function 20000 _purge_line           _bashmarks_purge_line
 
 # setup file to store bookmarks
 if [[ ! -e $BASHMARKS_SDIRS ]]; then
@@ -73,44 +73,44 @@ fi
 function bm {
   local option=$1
   case $option in
-  # save current directory to bookmarks [ bm -a BOOKMARK_NAME ]
-  -a)
-    _bashmarks_save "$2"
+    # save current directory to bookmarks [ bm -a BOOKMARK_NAME ]
+    -a)
+      _bashmarks_save "$2"
     ;;
-  # delete bookmark [ bm -d BOOKMARK_NAME ]
-  -d)
-    _bashmarks_delete "$2"
+    # delete bookmark [ bm -d BOOKMARK_NAME ]
+    -d)
+      _bashmarks_delete "$2"
     ;;
-  # jump to bookmark [ bm -g BOOKMARK_NAME ]
-  -g)
-    _bashmarks_goto "$2"
+    # jump to bookmark [ bm -g BOOKMARK_NAME ]
+    -g)
+      _bashmarks_goto "$2"
     ;;
-  # print bookmark [ bm -p BOOKMARK_NAME ]
-  -p)
-    _bashmarks_print "$2"
+    # print bookmark [ bm -p BOOKMARK_NAME ]
+    -p)
+      _bashmarks_print "$2"
     ;;
-  # show bookmark list [ bm -l ]
-  -l)
-    _bashmarks_list
+    # show bookmark list [ bm -l ]
+    -l)
+      _bashmarks_list
     ;;
-  # help [ bm -h ]
-  -h)
-    _bashmarks_usage
-    ;;
-  *)
-    if [[ $1 == -* ]]; then
-      # unrecognized option. echo error message and usage [ bm -X ]
-      echo "Unknown option '$1'"
+    # help [ bm -h ]
+    -h)
       _bashmarks_usage
-      kill -SIGINT $$
-      exit 1
-    elif [[ $1 == "" ]]; then
-      # no args supplied - echo usage [ bm ]
-      _bashmarks_usage
-    else
-      # non-option supplied as first arg.  assume goto [ bm BOOKMARK_NAME ]
-      _bashmarks_goto "$1"
-    fi
+    ;;
+    *)
+      if [[ $1 == -* ]]; then
+        # unrecognized option. echo error message and usage [ bm -X ]
+        echo "Unknown option '$1'"
+        _bashmarks_usage
+        kill -SIGINT $$
+        exit 1
+      elif [[ $1 == "" ]]; then
+        # no args supplied - echo usage [ bm ]
+        _bashmarks_usage
+      else
+        # non-option supplied as first arg.  assume goto [ bm BOOKMARK_NAME ]
+        _bashmarks_goto "$1"
+      fi
     ;;
   esac
 }
@@ -130,8 +130,8 @@ function _bashmarks_usage {
 function _bashmarks_save {
   if _bashmarks_is_valid_bookmark_name "$@"; then
     _bashmarks_purge_line "$BASHMARKS_SDIRS" "export DIR_$1="
-    CURDIR=$(echo $PWD | sed "s#^$HOME#\$HOME#g")
-    echo "export DIR_$1=\"$CURDIR\"" >>"$BASHMARKS_SDIRS"
+    CURDIR=$(echo $PWD| sed "s#^$HOME#\$HOME#g")
+    echo "export DIR_$1=\"$CURDIR\"" >> "$BASHMARKS_SDIRS"
   fi
 }
 
@@ -219,7 +219,7 @@ function _bashmarks_purge_line {
     trap "/bin/rm -f -- '$t'" EXIT
 
     # purge line
-    sed "/$2/d" "$1" >|"$t"
+    sed "/$2/d" "$1" >| "$t"
     /bin/mv "$t" "$1"
 
     # cleanup temp file
@@ -244,7 +244,7 @@ else
   complete -F _bashmarks_comp_cmd_bm d
 fi
 
-alias s='bm -a' # Save a bookmark [bookmark_name]
-alias g='bm -g' # Go to bookmark [bookmark_name]
-alias p='bm -p' # Print bookmark of a path [path]
-alias d='bm -d' # Delete a bookmark [bookmark_name]
+alias s='bm -a'       # Save a bookmark [bookmark_name]
+alias g='bm -g'       # Go to bookmark [bookmark_name]
+alias p='bm -p'       # Print bookmark of a path [path]
+alias d='bm -d'       # Delete a bookmark [bookmark_name]

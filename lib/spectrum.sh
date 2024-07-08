@@ -30,11 +30,11 @@ then
   function _omb_spectrum__initialize() {
     _omb_spectrum_fx=(
       [reset]=$'\e[00m'
-      [bold]=$'\e[01m' [no - bold]=$'\e[22m'
-      [italic]=$'\e[03m' [no - italic]=$'\e[23m'
-      [underline]=$'\e[04m' [no - underline]=$'\e[24m'
-      [blink]=$'\e[05m' [no - blink]=$'\e[25m'
-      [reverse]=$'\e[07m' [no - reverse]=$'\e[27m'
+      [bold]=$'\e[01m'       [no-bold]=$'\e[22m'
+      [italic]=$'\e[03m'     [no-italic]=$'\e[23m'
+      [underline]=$'\e[04m'  [no-underline]=$'\e[24m'
+      [blink]=$'\e[05m'      [no-blink]=$'\e[25m'
+      [reverse]=$'\e[07m'    [no-reverse]=$'\e[27m'
     )
     local color
     for color in {000..255}; do
@@ -44,8 +44,8 @@ then
   }
   _omb_spectrum__initialize
 
-  _omb_deprecate_const 20000 _RED "$_omb_term_brown" "${_omb_deprecate_msg_please_use/'%s'/_omb_term_brown}"
-  _omb_deprecate_const 20000 _NC "$_omb_term_reset" "${_omb_deprecate_msg_please_use/'%s'/_omb_term_reset}"
+  _omb_deprecate_const 20000 _RED "$_omb_term_brown"   "${_omb_deprecate_msg_please_use/'%s'/_omb_term_brown}"
+  _omb_deprecate_const 20000 _NC  "$_omb_term_reset" "${_omb_deprecate_msg_please_use/'%s'/_omb_term_reset}"
   function _omb_spectrum__deprecate() {
     local key
     for key in "${!_omb_spectrum_fx[@]}"; do FX[$key]=${_omb_spectrum_fx[$key]}; done
