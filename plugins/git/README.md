@@ -14,9 +14,9 @@ This README provides instructions on how to use the provided aliases and shell f
 - `g`: Shortcut for `git`.
 - `ga`: Shortcut for `git add`. Adds specified files to the staging area.
 - `gaa`: Shortcut for `git add --all`. Adds all changes, including untracked files, to the staging area.
-- `gc`: Shortcut for `git commit`. Commits changes to the repository.
-- `gca`: Shortcut for `git commit --all`. Commits all changes to the repository.
-- `gcmsg`: Shortcut for `git commit --message`. Commits changes with a specified message.
+- `gc`: Shortcut for `git ecommit`. Commits changes to the repository.
+- `gca`: Shortcut for `git ecommit --all`. Commits all changes to the repository.
+- `gcmsg`: Shortcut for `git ecommit --message`. Commits changes with a specified message.
 - `gd`: Shortcut for `git diff`. Shows changes between commits, commit and working tree, etc.
 - `gdca`: Shortcut for `git diff --cached`. Shows changes between staged and last commit.
 - `gf`: Shortcut for `git fetch`. Downloads objects and refs from another repository.

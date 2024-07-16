@@ -25,9 +25,9 @@
 #
 # If you use complex aliases of form '!f() { ... }; f', you can use the null
 # command ':' as the first command in the function body to declare the desired
-# completion style.  For example '!f() { : git commit ; ... }; f' will
+# completion style.  For example '!f() { : git ecommit ; ... }; f' will
 # tell the completion to use commit completion.  This also works with aliases
-# of form "!sh -c '...'".  For example, "!sh -c ': git commit ; ... '".
+# of form "!sh -c '...'".  For example, "!sh -c ': git ecommit ; ... '".
 #
 # If you have a command that is not part of git, but you would still
 # like completion, you can use __git_complete:
@@ -52,7 +52,7 @@
 #   GIT_COMPLETION_SHOW_ALL
 #
 #     When set to "1" suggest all options, including options which are
-#     typically hidden (e.g. '--allow-empty' for 'git commit').
+#     typically hidden (e.g. '--allow-empty' for 'git ecommit').
 
 case "$COMP_WORDBREAKS" in
 *:*) : great ;;

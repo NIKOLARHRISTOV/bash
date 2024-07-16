@@ -128,14 +128,14 @@ function git_prompt_remote {
   fi
 }
 
-# Formats prompt string for current git commit short SHA
+# Formats prompt string for current git ecommit short SHA
 function git_prompt_short_sha {
   local SHA
   SHA=$(_omb_prompt_git rev-parse --short HEAD 2> /dev/null) &&
     echo "$OSH_THEME_GIT_PROMPT_SHA_BEFORE$SHA$OSH_THEME_GIT_PROMPT_SHA_AFTER"
 }
 
-# Formats prompt string for current git commit long SHA
+# Formats prompt string for current git ecommit long SHA
 function git_prompt_long_sha {
   local SHA
   SHA=$(_omb_prompt_git rev-parse HEAD 2> /dev/null) &&
