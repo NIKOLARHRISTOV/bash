@@ -1,27 +1,38 @@
 # Oh-My-Bash Plugins: Enhancing Your Development Experience
 
-"Oh My Bash won't make you a tenfold developer... but it might make you feel like one."
+"Oh My Bash won't make you a tenfold developer... but it might make you feel
+like one."
 
-_Embracing a suite of plugins can significantly boost your coding efficiency by automating repetitive tasks, thereby making them less monotonous and easier to execute._
+_Embracing a suite of plugins can significantly boost your coding efficiency by
+automating repetitive tasks, thereby making them less monotonous and easier to
+execute._
 
-**What is a Plugin?**
-A plugin is a type of software that augments the functionality of an existing program or system. These additions can range from simple to complex features and are intended to extend or customize the core functionality without modifying the codebase.
+**What is a Plugin?** A plugin is a type of software that augments the
+functionality of an existing program or system. These additions can range from
+simple to complex features and are intended to extend or customize the core
+functionality without modifying the codebase.
 
-**Plugin Enablement:**
-Once you identify the plugins you wish to utilize with Oh My Bash, you'll need to enable them in the `.bashrc` file located in your `$HOME` directory. Open this file with your preferred text editor and specify the plugins you want to load. For instance:
+**Plugin Enablement:** Once you identify the plugins you wish to utilize with Oh
+My Bash, you'll need to enable them in the `.bashrc` file located in your
+`$HOME` directory. Open this file with your preferred text editor and specify
+the plugins you want to load. For instance:
 
 ```bash
 plugins=(git bundler osx rake ruby)
 ```
 
-**Conditional Enablement:**
-You may wish to control when or how plugins are activated. For instance, to ensure the `tmux-autoattach` plugin runs only in SSH sessions, you can employ a conditional statement checking for the `$SSH_TTY` variable. Make sure to remove the plugin from the main plugin list and use a conditional like this:
+**Conditional Enablement:** You may wish to control when or how plugins are
+activated. For instance, to ensure the `tmux-autoattach` plugin runs only in SSH
+sessions, you can employ a conditional statement checking for the `$SSH_TTY`
+variable. Make sure to remove the plugin from the main plugin list and use a
+conditional like this:
 
 ```bash
 [[ $SSH_TTY ]] && plugins+=(tmux-autoattach)
 ```
 
-By leveraging these plugins, you can streamline your workflow and tackle coding challenges with greater efficiency.
+By leveraging these plugins, you can streamline your workflow and tackle coding
+challenges with greater efficiency.
 
 | Plugin          | Description                                                                                                         |
 | --------------- | ------------------------------------------------------------------------------------------------------------------- |
