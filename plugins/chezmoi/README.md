@@ -1,11 +1,12 @@
 # Chezmoi plugin
 
-The chezmoi plugin defines a number of useful aliases for you. [Consult the complete list](./chezmoi.plugin.sh)
+The chezmoi plugin defines a number of useful aliases for you.
+[Consult the complete list](./chezmoi.plugin.sh)
 
 ## List of aliases
 
 | Alias | Command                | Description                                                                                                                                         |
-|-------|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| ----- | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
 | cz    | 'chezmoi'              | Manage your dotfiles across multiple diverse machines, securely                                                                                     |
 | cza   | 'chezmoi add'          | Add targets to the source state.                                                                                                                    |
 | czcd  | 'chezmoi cd'           | cd's into the chezmoi source directory                                                                                                              |

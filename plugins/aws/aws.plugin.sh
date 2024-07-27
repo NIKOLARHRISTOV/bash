@@ -10,12 +10,12 @@
 export AWS_HOME=~/.aws
 
 function agp {
-  echo $AWS_DEFAULT_PROFILE
+	echo $AWS_DEFAULT_PROFILE
 }
 
 function asp {
-  local rprompt=${RPROMPT/<aws:$(agp)>/}
+	local rprompt=${RPROMPT/<aws:$(agp)>/}
 
-  export AWS_DEFAULT_PROFILE=$1
-  export AWS_PROFILE=$1
+	export AWS_DEFAULT_PROFILE=$1
+	export AWS_PROFILE=$1
 }

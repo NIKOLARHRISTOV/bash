@@ -8,46 +8,46 @@
 # the plugin, before being pulled in to core lib/git.zsh as git_current_branch()
 # to fix the core -> git plugin dependency.
 function current_branch() {
-  git_current_branch
+	git_current_branch
 }
 # The list of remotes
 function current_repository() {
-  if ! $_omb_git_git_cmd rev-parse --is-inside-work-tree &> /dev/null; then
-    return
-  fi
-  echo $($_omb_git_git_cmd remote -v | cut -d':' -f 2)
+	if ! $_omb_git_git_cmd rev-parse --is-inside-work-tree &> /dev/null; then
+		return
+	fi
+	echo $($_omb_git_git_cmd remote -v | cut -d':' -f 2)
 }
 # Warn if the current branch is a WIP
 function work_in_progress() {
-  if $(git log -n 1 2>/dev/null | grep -q -c "\-\-wip\-\-"); then
-    echo "WIP!!"
-  fi
+	if $(git log -n 1 2> /dev/null | grep -q -c "\-\-wip\-\-"); then
+		echo "WIP!!"
+	fi
 }
 
 # Check for develop and similarly named branches
 function git_develop_branch() {
-  command git rev-parse --git-dir &>/dev/null || return
-  local branch
-  for branch in dev devel development; do
-    if command git show-ref -q --verify refs/heads/"$branch"; then
-      echo "$branch"
-      return
-    fi
-  done
-  echo develop
+	command git rev-parse --git-dir &> /dev/null || return
+	local branch
+	for branch in dev devel development; do
+		if command git show-ref -q --verify refs/heads/"$branch"; then
+			echo "$branch"
+			return
+		fi
+	done
+	echo develop
 }
 
 # Check if main exists and use instead of master
 function git_main_branch() {
-  command git rev-parse --git-dir &>/dev/null || return
-  local ref
-  for ref in refs/{heads,remotes/{origin,upstream}}/{main,trunk,mainline,default}; do
-    if command git show-ref -q --verify "$ref"; then
-      echo "${ref##*/}"
-      return
-    fi
-  done
-  echo master
+	command git rev-parse --git-dir &> /dev/null || return
+	local ref
+	for ref in refs/{heads,remotes/{origin,upstream}}/{main,trunk,mainline,default}; do
+		if command git show-ref -q --verify "$ref"; then
+			echo "${ref##*/}"
+			return
+		fi
+	done
+	echo master
 }
 
 #
@@ -112,11 +112,11 @@ alias gcps='command git cherry-pick -s'
 
 alias gcl='command git clone --recursive'
 function gccd() {
-  command git clone --recurse-submodules "$@"
-  local lastarg=$_
-  [[ -d $lastarg ]] && cd "$lastarg" && return
-  lastarg=${lastarg##*/}
-  cd "${lastarg%.git}"
+	command git clone --recurse-submodules "$@"
+	local lastarg=$_
+	[[ -d $lastarg ]] && cd "$lastarg" && return
+	lastarg=${lastarg##*/}
+	cd "${lastarg%.git}"
 }
 #compdef _git gccd=git-clone
 
@@ -149,11 +149,11 @@ alias gds='command git diff --staged'
 alias gdw='command git diff --word-diff'
 alias gdup='command git diff @{upstream}'
 function gdnolock() {
-  command git diff "$@" ":(exclude)package-lock.json" ":(exclude)*.lock"
+	command git diff "$@" ":(exclude)package-lock.json" ":(exclude)*.lock"
 }
 #compdef _git gdnolock=git-diff
 function gdv {
-  command git diff -w "$@" | view -
+	command git diff -w "$@" | view -
 }
 #compdef _git gdv=git-diff
 
@@ -186,10 +186,10 @@ alias glol='command git log --graph --pretty="%Cred%h%Creset -%C(auto)%d%Creset 
 alias glola='command git log --graph --pretty="%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset" --all'
 alias glols='command git log --graph --pretty="%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset" --stat'
 # Pretty log messages
-function _git_log_prettily(){
-  if [[ $1 ]]; then
-    command git log --pretty="$1"
-  fi
+function _git_log_prettily() {
+	if [[ $1 ]]; then
+		command git log --pretty="$1"
+	fi
 }
 alias glp='_git_log_prettily'
 #compdef _git glp=git-log
@@ -203,7 +203,7 @@ alias gmom='command git merge "origin/$(git_main_branch)"'
 alias gms='command git merge --squash'
 alias gmum='command git merge "upstream/$(git_main_branch)"'
 
-alias gmt='command git mergetool --no-prompt' # deprecate?
+alias gmt='command git mergetool --no-prompt'                   # deprecate?
 alias gmtvim='command git mergetool --no-prompt --tool=vimdiff' # deprecate?
 alias gmtl='command git mergetool --no-prompt'
 alias gmtlvim='command git mergetool --no-prompt --tool=vimdiff'
@@ -221,18 +221,18 @@ alias gupom='command git pull --rebase origin "$(git_main_branch)"'
 alias gupomi='command git pull --rebase=interactive origin "$(git_main_branch)"'
 alias gupv='command git pull --rebase --verbose'
 function ggl {
-  if (($# != 0 && $# != 1)); then
-    command git pull origin "$*"
-  else
-    local b=
-    (($# == 0)) && b=$(git_current_branch)
-    command git pull origin "${b:-$1}"
-  fi
+	if (($# != 0 && $# != 1)); then
+		command git pull origin "$*"
+	else
+		local b=
+		(($# == 0)) && b=$(git_current_branch)
+		command git pull origin "${b:-$1}"
+	fi
 }
 function ggu {
-  local b=
-  (($# != 1)) && b=$(git_current_branch)
-  command git pull --rebase origin "${b:-$1}"
+	local b=
+	(($# != 1)) && b=$(git_current_branch)
+	command git pull --rebase origin "${b:-$1}"
 }
 #compdef _git ggl=git-checkout
 #compdef _git ggpull=git-checkout
@@ -253,27 +253,27 @@ alias gpv='command git push --verbose'
 #is-at-least 2.30 "$git_version" && alias gpf='git push --force-with-lease --force-if-includes'
 #is-at-least 2.30 "$git_version" && alias gpsupf='git push --set-upstream origin "$(git_current_branch)" --force-with-lease --force-if-includes'
 function ggf {
-  (($# != 1)) && local b=$(git_current_branch)
-  command git push --force origin "${b:=$1}"
+	(($# != 1)) && local b=$(git_current_branch)
+	command git push --force origin "${b:=$1}"
 }
 function ggfl {
-  (($# != 1)) && local b=$(git_current_branch)
-  command git push --force-with-lease origin "${b:=$1}"
+	(($# != 1)) && local b=$(git_current_branch)
+	command git push --force-with-lease origin "${b:=$1}"
 }
 function ggp {
-  if (($# != 0 && $# != 1)); then
-    command git push origin "$*"
-  else
-    (($# == 0)) && local b=$(git_current_branch)
-    command git push origin "${b:=$1}"
-  fi
+	if (($# != 0 && $# != 1)); then
+		command git push origin "$*"
+	else
+		(($# == 0)) && local b=$(git_current_branch)
+		command git push origin "${b:=$1}"
+	fi
 }
 function ggpnp {
-  if (($# == 0)); then
-    ggl && ggp
-  else
-    ggl "$*" && ggp "$*"
-  fi
+	if (($# == 0)); then
+		ggl && ggp
+	else
+		ggl "$*" && ggp "$*"
+	fi
 }
 #compdef _git ggf=git-checkout
 #compdef _git ggfl=git-checkout
@@ -357,7 +357,7 @@ alias gta='command git tag --annotate'
 alias gts='command git tag --sign'
 alias gtv='command git tag | sort -V'
 function gtl {
-  command git tag --sort=-v:refname -n --list "$1*"
+	command git tag --sort=-v:refname -n --list "$1*"
 }
 #compdef _git gtl=git-tag
 
