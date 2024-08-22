@@ -9,8 +9,8 @@ function_exists() {
 	return "$?"
 }
 
-function_exists _get_comp_words_by_ref \
-	|| _get_comp_words_by_ref() {
+function_exists _get_comp_words_by_ref ||
+	_get_comp_words_by_ref() {
 		local exclude cur_ words_ cword_
 		if [ "$1" = "-n" ]; then
 			exclude=$2
@@ -20,25 +20,25 @@ function_exists _get_comp_words_by_ref \
 		cur_=${words_[cword_]}
 		while [ $# -gt 0 ]; do
 			case "$1" in
-				cur)
-					cur=$cur_
-					;;
-				prev)
-					prev=${words_[$cword_ - 1]}
-					;;
-				words)
-					words=("${words_[@]}")
-					;;
-				cword)
-					cword=$cword_
-					;;
+			cur)
+				cur=$cur_
+				;;
+			prev)
+				prev=${words_[$cword_ - 1]}
+				;;
+			words)
+				words=("${words_[@]}")
+				;;
+			cword)
+				cword=$cword_
+				;;
 			esac
 			shift
 		done
 	}
 
-function_exists __ltrim_colon_completions \
-	|| __ltrim_colon_completions() {
+function_exists __ltrim_colon_completions ||
+	__ltrim_colon_completions() {
 		if [[ "$1" == *:* && "$COMP_WORDBREAKS" == *:* ]]; then
 			# Remove colon-word prefix from COMPREPLY items
 			local colon_word=${1%${1##*:}}
@@ -49,8 +49,8 @@ function_exists __ltrim_colon_completions \
 		fi
 	}
 
-function_exists __find_mvn_projects \
-	|| __find_mvn_projects() {
+function_exists __find_mvn_projects ||
+	__find_mvn_projects() {
 		find . -name 'pom.xml' -not -path '*/target/*' -prune | while read LINE; do
 			local withoutPom=${LINE%/pom.xml}
 			local module=${withoutPom#./}
@@ -62,16 +62,16 @@ function_exists __find_mvn_projects \
 		done
 	}
 
-function_exists _realpath \
-	|| _realpath() {
+function_exists _realpath ||
+	_realpath() {
 		if [[ -f "$1" ]]; then
 			# file *must* exist
-			if cd "$(echo "${1%/*}")" &> /dev/null; then
+			if cd "$(echo "${1%/*}")" &>/dev/null; then
 				# file *may* not be local
 				# exception is ./file.ext
 				# try 'cd .; cd -;' *works!*
 				local tmppwd="$PWD"
-				cd - &> /dev/null
+				cd - &>/dev/null
 			else
 				# file *must* be local
 				local tmppwd="$PWD"
@@ -86,8 +86,8 @@ function_exists _realpath \
 		return 1 #success
 	}
 
-function_exists __pom_hierarchy \
-	|| __pom_hierarchy() {
+function_exists __pom_hierarchy ||
+	__pom_hierarchy() {
 		local pom=$(_realpath "pom.xml")
 		POM_HIERARCHY+=("$pom")
 		while [ -n "$pom" ] && grep -q "<parent>" "$pom"; do

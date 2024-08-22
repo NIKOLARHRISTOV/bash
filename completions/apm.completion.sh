@@ -35,26 +35,26 @@ function __apm_get_command {
 	for ((i = 1; i < $COMP_CWORD; ++i)); do
 		local arg=${COMP_WORDS[$i]}
 		case $arg in
-			[^-]*)
-				apm_command=$arg
-				return
-				;;
-			--version)
-				apm_command=-
-				return
-				;;
-			--help)
-				apm_command=help
-				return
-				;;
-			publish)
-				apm_command=publish
-				return
-				;;
-			config)
-				apm_command=config
-				return
-				;;
+		[^-]*)
+			apm_command=$arg
+			return
+			;;
+		--version)
+			apm_command=-
+			return
+			;;
+		--help)
+			apm_command=help
+			return
+			;;
+		publish)
+			apm_command=publish
+			return
+			;;
+		config)
+			apm_command=config
+			return
+			;;
 		esac
 	done
 }

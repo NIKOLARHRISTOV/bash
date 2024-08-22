@@ -2,7 +2,7 @@
 
 function _omb_completion_docker_compose_has_completion {
 	local complete
-	complete=$(complete -p docker-compose 2> /dev/null) && [[ $complete ]] || return 1
+	complete=$(complete -p docker-compose 2>/dev/null) && [[ $complete ]] || return 1
 
 	unset -f _omb_completion_docker_compose_has_completion
 	unset -f _omb_completion_docker_compose_try

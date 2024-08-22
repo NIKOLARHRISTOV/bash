@@ -6,8 +6,8 @@
 # /etc/gdm3/Xsession sources ~/.profile and checks stderr.  If there is any
 # stderr ourputs, it refuses to start the session.
 case $- in
-	*i*) ;;
-	*) return ;;
+*i*) ;;
+*) return ;;
 esac
 
 if [ -z "${BASH_VERSION-}" ]; then
@@ -36,16 +36,16 @@ fi
 # and plugins exists, or else we will use the default custom/
 if [[ ! ${OSH_CUSTOM-} ]]; then
 	OSH_CUSTOM=$OSH/custom
-	[[ -d $OSH_CUSTOM && -O $OSH_CUSTOM ]] \
-		|| OSH_CUSTOM=${XDG_DATA_HOME:-$HOME/.local/share}/oh-my-bash/custom
+	[[ -d $OSH_CUSTOM && -O $OSH_CUSTOM ]] ||
+		OSH_CUSTOM=${XDG_DATA_HOME:-$HOME/.local/share}/oh-my-bash/custom
 fi
 
 # Set OSH_CACHE_DIR to the path where cache files should be created
 # or else we will use the default cache/
 if [[ ! ${OSH_CACHE_DIR-} ]]; then
 	OSH_CACHE_DIR=$OSH/cache
-	[[ -d $OSH_CACHE_DIR && -O $OSH_CACHE_DIR ]] \
-		|| OSH_CACHE_DIR=${XDG_STATE_HOME:-$HOME/.local/state}/oh-my-bash/cache
+	[[ -d $OSH_CACHE_DIR && -O $OSH_CACHE_DIR ]] ||
+		OSH_CACHE_DIR=${XDG_STATE_HOME:-$HOME/.local/state}/oh-my-bash/cache
 fi
 
 _omb_module_loaded=
@@ -64,16 +64,16 @@ function _omb_module_require {
 
 		local -a locations=()
 		case $type in
-			lib) locations=({"$OSH_CUSTOM","$OSH"}/lib/"$name".{bash,sh}) ;;
-			plugin) locations=({"$OSH_CUSTOM","$OSH"}/plugins/"$name"/"$name".plugin.{bash,sh}) ;;
-			alias) locations=({"$OSH_CUSTOM","$OSH"}/aliases/"$name".aliases.{bash,sh}) ;;
-			completion) locations=({"$OSH_CUSTOM","$OSH"}/completions/"$name".completion.{bash,sh}) ;;
-			theme) locations=({"$OSH_CUSTOM"{,/themes},"$OSH"/themes}/"$name"/"$name".theme.{bash,sh}) ;;
-			*)
-				echo "oh-my-bash (module_require): unknown module type '$type'." >&2
-				status=2
-				continue
-				;;
+		lib) locations=({"$OSH_CUSTOM","$OSH"}/lib/"$name".{bash,sh}) ;;
+		plugin) locations=({"$OSH_CUSTOM","$OSH"}/plugins/"$name"/"$name".plugin.{bash,sh}) ;;
+		alias) locations=({"$OSH_CUSTOM","$OSH"}/aliases/"$name".aliases.{bash,sh}) ;;
+		completion) locations=({"$OSH_CUSTOM","$OSH"}/completions/"$name".completion.{bash,sh}) ;;
+		theme) locations=({"$OSH_CUSTOM"{,/themes},"$OSH"/themes}/"$name"/"$name".theme.{bash,sh}) ;;
+		*)
+			echo "oh-my-bash (module_require): unknown module type '$type'." >&2
+			status=2
+			continue
+			;;
 		esac
 
 		local path
@@ -121,7 +121,7 @@ unset -v _omb_init_files
 # Figure out the SHORT hostname
 if [[ $OSTYPE = darwin* ]]; then
 	# macOS's $HOST changes with dhcp, etc. Use ComputerName if possible.
-	SHORT_HOST=$(scutil --get ComputerName 2> /dev/null) || SHORT_HOST=${HOST/.*/}
+	SHORT_HOST=$(scutil --get ComputerName 2>/dev/null) || SHORT_HOST=${HOST/.*/}
 else
 	SHORT_HOST=${HOST/.*/}
 fi
@@ -138,8 +138,8 @@ _omb_module_require_completion "${completions[@]}"
 # Load all of your custom configurations from custom/
 _omb_util_glob_expand _omb_init_files '"$OSH_CUSTOM"/*.{sh,bash}'
 for _omb_init_file in "${_omb_init_files[@]}"; do
-	[[ -f $_omb_init_file ]] \
-		&& source "$_omb_init_file"
+	[[ -f $_omb_init_file ]] &&
+		source "$_omb_init_file"
 done
 unset -v _omb_init_files _omb_init_file
 
@@ -150,8 +150,8 @@ if [[ $OSH_THEME == random ]]; then
 	# Remove ignored themes from the list
 	for _omb_init_theme in random "${OMB_THEME_RANDOM_IGNORED[@]}"; do
 		for _omb_init_index in "${!_omb_init_files[@]}"; do
-			[[ ${_omb_init_files[_omb_init_index]} == */"$_omb_init_theme"/* ]] \
-				&& unset -v '_omb_init_files[_omb_init_index]'
+			[[ ${_omb_init_files[_omb_init_index]} == */"$_omb_init_theme"/* ]] &&
+				unset -v '_omb_init_files[_omb_init_index]'
 		done
 		unset -v _omb_init_index
 	done

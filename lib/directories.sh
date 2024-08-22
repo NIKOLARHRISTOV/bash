@@ -19,23 +19,23 @@ function _omb_directories_cd {
 	fi
 	if [[ ${OMB_DIRECTORIES_CD_USE_PUSHD-} == true ]]; then
 		local oldpwd=$OLDPWD
-		builtin pushd . > /dev/null \
-			&& OLDPWD=$oldpwd builtin cd "$@" \
-			&& oldpwd=$OLDPWD \
-			&& builtin pushd . > /dev/null \
-			&& for ((index = ${#DIRSTACK[@]} - 1; index >= 1; index--)); do
+		builtin pushd . >/dev/null &&
+			OLDPWD=$oldpwd builtin cd "$@" &&
+			oldpwd=$OLDPWD &&
+			builtin pushd . >/dev/null &&
+			for ((index = ${#DIRSTACK[@]} - 1; index >= 1; index--)); do
 				if [[ ${DIRSTACK[0]/#~/$HOME} == "${DIRSTACK[index]}" ]]; then
-					builtin popd "+$index" > /dev/null || return 1
+					builtin popd "+$index" >/dev/null || return 1
 				fi
 			done
 		local status=$?
 		_omb_cd_dirstack=("${DIRSTACK[@]/#~/$HOME}")
 		OLDPWD=$oldpwd
 	else
-		[[ ${_omb_cd_dirstack[0]} == "$PWD" ]] \
-			|| _omb_cd_dirstack=("$PWD" "${_omb_cd_dirstack[@]}")
-		builtin cd "$@" \
-			&& _omb_cd_dirstack=("$PWD" "${_omb_cd_dirstack[@]}")
+		[[ ${_omb_cd_dirstack[0]} == "$PWD" ]] ||
+			_omb_cd_dirstack=("$PWD" "${_omb_cd_dirstack[@]}")
+		builtin cd "$@" &&
+			_omb_cd_dirstack=("$PWD" "${_omb_cd_dirstack[@]}")
 		local status=$?
 
 		for ((index = ${#_omb_cd_dirstack[@]} - 1; index >= 1; index--)); do

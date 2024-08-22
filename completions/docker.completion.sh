@@ -2,7 +2,7 @@
 
 function _omb_completion_docker_has_completion {
 	local complete
-	complete=$(complete -p docker 2> /dev/null) && [[ $complete ]] || return 1
+	complete=$(complete -p docker 2>/dev/null) && [[ $complete ]] || return 1
 
 	# bash-completion runs $(docker completion bash) as a fallback, but the
 	# official docker completion is not provided through $(docker completion

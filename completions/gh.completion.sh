@@ -5,12 +5,12 @@
 # Check that git tab completion is available
 if _omb_util_function_exists _git; then
 	# Duplicate and rename the 'list_all_commands' function
-	eval "$(declare -f __git_list_all_commands \
-		| sed 's/__git_list_all_commands/__git_list_all_commands_without_hub/')"
+	eval "$(declare -f __git_list_all_commands |
+		sed 's/__git_list_all_commands/__git_list_all_commands_without_hub/')"
 
 	# Wrap the 'list_all_commands' function with extra hub commands
 	function __git_list_all_commands {
-		cat <<- EOF
+		cat <<-EOF
 			alias
 			pull-request
 			fork
@@ -38,17 +38,17 @@ if _omb_util_function_exists _git; then
 		while [ $c -lt $cword ]; do
 			i="${words[c]}"
 			case "$i" in
-				-s)
-					unset s
-					;;
-				*)
-					for sh in $shells; do
-						if [ "$sh" = "$i" ]; then
-							unset shells
-							break
-						fi
-					done
-					;;
+			-s)
+				unset s
+				;;
+			*)
+				for sh in $shells; do
+					if [ "$sh" = "$i" ]; then
+						unset shells
+						break
+					fi
+				done
+				;;
 			esac
 			((c++))
 		done
@@ -65,16 +65,16 @@ if _omb_util_function_exists _git; then
 		while [ $c -lt $cword ]; do
 			i="${words[c]}"
 			case "$i" in
-				-u)
-					unset u
-					;;
-				*)
-					if [ -z "$repo" ]; then
-						repo=$i
-					else
-						subpage=$i
-					fi
-					;;
+			-u)
+				unset u
+				;;
+			*)
+				if [ -z "$repo" ]; then
+					repo=$i
+				else
+					subpage=$i
+				fi
+				;;
 			esac
 			((c++))
 		done
@@ -82,14 +82,14 @@ if _omb_util_function_exists _git; then
 			__gitcomp "$u -- $(__hub_github_repos '\p')"
 		elif [ -z "$subpage" ]; then
 			case "$cur" in
-				*/*)
-					local pfx="${cur%/*}" cur_="${cur#*/}"
-					local subpages_var="subpages_$pfx"
-					__gitcomp "${!subpages_var}" "$pfx/" "$cur_"
-					;;
-				*)
-					__gitcomp "$u ${subpages_}"
-					;;
+			*/*)
+				local pfx="${cur%/*}" cur_="${cur#*/}"
+				local subpages_var="subpages_$pfx"
+				__gitcomp "${!subpages_var}" "$pfx/" "$cur_"
+				;;
+			*)
+				__gitcomp "$u ${subpages_}"
+				;;
 			esac
 		else
 			__gitcomp "$u"
@@ -102,26 +102,26 @@ if _omb_util_function_exists _git; then
 		while [ $c -gt 1 ]; do
 			i="${words[c]}"
 			case "$i" in
-				-u)
-					unset u
-					;;
-				*)
-					if [ -z "$rev" ]; then
-						# Even though the logic below is able to complete both user/repo
-						# and revision in the right place, when there is only one argument
-						# (other than -u) in the command, that argument will be taken as
-						# revision. For example:
-						# $ hub compare -u upstream
-						# > https://github.com/USER/REPO/compare/upstream
-						if __hub_github_repos '\p' | grep -Eqx "^$i(/[^/]+)?"; then
-							arg_repo=$i
-						else
-							rev=$i
-						fi
-					elif [ -z "$arg_repo" ]; then
+			-u)
+				unset u
+				;;
+			*)
+				if [ -z "$rev" ]; then
+					# Even though the logic below is able to complete both user/repo
+					# and revision in the right place, when there is only one argument
+					# (other than -u) in the command, that argument will be taken as
+					# revision. For example:
+					# $ hub compare -u upstream
+					# > https://github.com/USER/REPO/compare/upstream
+					if __hub_github_repos '\p' | grep -Eqx "^$i(/[^/]+)?"; then
 						arg_repo=$i
+					else
+						rev=$i
 					fi
-					;;
+				elif [ -z "$arg_repo" ]; then
+					arg_repo=$i
+				fi
+				;;
 			esac
 			((c--))
 		done
@@ -154,29 +154,29 @@ if _omb_util_function_exists _git; then
 				repo=${i#*:}
 				owner=${repo%%/*}
 				case "$arg_repo" in
-					"$repo" | "$owner")
-						break
-						;;
+				"$repo" | "$owner")
+					break
+					;;
 				esac
 			done
 		fi
 
 		local pfx cur_="$cur"
 		case "$cur_" in
-			*..*)
-				pfx="${cur_%%..*}..."
-				cur_="${cur_##*..}"
-				__gitcomp_nl "$(__hub_revlist $remote)" "$pfx" "$cur_"
-				;;
-			*)
-				if [ -z "${arg_repo}${rev}" ]; then
-					__gitcomp "$u $(__hub_github_repos '\o\n\p') $(__hub_revlist $remote)"
-				elif [ -z "$rev" ]; then
-					__gitcomp "$u $(__hub_revlist $remote)"
-				else
-					__gitcomp "$u"
-				fi
-				;;
+		*..*)
+			pfx="${cur_%%..*}..."
+			cur_="${cur_##*..}"
+			__gitcomp_nl "$(__hub_revlist $remote)" "$pfx" "$cur_"
+			;;
+		*)
+			if [ -z "${arg_repo}${rev}" ]; then
+				__gitcomp "$u $(__hub_github_repos '\o\n\p') $(__hub_revlist $remote)"
+			elif [ -z "$rev" ]; then
+				__gitcomp "$u $(__hub_revlist $remote)"
+			else
+				__gitcomp "$u"
+			fi
+			;;
 		esac
 	}
 
@@ -186,16 +186,16 @@ if _omb_util_function_exists _git; then
 		while [ $c -lt $cword ]; do
 			i="${words[c]}"
 			case "$i" in
-				-d | -h)
-					((c++))
-					flags=${flags/$i/}
-					;;
-				-p)
-					flags=${flags/$i/}
-					;;
-				*)
-					name=$i
-					;;
+			-d | -h)
+				((c++))
+				flags=${flags/$i/}
+				;;
+			-p)
+				flags=${flags/$i/}
+				;;
+			*)
+				name=$i
+				;;
 			esac
 			((c++))
 		done
@@ -203,12 +203,12 @@ if _omb_util_function_exists _git; then
 			repo=$(basename "$PWD")
 		fi
 		case "$prev" in
-			-d | -h)
-				COMPREPLY=()
-				;;
-			-p | *)
-				__gitcomp "$repo $flags"
-				;;
+		-d | -h)
+			COMPREPLY=()
+			;;
+		-p | *)
+			__gitcomp "$repo $flags"
+			;;
 		esac
 	}
 
@@ -218,9 +218,9 @@ if _omb_util_function_exists _git; then
 		while [ $c -lt $cword ]; do
 			i="${words[c]}"
 			case "$i" in
-				--no-remote)
-					unset remote
-					;;
+			--no-remote)
+				unset remote
+				;;
 			esac
 			((c++))
 		done
@@ -235,33 +235,33 @@ if _omb_util_function_exists _git; then
 		while [ $c -lt $cword ]; do
 			i="${words[c]}"
 			case "$i" in
-				-m | -F | -i | -b | -h)
-					((c++))
-					flags=${flags/$i/}
-					;;
-				-f)
-					flags=${flags/$i/}
-					;;
+			-m | -F | -i | -b | -h)
+				((c++))
+				flags=${flags/$i/}
+				;;
+			-f)
+				flags=${flags/$i/}
+				;;
 			esac
 			((c++))
 		done
 		case "$prev" in
-			-i)
-				COMPREPLY=()
-				;;
-			-b | -h)
-				# (Doesn't seem to need this...)
-				# Uncomment the following line when 'owner/repo:[TAB]' misbehaved
-				#_get_comp_words_by_ref -n : cur
-				__gitcomp_nl "$(__hub_heads)"
-				# __ltrim_colon_completions "$cur"
-				;;
-			-F)
-				COMPREPLY=("$cur"*)
-				;;
-			-f | *)
-				__gitcomp "$flags"
-				;;
+		-i)
+			COMPREPLY=()
+			;;
+		-b | -h)
+			# (Doesn't seem to need this...)
+			# Uncomment the following line when 'owner/repo:[TAB]' misbehaved
+			#_get_comp_words_by_ref -n : cur
+			__gitcomp_nl "$(__hub_heads)"
+			# __ltrim_colon_completions "$cur"
+			;;
+		-F)
+			COMPREPLY=("$cur"*)
+			;;
+		-f | *)
+			__gitcomp "$flags"
+			;;
 		esac
 	}
 
@@ -298,7 +298,7 @@ if _omb_util_function_exists _git; then
 					echo "$v"
 					break
 				fi
-			done < "$config"
+			done <"$config"
 		fi
 	}
 
@@ -322,9 +322,9 @@ if _omb_util_function_exists _git; then
 			format=${format//\p/\2}
 			format=${format//\o/\3}
 		fi
-		_omb_prompt_git config --get-regexp 'remote\.[^.]*\.url' \
-			| grep -E ' ((https?|git)://|git@)github\.com[:/][^:/]+/[^/]+$' \
-			| sed -E 's#^remote\.([^.]+)\.url +.+[:/](([^/]+)/[^.]+)(\.git)?$#'"$format"'#'
+		_omb_prompt_git config --get-regexp 'remote\.[^.]*\.url' |
+			grep -E ' ((https?|git)://|git@)github\.com[:/][^:/]+/[^/]+$' |
+			sed -E 's#^remote\.([^.]+)\.url +.+[:/](([^/]+)/[^.]+)(\.git)?$#'"$format"'#'
 	}
 
 	# __hub_heads
@@ -361,6 +361,6 @@ if _omb_util_function_exists _git; then
 	}
 
 	# Enable completion for hub even when not using the alias
-	complete -o bashdefault -o default -o nospace -F _git gh 2> /dev/null \
-		|| complete -o default -o nospace -F _git gh
+	complete -o bashdefault -o default -o nospace -F _git gh 2>/dev/null ||
+		complete -o default -o nospace -F _git gh
 fi

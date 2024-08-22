@@ -5,12 +5,12 @@ function __gradle {
 	local cache_dir="$HOME/.gradle/completion_cache"
 
 	case $OSTYPE in
-		darwin*)
-			local checksum_command="find . -name build.gradle -print0 | xargs -0 md5 -q | md5 -q"
-			;;
-		*)
-			local checksum_command="find . -name build.gradle -print0 | xargs -0 md5sum | md5sum | cut -d ' ' -f 1"
-			;;
+	darwin*)
+		local checksum_command="find . -name build.gradle -print0 | xargs -0 md5 -q | md5 -q"
+		;;
+	*)
+		local checksum_command="find . -name build.gradle -print0 | xargs -0 md5sum | md5sum | cut -d ' ' -f 1"
+		;;
 	esac
 	local parsing_command="gradle --console=plain --quiet tasks | grep -v Rules | sed -nE -e 's/^([a-zA-Z]+)($| - .+)/\1/p'"
 
@@ -23,18 +23,18 @@ function __gradle {
 			newest_gradle_file="$(find . -type f -name build.gradle -newer "${cache_dir}/${gradle_files_checksum}")"
 			if [ -n "${newest_gradle_file}" ]; then
 				tasks="$(eval "${parsing_command}")"
-				[[ -n "${tasks}" ]] && echo "${tasks}" > "${cache_dir}/${gradle_files_checksum}"
+				[[ -n "${tasks}" ]] && echo "${tasks}" >"${cache_dir}/${gradle_files_checksum}"
 			else
 				tasks="$(cat "${cache_dir}/${gradle_files_checksum}")"
 				touch "${cache_dir}/${gradle_files_checksum}"
 			fi
 		else
 			tasks="$(eval "${parsing_command}")"
-			[[ -n "${tasks}" ]] && echo "${tasks}" > "${cache_dir}/${gradle_files_checksum}"
+			[[ -n "${tasks}" ]] && echo "${tasks}" >"${cache_dir}/${gradle_files_checksum}"
 		fi
 	else
 		tasks="$(eval "${parsing_command}")"
-		[[ -n "${tasks}" ]] && echo "${tasks}" > "${cache_dir}/${gradle_files_checksum}"
+		[[ -n "${tasks}" ]] && echo "${tasks}" >"${cache_dir}/${gradle_files_checksum}"
 	fi
 	COMPREPLY=($(compgen -W "${tasks}" -- "${cur}"))
 }

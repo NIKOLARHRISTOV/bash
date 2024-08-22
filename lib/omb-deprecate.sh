@@ -27,8 +27,8 @@ function _omb_deprecate_function__notify {
 
 function _omb_deprecate_function {
 	local warning=
-	((_omb_version >= $1)) \
-		&& warning="_omb_deprecate_function__notify '$2' '$3'; "
+	((_omb_version >= $1)) &&
+		warning="_omb_deprecate_function__notify '$2' '$3'; "
 	builtin eval -- "function $2 { $warning$3 \"\$@\"; }"
 }
 
@@ -66,7 +66,7 @@ function _omb_deprecate_declare__init {
 				printf '%s\n' "oh-my-bash: The variable '$__old' is set but has been renamed to '$__new'.  Please use '$__new'."
 			else
 				printf '%s\n' "oh-my-bash: The variable '$__old' is set but has been deprecated.${__msg+ $__msg}"
-			fi > /dev/tty
+			fi >/dev/tty
 		fi
 		if [[ $__new && ! ${!__new+set} ]]; then
 			printf -v "$__new" '%s' "${!__old}"
@@ -105,7 +105,7 @@ if ((_omb_bash_version >= 40300)); then
 				_omb_deprecate_warning 1 "The variable '$esc_old' has been renamed to '$esc_new'. Please use '$esc_new'."
 			else
 				_omb_deprecate_warning 1 "The variable '$esc_old' has been deprecated.${__msg+ $__msg}"
-			fi > /dev/tty
+			fi >/dev/tty
 		fi
 		echo 1
 	}
@@ -158,29 +158,29 @@ else
 					printf '%s\n' "oh-my-bash: The variable '$esc_old' is changed but has been renamed to '$esc_new'.  Please use '$esc_new'."
 				else
 					printf '%s\n' "oh-my-bash: The variable '$esc_old' is changed but has been deprecated.${__msg+ $__msg}"
-				fi > /dev/tty
+				fi >/dev/tty
 			fi
 
 			case $__type in
-				sync)
-					local __value=${_omb_util_deprecate_value[__index]} __event=
-					if [[ ! ${!__new+set} || ! ${!__old+set} ]]; then
-						__value=${!__new-${!__old-}} __event=change
-					elif [[ ${!__new} != "$__value" ]]; then
-						__value=${!__new} __event=change
-					elif [[ ${!__old} != "$__value" ]]; then
-						__value=${!__old} __event=change
-					fi
+			sync)
+				local __value=${_omb_util_deprecate_value[__index]} __event=
+				if [[ ! ${!__new+set} || ! ${!__old+set} ]]; then
+					__value=${!__new-${!__old-}} __event=change
+				elif [[ ${!__new} != "$__value" ]]; then
+					__value=${!__new} __event=change
+				elif [[ ${!__old} != "$__value" ]]; then
+					__value=${!__old} __event=change
+				fi
 
-					if [[ $__event ]]; then
-						_omb_util_deprecate_value[__index]=$__value
-						printf -v "$__new" %s "$__value"
-						printf -v "$__old" %s "$__value"
-					fi
-					;;
-				track)
-					printf -v "$__old" %s "${!__new-}"
-					;;
+				if [[ $__event ]]; then
+					_omb_util_deprecate_value[__index]=$__value
+					printf -v "$__new" %s "$__value"
+					printf -v "$__old" %s "$__value"
+				fi
+				;;
+			track)
+				printf -v "$__old" %s "${!__new-}"
+				;;
 			esac
 		done
 	}

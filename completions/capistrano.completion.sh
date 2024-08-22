@@ -8,14 +8,14 @@ function _omb_completion_cap {
 	_omb_completion_reassemble_breaks :
 
 	if [[ -f Capfile ]]; then
-		local recent=$(ls -t .cap_tasks~ Capfile **/*.cap 2> /dev/null | head -n 1)
+		local recent=$(ls -t .cap_tasks~ Capfile **/*.cap 2>/dev/null | head -n 1)
 		if [[ $recent != '.cap_tasks~' ]]; then
-			if cap --version | grep 'Capistrano v2.' > /dev/null; then
+			if cap --version | grep 'Capistrano v2.' >/dev/null; then
 				# Capistrano 2.x
-				cap --tool --verbose --tasks | cut -d " " -f 2 > .cap_tasks~
+				cap --tool --verbose --tasks | cut -d " " -f 2 >.cap_tasks~
 			else
 				# Capistrano 3.x
-				cap --all --tasks | cut -d " " -f 2 > .cap_tasks~
+				cap --all --tasks | cut -d " " -f 2 >.cap_tasks~
 			fi
 		fi
 		COMPREPLY=($(compgen -W '$(< .cap_tasks)' -- "$cur"))

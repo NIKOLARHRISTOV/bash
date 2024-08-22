@@ -13,7 +13,7 @@ _omb_uninstall_confirmation() {
 }
 
 _omb_uninstall_contains_omb() {
-	command grep -qE '(source|\.)[[:space:]]+.*[/[:space:]]oh-my-bash\.sh' "$1" 2> /dev/null
+	command grep -qE '(source|\.)[[:space:]]+.*[/[:space:]]oh-my-bash\.sh' "$1" 2>/dev/null
 }
 
 # Find the latest bashrc that do not source oh-my-bash.sh
@@ -49,7 +49,7 @@ if [ "$_omb_uninstall_confirmation" != y ] && [ "$_omb_uninstall_confirmation" !
 	printf '%s\n' "Uninstall cancelled"
 	unset -v _omb_uninstall_confirmation
 	# shellcheck disable=SC2317
-	return 0 2> /dev/null || exit 0
+	return 0 2>/dev/null || exit 0
 fi
 unset -v _omb_uninstall_confirmation
 
@@ -69,7 +69,7 @@ if ! _omb_uninstall_contains_omb ~/.bashrc; then
 	printf '%s\n' "uninstall: Canceled." >&2
 	unset -v _omb_uninstall_bashrc_original
 	# shellcheck disable=SC2317
-	return 1 2> /dev/null || exit 1
+	return 1 2>/dev/null || exit 1
 fi
 
 _omb_uninstall_bashrc_uninstalled=
@@ -84,8 +84,8 @@ if [ -n "$_omb_uninstall_bashrc_original" ]; then
 	command mv "$_omb_uninstall_bashrc_original" ~/.bashrc
 	printf '%s\n' "Your original bash config was restored. Please restart your session."
 else
-	command sed '/oh-my-bash\.sh/s/^/: #/' ~/"${_omb_uninstall_bashrc_uninstalled:-.bashrc}" >| ~/.bashrc.omb-temp \
-		&& command mv ~/.bashrc.omb-temp ~/.bashrc
+	command sed '/oh-my-bash\.sh/s/^/: #/' ~/"${_omb_uninstall_bashrc_uninstalled:-.bashrc}" >|~/.bashrc.omb-temp &&
+		command mv ~/.bashrc.omb-temp ~/.bashrc
 fi
 
 unset -v _omb_uninstall_bashrc_original
@@ -93,11 +93,11 @@ unset -v _omb_uninstall_bashrc_uninstalled
 
 echo "Thanks for trying out Oh My Bash. It has been uninstalled."
 case $- in
-	*i*)
-		# shellcheck disable=SC3044,SC3046,SC1090
-		if [ -n "${BASH_VERSION-}" ]; then
-			declare -f _omb_util_unload > /dev/null 2>&1 && _omb_util_unload
-			source ~/.bashrc
-		fi
-		;;
+*i*)
+	# shellcheck disable=SC3044,SC3046,SC1090
+	if [ -n "${BASH_VERSION-}" ]; then
+		declare -f _omb_util_unload >/dev/null 2>&1 && _omb_util_unload
+		source ~/.bashrc
+	fi
+	;;
 esac

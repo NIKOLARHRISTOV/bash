@@ -30,7 +30,7 @@ function parse_git_dirty {
 		if [[ $DISABLE_UNTRACKED_FILES_DIRTY == "true" ]]; then
 			FLAGS+=('--untracked-files=no')
 		fi
-		STATUS=$(_omb_prompt_git status "${FLAGS[@]}" 2> /dev/null | tail -n1)
+		STATUS=$(_omb_prompt_git status "${FLAGS[@]}" 2>/dev/null | tail -n1)
 	fi
 	if [[ $STATUS ]]; then
 		echo "$OSH_THEME_GIT_PROMPT_DIRTY"
@@ -41,11 +41,11 @@ function parse_git_dirty {
 
 # Gets the difference between the local and remote branches
 function git_remote_status {
-	local git_remote_origin=$(_omb_prompt_git rev-parse --verify ${hook_com[branch]}@{upstream} --symbolic-full-name 2> /dev/null)
+	local git_remote_origin=$(_omb_prompt_git rev-parse --verify ${hook_com[branch]}@{upstream} --symbolic-full-name 2>/dev/null)
 	local remote=${git_remote_origin/refs\/remotes\//}
 	if [[ $remote ]]; then
-		local ahead=$(_omb_prompt_git rev-list ${hook_com[branch]}@{upstream}..HEAD 2> /dev/null | wc -l)
-		local behind=$(_omb_prompt_git rev-list HEAD..${hook_com[branch]}@{upstream} 2> /dev/null | wc -l)
+		local ahead=$(_omb_prompt_git rev-list ${hook_com[branch]}@{upstream}..HEAD 2>/dev/null | wc -l)
+		local behind=$(_omb_prompt_git rev-list HEAD..${hook_com[branch]}@{upstream} 2>/dev/null | wc -l)
 
 		local git_remote_status git_remote_status_detailed
 		if ((ahead == 0 && behind == 0)); then
@@ -75,18 +75,18 @@ function git_remote_status {
 # it's not a symbolic ref, but in a Git repo.
 function git_current_branch {
 	local ref
-	ref=$(_omb_prompt_git symbolic-ref --quiet HEAD 2> /dev/null)
+	ref=$(_omb_prompt_git symbolic-ref --quiet HEAD 2>/dev/null)
 	local ret=$?
 	if [[ $ret != 0 ]]; then
 		[[ $ret == 128 ]] && return # no git repo.
-		ref=$(_omb_prompt_git rev-parse --short HEAD 2> /dev/null) || return
+		ref=$(_omb_prompt_git rev-parse --short HEAD 2>/dev/null) || return
 	fi
 	echo ${ref#refs/heads/}
 }
 
 # Gets the number of commits ahead from remote
 function git_commits_ahead {
-	if _omb_prompt_git rev-parse --git-dir &> /dev/null; then
+	if _omb_prompt_git rev-parse --git-dir &>/dev/null; then
 		local commits=$(_omb_prompt_git rev-list --count @{upstream}..HEAD)
 		if ((commits != 0)); then
 			echo "$OSH_THEME_GIT_COMMITS_AHEAD_PREFIX$commits$OSH_THEME_GIT_COMMITS_AHEAD_SUFFIX"
@@ -96,7 +96,7 @@ function git_commits_ahead {
 
 # Gets the number of commits behind remote
 function git_commits_behind {
-	if _omb_prompt_git rev-parse --git-dir &> /dev/null; then
+	if _omb_prompt_git rev-parse --git-dir &>/dev/null; then
 		local commits=$(_omb_prompt_git rev-list --count HEAD..@{upstream})
 		if ((commits != 0)); then
 			echo "$OSH_THEME_GIT_COMMITS_BEHIND_PREFIX$commits$OSH_THEME_GIT_COMMITS_BEHIND_SUFFIX"
@@ -106,21 +106,21 @@ function git_commits_behind {
 
 # Outputs if current branch is ahead of remote
 function git_prompt_ahead {
-	if [[ $(_omb_prompt_git rev-list origin/$(git_current_branch)..HEAD 2> /dev/null) ]]; then
+	if [[ $(_omb_prompt_git rev-list origin/$(git_current_branch)..HEAD 2>/dev/null) ]]; then
 		echo "$OSH_THEME_GIT_PROMPT_AHEAD"
 	fi
 }
 
 # Outputs if current branch is behind remote
 function git_prompt_behind {
-	if [[ $(_omb_prompt_git rev-list HEAD..origin/$(git_current_branch) 2> /dev/null) ]]; then
+	if [[ $(_omb_prompt_git rev-list HEAD..origin/$(git_current_branch) 2>/dev/null) ]]; then
 		echo "$OSH_THEME_GIT_PROMPT_BEHIND"
 	fi
 }
 
 # Outputs if current branch exists on remote or not
 function git_prompt_remote {
-	if [[ $(_omb_prompt_git show-ref origin/$(git_current_branch) 2> /dev/null) ]]; then
+	if [[ $(_omb_prompt_git show-ref origin/$(git_current_branch) 2>/dev/null) ]]; then
 		echo "$OSH_THEME_GIT_PROMPT_REMOTE_EXISTS"
 	else
 		echo "$OSH_THEME_GIT_PROMPT_REMOTE_MISSING"
@@ -130,49 +130,49 @@ function git_prompt_remote {
 # Formats prompt string for current git ecommit short SHA
 function git_prompt_short_sha {
 	local SHA
-	SHA=$(_omb_prompt_git rev-parse --short HEAD 2> /dev/null) \
-		&& echo "$OSH_THEME_GIT_PROMPT_SHA_BEFORE$SHA$OSH_THEME_GIT_PROMPT_SHA_AFTER"
+	SHA=$(_omb_prompt_git rev-parse --short HEAD 2>/dev/null) &&
+		echo "$OSH_THEME_GIT_PROMPT_SHA_BEFORE$SHA$OSH_THEME_GIT_PROMPT_SHA_AFTER"
 }
 
 # Formats prompt string for current git ecommit long SHA
 function git_prompt_long_sha {
 	local SHA
-	SHA=$(_omb_prompt_git rev-parse HEAD 2> /dev/null) \
-		&& echo "$OSH_THEME_GIT_PROMPT_SHA_BEFORE$SHA$OSH_THEME_GIT_PROMPT_SHA_AFTER"
+	SHA=$(_omb_prompt_git rev-parse HEAD 2>/dev/null) &&
+		echo "$OSH_THEME_GIT_PROMPT_SHA_BEFORE$SHA$OSH_THEME_GIT_PROMPT_SHA_AFTER"
 }
 
 # Get the status of the working tree
 function git_prompt_status {
-	local INDEX=$(_omb_prompt_git status --porcelain -b 2> /dev/null)
+	local INDEX=$(_omb_prompt_git status --porcelain -b 2>/dev/null)
 	local STATUS=
-	if command grep -qE '^\?\? ' <<< "$INDEX"; then
+	if command grep -qE '^\?\? ' <<<"$INDEX"; then
 		STATUS=$OSH_THEME_GIT_PROMPT_UNTRACKED$STATUS
 	fi
-	if command grep -q '^[AM]  ' <<< "$INDEX"; then
+	if command grep -q '^[AM]  ' <<<"$INDEX"; then
 		STATUS=$OSH_THEME_GIT_PROMPT_ADDED$STATUS
 	fi
-	if command grep -qE '^[ A]M |^ T ' <<< "$INDEX"; then
+	if command grep -qE '^[ A]M |^ T ' <<<"$INDEX"; then
 		STATUS=$OSH_THEME_GIT_PROMPT_MODIFIED$STATUS
 	fi
-	if command grep -q '^R  ' <<< "$INDEX"; then
+	if command grep -q '^R  ' <<<"$INDEX"; then
 		STATUS=$OSH_THEME_GIT_PROMPT_RENAMED$STATUS
 	fi
-	if command grep -qE '^[ A]D |D  ' <<< "$INDEX"; then
+	if command grep -qE '^[ A]D |D  ' <<<"$INDEX"; then
 		STATUS=$OSH_THEME_GIT_PROMPT_DELETED$STATUS
 	fi
-	if _omb_prompt_git rev-parse --verify refs/stash &> /dev/null; then
+	if _omb_prompt_git rev-parse --verify refs/stash &>/dev/null; then
 		STATUS=$OSH_THEME_GIT_PROMPT_STASHED$STATUS
 	fi
-	if command grep -q '^UU ' <<< "$INDEX"; then
+	if command grep -q '^UU ' <<<"$INDEX"; then
 		STATUS=$OSH_THEME_GIT_PROMPT_UNMERGED$STATUS
 	fi
-	if command grep -q '^## [^ ]\+ .*ahead' <<< "$INDEX"; then
+	if command grep -q '^## [^ ]\+ .*ahead' <<<"$INDEX"; then
 		STATUS=$OSH_THEME_GIT_PROMPT_AHEAD$STATUS
 	fi
-	if command grep -q '^## [^ ]\+ .*behind' <<< "$INDEX"; then
+	if command grep -q '^## [^ ]\+ .*behind' <<<"$INDEX"; then
 		STATUS=$OSH_THEME_GIT_PROMPT_BEHIND$STATUS
 	fi
-	if command grep -q '^## [^ ]\+ .*diverged' <<< "$INDEX"; then
+	if command grep -q '^## [^ ]\+ .*diverged' <<<"$INDEX"; then
 		STATUS=$OSH_THEME_GIT_PROMPT_DIVERGED$STATUS
 	fi
 	echo "$STATUS"
@@ -184,7 +184,7 @@ function git_prompt_status {
 function git_compare_version {
 	local INPUT_GIT_VERSION INSTALLED_GIT_VERSION
 	_omb_util_split INPUT_GIT_VERSION "$1" '.'
-	_omb_util_split INSTALLED_GIT_VERSION "$(_omb_prompt_git --version 2> /dev/null)"
+	_omb_util_split INSTALLED_GIT_VERSION "$(_omb_prompt_git --version 2>/dev/null)"
 	_omb_util_split INSTALLED_GIT_VERSION "${INSTALLED_GIT_VERSION[2]}" '.'
 
 	local i
@@ -204,11 +204,11 @@ function git_compare_version {
 # Outputs the name of the current user
 # Usage example: $(git_current_user_name)
 function git_current_user_name {
-	_omb_prompt_git config user.name 2> /dev/null
+	_omb_prompt_git config user.name 2>/dev/null
 }
 
 # Outputs the email of the current user
 # Usage example: $(git_current_user_email)
 function git_current_user_email {
-	_omb_prompt_git config user.email 2> /dev/null
+	_omb_prompt_git config user.email 2>/dev/null
 }
