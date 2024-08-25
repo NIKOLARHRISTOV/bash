@@ -1,4 +1,4 @@
-#!/bin/sh oh-my-bash.module
+#!/bin/bash oh-my-bash.module
 # gcloud.plugin.sh
 # Author: Ian Chesal (github.com/ianchesal) -- ohmyzsh/gloud.plugin.zsh
 # Author: Antonino Cangialosi (github.com/ninoCan)

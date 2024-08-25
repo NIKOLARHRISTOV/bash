@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Note: this file is intentionally written in POSIX sh so that oh-my-bash can
 # be uninstalled without bash.
