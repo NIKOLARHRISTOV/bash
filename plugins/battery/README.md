@@ -35,7 +35,7 @@ functions to monitor and display battery status and information.
 -   **Stanard Output:**
     -   Graphical representation of the battery charge.
 
-## Usage
+## 🛠️ Usage
 
 Add the plugin name `battery` in the `plugins` array in `~/.bashrc`.
 

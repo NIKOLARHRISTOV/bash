@@ -6,7 +6,7 @@ This script provides a simple progress bar TUI for the terminal platform. It
 allows you to visualize the progress of a task being executed in your shell
 script.
 
-## Usage
+## 🛠️ Usage
 
 You can use the function `progress` from the interactive settings with Oh My
 Bash. The function handles printing of the progress bar.

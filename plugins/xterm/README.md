@@ -25,7 +25,7 @@ You can find the original source of this script
 1. **`set_xterm_title`**
     - Sets the xterm title with the provided string.
 
-## Usage
+## 🛠️ Usage
 
 1. **Enable plugin:**
 

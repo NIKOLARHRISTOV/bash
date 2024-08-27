@@ -2,7 +2,7 @@
 
 This plugin automatically source nvm[1]
 
-## Installation
+## 🚀 Installation
 
 ### Install nvm
 

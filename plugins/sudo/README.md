@@ -9,7 +9,7 @@ To use it, add `sudo` to the plugins array in your bashrc file:
 plugins=(... sudo)
 ```
 
-## Usage
+## 🛠️ Usage
 
 ### Current typed commands
 
