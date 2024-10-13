@@ -3,8 +3,8 @@
 ## Introduction
 
 The `ansible plugin` adds several aliases for useful
-[ansible](https://docs.ansible.com/ansible/latest/index.html) commands and
-[aliases](#aliases).
+[`ansible`](https://docs.ansible.com/ansible/latest/index.html) commands and
+[`aliases`](#aliases).
 
 To use it, add `ansible` to the plugins array of your bashrc file:
 

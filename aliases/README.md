@@ -94,7 +94,7 @@ Shorted aliases for most used Debian specific commands. To activate it, add
 This plugin provides the set of aliases that can be used to control package
 managers. Here is the list of the supported aliases for each package manager.
 You can find the details of each alias in the source
-[`package-manager.aliases.bash`](package-manager.aliases.bash).
+[`package-manager.aliases.bash``](package-manager.aliases.bash).
 
 -   `emerge` (Portage Enoch Merge) ... `em`, `es`, `esync`, `eb`, `er`, `emfu`,
     `ecd`, `ecp`, `elip`

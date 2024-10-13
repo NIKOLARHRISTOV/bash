@@ -11,4 +11,4 @@ will be displayed automatically when appropriate, including the current user and
 the hostname, whether the last call exited with an error, and whether background
 jobs are running in this shell.
 
-![bash screenshot](absimple-bash.png)
+![`bash screenshot`](absimple-bash.png)

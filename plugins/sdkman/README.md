@@ -1,12 +1,12 @@
 # sdkman plugin
 
-This plugin will automatically source [sdkman](https://sdkman.io/).
+This plugin will automatically source [`sdkman`](https://sdkman.io/).
 
 ## 🚀 Installation
 
 ### Install sdkman
 
-Let's [install the sdkman](https://sdkman.io/install) without updating shell
+Let's [`install the sdkman`](https://sdkman.io/install) without updating shell
 config!
 
 ```bash

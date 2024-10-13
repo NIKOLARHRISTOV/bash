@@ -1,6 +1,6 @@
 # Bakke
 
-![theme Bakke](bakke-dark.png)
+![`theme Bakke`](bakke-dark.png)
 
 -   **Version Control State Indicators:** It uses brown to indicate a dirty
     state and bold green for a clean state in version control-related prompts

@@ -1,6 +1,6 @@
 # 90210 💜
 
-![theme 90210](90210-dark.png)
+![`theme 90210`](90210-dark.png)
 
 -   **Brown**: Used to indicate a dirty state in source control management (SCM)
     and Git prompts.
