@@ -37,6 +37,6 @@ it!
 The direct upstream of the theme is
 [`agnoster-bash`](https://github.com/speedenator/agnoster-bash). The current base
 is
-[`1165d1b3``](https://github.com/speedenator/agnoster-bash/commit/1165d1b3f125f52e7d4df953166d3c62774638fc).
+[`1165d1b3`](https://github.com/speedenator/agnoster-bash/commit/1165d1b3f125f52e7d4df953166d3c62774638fc).
 New updates in the upstream can be found
 [`here`](https://github.com/speedenator/agnoster-bash/compare/1165d1b3f125f52e7d4df953166d3c62774638fc...master).
