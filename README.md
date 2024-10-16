@@ -360,8 +360,3 @@ Oh My Bash has a vibrant community of happy users and delightful contributors.
 Without all the time and help from our contributors, it wouldn't be so awesome.
 
 Thank you so much!
-
-## License
-
-Oh My Bash is derived from [`Oh My Zsh`](https://github.com/ohmyzsh/ohmyzsh). Oh
-My Bash is released under the [`MIT license`](LICENSE.md).
