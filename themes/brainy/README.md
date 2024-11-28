@@ -11,7 +11,7 @@ Simple colorful terminal prompt theme (inspired by a number of themes).
 -   SCM Information
 -   Battery Charge
 -   Clock
--   [`Todo.txt`](https://github.com/ginatrapani/todo.txt-cli) status
+-   [`Todo.txt`](HTTPS://github.com/ginatrapani/todo.txt-cli) status
 -   Ruby Environment
 -   Python Environment
 -   Exit Code
@@ -78,7 +78,7 @@ Python environment version information:
 
 #### ToDo.txt status
 
-[`Todo.txt`](https://github.com/ginatrapani/todo.txt-cli) status:
+[`Todo.txt`](HTTPS://github.com/ginatrapani/todo.txt-cli) status:
 
 `THEME_SHOW_TODO=false`
 

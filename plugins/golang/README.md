@@ -1,7 +1,7 @@
 # Golang plugin
 
 The `golang plugin` plugin adds some aliases for common
-[`Golang`](https://golang.org/) commands.
+[`Golang`](HTTPS://golang.org/) commands.
 
 To use it, add `golang` to the plugins array of your bashrc file:
 

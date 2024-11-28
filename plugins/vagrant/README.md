@@ -3,7 +3,7 @@
 ## Introduction
 
 The `vagrant plugin` adds several useful aliases for
-[`vagrant](https://www.vagrantup.com/downloads) commands and [aliases`](#aliases).
+[`vagrant](HTTPS://www.vagrantup.com/downloads) commands and [aliases`](#aliases).
 
 To use them, add `vagrant` to the `plugins` array of your bashrc file:
 

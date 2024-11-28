@@ -1,6 +1,6 @@
 # brew plugin
 
-The plugin adds several aliases for common [`brew`](https://brew.sh) commands.
+The plugin adds several aliases for common [`brew`](HTTPS://brew.sh) commands.
 
 To use it, add `brew` to the plugins array of your bashrc file:
 

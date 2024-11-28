@@ -1,5 +1,5 @@
 Oh My Bash is an open source, community-driven framework for managing your
-[`bash`](https://www.gnu.org/software/bash/) configuration.
+[`bash`](HTTPS://www.gnu.org/software/bash/) configuration.
 
 Sounds boring. Let's try again.
 
@@ -33,13 +33,13 @@ terminal. You can install this via the command-line with either `curl` or
 #### via curl
 
 ```shell
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
+bash -c "$(curl -fsSL HTTPS://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
 ```
 
 #### via wget
 
 ```shell
-bash -c "$(wget https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh -O -)"
+bash -c "$(wget HTTPS://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh -O -)"
 ```
 
 This replaces `~/.bashrc` with the version provided by Oh My Bash. The original
@@ -64,8 +64,8 @@ fi
 
 Oh My Bash comes with a shit load of plugins to take advantage of. You can take
 a look in the
-[`plugins`](https://github.com/ohmybash/oh-my-bash/tree/master/plugins) directory
-and/or the [`wiki`](https://github.com/ohmybash/oh-my-bash/wiki/Plugins) to see
+[`plugins`](HTTPS://github.com/ohmybash/oh-my-bash/tree/master/plugins) directory
+and/or the [`wiki`](HTTPS://github.com/ohmybash/oh-my-bash/wiki/Plugins) to see
 what's currently available.
 
 #### Enabling Plugins
@@ -102,8 +102,8 @@ documents how to use them.
 
 We'll admit it. Early in the Oh My Bash world, we may have gotten a bit too
 theme happy. We have over one hundred themes now bundled. Most of them have
-[`screenshots`](https://github.com/ohmybash/oh-my-bash/wiki/Themes) on our wiki or
-alternatively [`oh-my-zsh`](https://github.com/robbyrussell/oh-my-zsh/wiki/themes)
+[`screenshots`](HTTPS://github.com/ohmybash/oh-my-bash/wiki/Themes) on our wiki or
+alternatively [`oh-my-zsh`](HTTPS://github.com/robbyrussell/oh-my-zsh/wiki/themes)
 wiki.
 
 #### Selecting a Theme
@@ -125,7 +125,7 @@ desired theme. For example:
 ```shell
 OSH_THEME="agnoster" # (this is one of the fancy ones)
 # you might need to install a special Powerline font on your console's host for this to work
-# see https://github.com/ohmybash/oh-my-bash/wiki/Themes#agnoster
+# see HTTPS://github.com/ohmybash/oh-my-bash/wiki/Themes#agnoster
 ```
 
 Open up a new terminal window and your prompt should look something like this:
@@ -134,7 +134,7 @@ Open up a new terminal window and your prompt should look something like this:
 
 In case you did not find a suitable theme for your needs, please have a look at
 the wiki for
-[`more of them`](https://github.com/ohmybash/oh-my-bash/wiki/External-themes).
+[`more of them`](HTTPS://github.com/ohmybash/oh-my-bash/wiki/External-themes).
 
 If you're feeling feisty, you can let the computer select one randomly for you
 each time you open a new terminal window.
@@ -174,7 +174,7 @@ setting it before the end of the install pipeline like this:
 
 ```shell
 export OSH="$HOME/.dotfiles/oh-my-bash"
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
+bash -c "$(curl -fsSL HTTPS://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
 ```
 
 #### Unattended install
@@ -185,7 +185,7 @@ the effect of not trying to change the default shell, and also won't run `bash`
 when the installation has finished.
 
 ```sh
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)" --unattended
+bash -c "$(curl -fsSL HTTPS://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)" --unattended
 ```
 
 #### System-wide installation
@@ -194,7 +194,7 @@ For example, Oh My Bash can be installed to `/usr/local/share/oh-my-bash` for
 the system-wide installation by specifying the option `--prefix=PREFIX`.
 
 ```sh
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)" --prefix=/usr/local
+bash -c "$(curl -fsSL HTTPS://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)" --prefix=/usr/local
 ```
 
 To enable Oh My Bash, the Bash startup file `.bashrc` needs to be manually set
@@ -211,7 +211,7 @@ cp /usr/local/share/oh-my-bash/bashrc ~/.bashrc
 ##### 1. Clone the repository:
 
 ```shell
-git clone https://github.com/ohmybash/oh-my-bash.git ~/.oh-my-bash
+git clone HTTPS://github.com/ohmybash/oh-my-bash.git ~/.oh-my-bash
 ```
 
 ##### 2. _Optionally_, backup your existing `~/.bashrc` file:
@@ -345,13 +345,13 @@ configuration.
 
 ## Contributing
 
-I'm far from being a [`Bash`](https://www.gnu.org/software/bash/) expert and
+I'm far from being a [`Bash`](HTTPS://www.gnu.org/software/bash/) expert and
 suspect there are many ways to improve – if you have ideas on how to make the
 configuration easier to maintain (and faster), don't hesitate to fork and send
 pull requests!
 
 We also need people to test out pull-requests. So take a look through
-[`the open issues`](https://github.com/ohmybash/oh-my-bash/issues) and help where
+[`the open issues`](HTTPS://github.com/ohmybash/oh-my-bash/issues) and help where
 you can.
 
 ## Contributors
