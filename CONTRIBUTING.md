@@ -34,7 +34,7 @@ If you find one, comment on it so we can know there are more people experiencing
 it.
 
 If not, look at the
-[`Troubleshooting`](HTTPS://github.com/ohmybash/oh-my-bash/wiki/Troubleshooting)
+[`Troubleshooting`](https://github.com/ohmybash/oh-my-bash/wiki/Troubleshooting)
 page for instructions on how to gather data to better debug your problem.
 
 Then, you can go ahead and create an issue with as much detail as you can
@@ -85,9 +85,9 @@ pending/merged/rejected PRs covering or related to what you are going to change.
     your message.
 
 You should be familiar with the basics of
-[`contributing on GitHub`](HTTPS://help.github.com/articles/using-pull-requests)
+[`contributing on GitHub`](https://help.github.com/articles/using-pull-requests)
 and have a fork
-[`properly set up`](HTTPS://github.com/ohmybash/oh-my-bash/wiki/Contribution-Technical-Practices).
+[`properly set up`](https://github.com/ohmybash/oh-my-bash/wiki/Contribution-Technical-Practices).
 
 You MUST always create a PR with _a dedicated branch_ (i.e., a branch that is
 NOT `master`) based on the latest upstream tree.
@@ -111,7 +111,7 @@ The conventional commits are also accepted:
 
 When you open a new PR, please make sure you do it right. Also, reference in the
 PR description body any issues that would be solved by the PR,
-[`for instance`](HTTPS://help.github.com/articles/closing-issues-via-commit-messages/)
+[`for instance`](https://help.github.com/articles/closing-issues-via-commit-messages/)
 _"Fixes #XXXX"_ for issue number XXXX.
 
 ### You have a solution
@@ -137,9 +137,9 @@ or `<theme name>-light.png` depending on the dark or light background of the
 terminal used to make the image.
 
 When you add a new theme, please also update
-[`themes/THEMES.md`](HTTPS://github.com/ohmybash/oh-my-bash/blob/master/themes/THEMES.md).
+[`themes/THEMES.md`](https://github.com/ohmybash/oh-my-bash/blob/master/themes/THEMES.md).
 After your new theme is merged, the list in
-[`Themes`](HTTPS://github.com/ohmybash/oh-my-bash/wiki/Themes) in the wiki also
+[`Themes`](https://github.com/ohmybash/oh-my-bash/wiki/Themes) in the wiki also
 needs to be updated.
 
 ### New Plugin
@@ -150,7 +150,7 @@ it is worth including in Oh My Bash, you will have to find testers to +1 your
 PR.
 
 When you add a new plugin, please also update
-[`plugins/README.md`](HTTPS://github.com/ohmybash/oh-my-bash/blob/master/plugins/README.md)
+[`plugins/README.md`](https://github.com/ohmybash/oh-my-bash/blob/master/plugins/README.md)
 
 ### Copyright and responsibility
 
@@ -201,13 +201,13 @@ to the exiting code.
 _May the Force (of past experiences) be with you_
 
 GitHub offers
-[`many search features`](HTTPS://help.github.com/articles/searching-github/) to
+[`many search features`](https://help.github.com/articles/searching-github/) to
 help you check whether a similar contribution to yours already exists. Please
 search before making any contribution, it avoids duplicates and eases
 maintenance. Trust me, that works 90% of the time.
 
 You can also take a look at the
-[`FAQ`](HTTPS://github.com/ohmybash/oh-my-bash/wiki/FAQ) to be sure your
+[`FAQ`](https://github.com/ohmybash/oh-my-bash/wiki/FAQ) to be sure your
 contribution has not already come up.
 
 If all fails, your thing has probably not been reported yet, so you can go ahead
@@ -221,5 +221,5 @@ and [`create an issue`](#reporting-issues) or
 Very nice!! :)
 
 Please have a look at the
-[`Volunteer`](HTTPS://github.com/ohmybash/oh-my-bash/wiki/Volunteers) page for
+[`Volunteer`](https://github.com/ohmybash/oh-my-bash/wiki/Volunteers) page for
 instructions on where to start and more.

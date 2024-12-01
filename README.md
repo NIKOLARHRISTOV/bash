@@ -1,5 +1,5 @@
 Oh My Bash is an open source, community-driven framework for managing your
-[`bash`](HTTPS://www.gnu.org/software/bash/) configuration.
+[`bash`](https://www.gnu.org/software/bash/) configuration.
 
 Sounds boring. Let's try again.
 
@@ -64,8 +64,8 @@ fi
 
 Oh My Bash comes with a shit load of plugins to take advantage of. You can take
 a look in the
-[`plugins`](HTTPS://github.com/ohmybash/oh-my-bash/tree/master/plugins) directory
-and/or the [`wiki`](HTTPS://github.com/ohmybash/oh-my-bash/wiki/Plugins) to see
+[`plugins`](https://github.com/ohmybash/oh-my-bash/tree/master/plugins) directory
+and/or the [`wiki`](https://github.com/ohmybash/oh-my-bash/wiki/Plugins) to see
 what's currently available.
 
 #### Enabling Plugins
@@ -102,8 +102,8 @@ documents how to use them.
 
 We'll admit it. Early in the Oh My Bash world, we may have gotten a bit too
 theme happy. We have over one hundred themes now bundled. Most of them have
-[`screenshots`](HTTPS://github.com/ohmybash/oh-my-bash/wiki/Themes) on our wiki or
-alternatively [`oh-my-zsh`](HTTPS://github.com/robbyrussell/oh-my-zsh/wiki/themes)
+[`screenshots`](https://github.com/ohmybash/oh-my-bash/wiki/Themes) on our wiki or
+alternatively [`oh-my-zsh`](https://github.com/robbyrussell/oh-my-zsh/wiki/themes)
 wiki.
 
 #### Selecting a Theme
@@ -134,7 +134,7 @@ Open up a new terminal window and your prompt should look something like this:
 
 In case you did not find a suitable theme for your needs, please have a look at
 the wiki for
-[`more of them`](HTTPS://github.com/ohmybash/oh-my-bash/wiki/External-themes).
+[`more of them`](https://github.com/ohmybash/oh-my-bash/wiki/External-themes).
 
 If you're feeling feisty, you can let the computer select one randomly for you
 each time you open a new terminal window.
@@ -345,13 +345,13 @@ configuration.
 
 ## Contributing
 
-I'm far from being a [`Bash`](HTTPS://www.gnu.org/software/bash/) expert and
+I'm far from being a [`Bash`](https://www.gnu.org/software/bash/) expert and
 suspect there are many ways to improve – if you have ideas on how to make the
 configuration easier to maintain (and faster), don't hesitate to fork and send
 pull requests!
 
 We also need people to test out pull-requests. So take a look through
-[`the open issues`](HTTPS://github.com/ohmybash/oh-my-bash/issues) and help where
+[`the open issues`](https://github.com/ohmybash/oh-my-bash/issues) and help where
 you can.
 
 ## Contributors

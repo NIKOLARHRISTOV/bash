@@ -3,7 +3,7 @@
 ## Description
 
 The _Nwinkler Random Color_ Theme is based on the
-[`nwinkler theme`](HTTPS://github.com/Bash-it/bash-it/wiki/Themes#nwinkler), but
+[`nwinkler theme`](https://github.com/Bash-it/bash-it/wiki/Themes#nwinkler), but
 it randomizes the colors for:
 
 -   time
