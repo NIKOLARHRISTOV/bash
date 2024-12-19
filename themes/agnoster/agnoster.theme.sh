@@ -91,7 +91,7 @@
 # > install.sh
 
 # In addition, I recommend the
-# [Solarized theme](https://github.com/altercation/solarized/) and, if you're
+# [Solarized theme](HTTPS://GitHub.Com/altercation/solarized/) and, if you're
 # using it on Mac OS X, [iTerm 2](http://www.iterm2.com/) over Terminal.app -
 # it has significantly better color fidelity.
 
