@@ -2,7 +2,7 @@
 
 This plugin will automatically source [`sdkman`](https://sdkman.io/).
 
-## 🚀 Installation
+## Installation 🚀
 
 ### Install sdkman
 
