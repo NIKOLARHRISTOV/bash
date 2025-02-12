@@ -2,7 +2,7 @@
 
 Simple colorful terminal prompt theme (inspired by a number of themes).
 
-## Features
+## Feature
 
 ### Prompt Segments
 

@@ -3,7 +3,7 @@
 Simple colorful terminal prompt theme (inspired by powerlevel10k zsh theme,
 based on Brainy theme).
 
-## Features
+## Feature
 
 ### Prompt Segments
 
